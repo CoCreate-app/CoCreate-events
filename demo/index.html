@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Events | CoCreateJS</title>
+		
+		<!-- CoCreate Favicon -->
+		<link rel="icon" href="https://cdn.cocreate.app/favicon.ico" type="image/ico" sizes="16x16">
+		
+  		
+		<!-- Custom CSS -->
+		<style type="text/css">
+			.test{background:red}
+			.new{background:yellow}
+			.active{
+			background-color:blue;
+			}
+			.hidden {
+			display: none;
+			}
+		</style>
+	</head>
+	<body>
+	
+	   <div toggle="active"  class="test">hhh
+		   <!--<div  class="test">click me</div><br/>-->
+	   </div>
+	
+		 
+	
+	
+		<i class="fas fa-plus-circle" toggle="fa-minus-circle, fa-plus-circle"></i>
+	
+		<article>
+			<div id="div-01" class="vdom-item">
+				<p>Here is div-01 i should get class hidden</p>
+				<div>
+				  <div class="vdom-item" >some content1</div> 
+				  <span toggle="test" toggle-closest=".vdom-item"><i class="fa fa-caret-down"></i></span>
+				</div>
+				 <div class="vdom-item" >some content2</div>
+			</div>
+			<div class="vdom-item" >some content3</div>
+			<div id="div-03">Here is div-03</div>
+		</article>
+		<br>
+		<hr>
+		<div class="vdom-item" toggle="active" toggle-target="article > div">some content</div>
+		<br>
+		<hr> 
+		<div class="vdom-item" toggle-attribute='class' toggle="active" toggle-target=".vdom-item">
+			click for active
+		</div>
+	   <br>
+	   <hr>
+	   TEST HERE
+		<div class="vdom-item" id="hey" data-test="" toggle-attribute='id' toggle="active, other, hi, jean">
+			some content
+		</div>
+	
+	
+	    
+        <!--<script src="../dist/CoCreate-events.js"></script>-->
+	    <script src="https://cdn.cocreate.app/latest/CoCreate.min.js" ></script>
+	</body>
+</html>

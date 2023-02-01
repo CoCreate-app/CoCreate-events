@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Hover | CoCreateJS</title>
+		
+		
+  		
+  		<!-- Custom CSS -->
+		<style type="text/css">
+			.test{background:red}
+			.new{background:yellow}
+			.active{
+			background-color:blue;
+			}
+			.hidden {
+			  display: none;
+			}
+		</style>
+	</head>
+	<body>
+ 
+	   <div hover="active"  class="test">hhh
+		   <!--<div  class="test">click me</div><br/>-->
+	   </div>
+
+		 
+		<article>
+			<div id="div-01" class="vdom-item">
+				<p>Here is div-01 i should get class hidden</p>
+				<div>
+				  <div class="vdom-item" >some content1</div> 
+				  <span hover="test" hover-closest=".vdom-item"><i class="fa fa-caret-down"></i></span>
+				</div>
+				 <div class="vdom-item" >some content2</div>
+			</div>
+			<div class="vdom-item" >some content3</div>
+			<div id="div-03">Here is div-03</div>
+		</article>
+		<br>
+		<hr>
+		<div class="vdom-item" hover="active" hover-target="article > div">some content</div>
+		<br>
+		<hr> 
+		<div class="vdom-item" hover-attribute='class' hover="active" hover-target=".vdom-item">
+			click for active
+		</div>
+		
+		<div class="vdom-item" id="hey" data-test="" hover-attribute='data-test' hover="active, other, hi, jean">
+			some content
+		</div>
+	
+        <!--<script src="../dist/CoCreate-events.js"></script>-->
+	    <script src="https://cdn.cocreate.app/latest/CoCreate.min.js" ></script>
+	</body>
+</html>
