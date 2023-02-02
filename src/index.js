@@ -33,8 +33,24 @@ const CoCreateEvents = {
 			mainContainer.addEventListener(event_name, function(event) {
 				const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
 				if (target) {
-					if (target.closest(`[actions=*"${prefix}"]`)) return;
+					let attribute = target.getAttribute('actions') || ""
+					if (attribute.includes(prefix))
+						return;
+					// if (target.closest(`[actions*="${prefix}"]`)) 
+					// 	return;
 					self.__updateElements(target, prefix);
+
+					let parentElement = target.parentElement;
+					if (parentElement) {
+						do {
+							parentElement = parentElement.closest(`[${prefix}], [${prefix}-value]`)
+							if (parentElement)
+								self.__updateElements(parentElement, prefix);
+						}
+						while (parentElement)
+
+					}
+
 				}
 			});
 		});
@@ -52,10 +68,13 @@ const CoCreateEvents = {
 	__updateElements: function(element, prefix) {
 		const self = this;
 		let targetValue = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
+		if (!targetValue) return
+		
 		let values = targetValue.split(',');
 		if (!values || values.length == 0) {
 			return;
 		}
+
 		
 		let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
 		let targetSelector = element.getAttribute(`${prefix}-target`);
