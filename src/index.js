@@ -1,7 +1,8 @@
 import {queryDocumentSelectorAll} from '@cocreate/utils';
+import action from '@cocreate/actions';
 
 const CoCreateEvents = {
-	
+	// ToDo update to support config, ability to add custom prefix, for loop each deafualt and custom prefix to support action
 	init: function() {
 		this.initElement(document, 'events');
 		this.initElement(document, 'click');
@@ -32,10 +33,20 @@ const CoCreateEvents = {
 			mainContainer.addEventListener(event_name, function(event) {
 				const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
 				if (target) {
+					if (target.closest(`[actions=*"${prefix}"]`)) return;
 					self.__updateElements(target, prefix);
 				}
 			});
 		});
+
+		action.init({
+			name: prefix,
+			endEvent: `${prefix}End`,
+			callback: (btn, data) => {
+				this.__updateElements(btn, prefix)
+			}
+		});
+
 	},
 	
 	__updateElements: function(element, prefix) {
@@ -88,6 +99,11 @@ const CoCreateEvents = {
 			targetElements.forEach((el) => self.setValue(el, targetAttribute, values));
 		} else
 			self.setValue(element, targetAttribute, values);
+
+		document.dispatchEvent(new CustomEvent(`${prefix}End`, {
+			detail: {}
+		}))
+		
 	},
 	
 	setValue: function(element, attrName, values, deactivate) {
@@ -154,6 +170,7 @@ const CoCreateEvents = {
 		}
 	}
 };
+
 
 CoCreateEvents.init();
 
