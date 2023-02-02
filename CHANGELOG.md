@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.1.0...v1.2.0) (2023-02-02)
+
+
+### Features
+
+* add @cocreate/actions, events bubble up and triggers parent events ([9946b30](https://github.com/CoCreate-app/CoCreate-events/commit/9946b302b5ed19e3f20d850f0734dde6e28852fe))
+
 # [1.1.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.0.0...v1.1.0) (2023-02-02)
 
 
