@@ -3,34 +3,30 @@ import action from '@cocreate/actions';
 
 const CoCreateEvents = {
 	// ToDo update to support config, ability to add custom prefix, for loop each deafualt and custom prefix to support action
-	init: function() {
-		this.initElement(document, 'events');
-		this.initElement(document, 'click');
-		this.initElement(document, 'hover');
-		this.initElement(document, 'mouseover');
-		this.initElement(document, 'mouseout');
-		this.initElement(document, 'input');
-		this.initElement(document, 'change');
+	init: function(prefix, events) {
+		if (prefix && events)
+			this.initElement(document, prefix, events);
+		else {
+			this.initElement(document, 'toggle', ['click']);
+			this.initElement(document, 'click', ['click']);
+			// this.initElement(document, 'hover', ['mouseover', 'mouseout');
+			// this.initElement(document, 'mouseover', ['mouseover');
+			// this.initElement(document, 'mouseout', ['mouseout');
+			this.initElement(document, 'input', ['input']);
+			this.initElement(document, 'change', ['change']);
+			this.initElement(document, 'selected', ['click']);
+		}
 	},
 	
-	initElement: function(container, prefix) {
-		this.__initElementEvent(container || document, prefix);
+	initElement: function(element, prefix, events) {
+		this.__initElementEvent(element || document, prefix, events);
 	},
 	
-	__initElementEvent: function(mainContainer, prefix) {
+	__initElementEvent: function(element, prefix, events) {
 		const self = this;
-		let eventNames = []; 
-		
-		if (prefix === 'toggle') eventNames = ['click'];
-		if (prefix === 'click') eventNames = ['click'];
-		if (prefix === 'hover') eventNames = ['mouseover', 'mouseout'];
-		if (prefix === 'mouseover') eventNames = ['mouseover'];
-		if (prefix === 'mouseout') eventNames = ['mouseout'];
-		if (prefix === 'input') eventNames = ['input'];
-		if (prefix === 'change') eventNames = ['change'];
-	
-		eventNames.forEach((event_name) => {
-			mainContainer.addEventListener(event_name, function(event) {
+			
+		events.forEach((eventName) => {
+			element.addEventListener(eventName, function(event) {
 				const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
 				if (target) {
 					let attribute = target.getAttribute('actions') || ""
@@ -75,10 +71,11 @@ const CoCreateEvents = {
 			return;
 		}
 
-		
 		let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
 		let targetSelector = element.getAttribute(`${prefix}-target`);
 		let targetClosest = element.getAttribute(`${prefix}-closest`);
+		let targetKey = element.getAttribute(`${prefix}-key`);
+
 		let targetGroup = element.getAttribute(`${prefix}-group`);
 		if (targetGroup) {
 			document.querySelectorAll(`[${prefix}-group="${targetGroup}"]`).forEach((el) => {
@@ -87,22 +84,24 @@ const CoCreateEvents = {
 				if (!groupValues || groupValues.length == 0) {
 					return;
 				}
+	
 				groupValues = groupValues.map(x => x.trim());
 
 				let groupTarget = el.getAttribute(`${prefix}-target`);
 				let groupClosest = el.getAttribute(`${prefix}-closest`);
 				let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';	
+				let groupKey = el.getAttribute(`${prefix}-key`)	
 
 				// el.removeAttribute(prefix)
-				self.setValue(el, groupAttribute, groupValue, 'deactivate')
+				self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
 				if (groupTarget)
 					document.querySelectorAll(groupTarget).forEach((el) => 
-						self.setValue(el, groupAttribute, groupValue, 'deactivate')
+						self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
 					);
 				else if (groupClosest) {
 					let element = el.closest(groupClosest)
 					if (element)
-						self.setValue(element, groupAttribute, groupValue, 'deactivate');
+						self.setValue(prefix, element, groupAttribute, groupValues, groupKey, 'deactivate');
 				}
 			});
 		}
@@ -115,9 +114,9 @@ const CoCreateEvents = {
 		if (targetSelector) {
 			if (/{{\s*([\w\W]+)\s*}}/g.test(targetSelector)) return;
 			targetElements = queryDocumentSelectorAll(targetSelector);
-			targetElements.forEach((el) => self.setValue(el, targetAttribute, values));
+			targetElements.forEach((el) => self.setValue(prefix, el, targetAttribute, values, targetKey));
 		} else
-			self.setValue(element, targetAttribute, values);
+			self.setValue(prefix, element, targetAttribute, values, targetKey);
 
 		document.dispatchEvent(new CustomEvent(`${prefix}End`, {
 			detail: {}
@@ -125,56 +124,63 @@ const CoCreateEvents = {
 		
 	},
 	
-	setValue: function(element, attrName, values, deactivate) {
+	setValue: function(prefix, element, attrName, values, key, deactivate) {
 		let attrValues, oldValue;
-	
-		if (attrName === 'style') {
-			if (element.getAttribute(attrName)) {
-				attrValues = element.getAttribute(attrName).split(';').map(x => x.trim());
-			attrValues = element.getAttribute(attrName).split(';').map(x => x.trim());
-			attrValues = attrValues.map(function(item, index){
-			  return item.replace(' ','');
-			});
-			oldValue = values.filter(x => attrValues.includes(x))[0] || '';
-			}
-			let newValue = this.__getNextValue(values, oldValue);
-			
-			if (oldValue) {
-				let [property, value] = oldValue.split(":");
-				element.style[property] = '';
-			}
-			
-			if (newValue != '') {
-				let [property, value] = newValue.split(":");
-				element.style[property] = value;
-			}
+		if (key) {
+			key = `{{${key}}}`;
+			// let value = values[0]
+			replaceKey(prefix, element, key, values)
 		} else {
-			if (attrName === 'value') {
-				oldValue = element.getValue()	
-			} else if (element.getAttribute(attrName)) {
-				attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
+			if (attrName === 'style') {
+				if (element.getAttribute(attrName)) {
+					attrValues = element.getAttribute(attrName).split(';').map(x => x.trim());
+					attrValues = attrValues.map(function(item, index){
+					return item.replace(' ','');
+				});
 				oldValue = values.filter(x => attrValues.includes(x))[0] || '';
-			}
-
-			let newValue = this.__getNextValue(values, oldValue);
-			if (deactivate)
-				newValue = ""
-
-			if (attrName === 'class') {
-				if (oldValue != '') {
-					element.classList.remove(oldValue);
-					if (values.length === 1) {
-						return;
-					}
+				}
+				let newValue = this.__getNextValue(values, oldValue);
+				
+				if (oldValue) {
+					let [property, value] = oldValue.split(":");
+					element.style[property] = '';
 				}
 				
 				if (newValue != '') {
-					element.classList.add(newValue);
+					newValue = newValue.split(';').map(x => x.trim())
+					for (let style of newValue) {
+						let [property, value] = style.split(":");
+						element.style[property] = value;
+					}
 				}
-			} else if (attrName === 'value') {
-				element.setValue(newValue);
 			} else {
-				element.setAttribute(attrName, newValue);
+				if (attrName === 'value') {
+					oldValue = element.getValue()	
+				} else if (element.getAttribute(attrName)) {
+					attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
+					oldValue = values.filter(x => attrValues.includes(x))[0] || '';
+				}
+
+				let newValue = this.__getNextValue(values, oldValue);
+				if (deactivate)
+					newValue = ""
+
+				if (attrName === 'class') {
+					if (oldValue != '') {
+						element.classList.remove(oldValue);
+						if (values.length === 1) {
+							return;
+						}
+					}
+					
+					if (newValue != '') {
+						element.classList.add(newValue);
+					}
+				} else if (attrName === 'value') {
+					element.setValue(newValue);
+				} else {
+					element.setAttribute(attrName, newValue);
+				}
 			}
 		}
 	},
@@ -190,6 +196,41 @@ const CoCreateEvents = {
 	}
 };
 
+const eventElements = new Map();
+const elementPrefix = new Map();
+function replaceKey(prefix, element, key, values){
+	if (eventElements.has(element)) {
+		key = eventElements.get(element).get(prefix);
+	}
+	let oldValue = key
+	let value = CoCreateEvents.__getNextValue(values, oldValue);
+
+	const regex = new RegExp(key, "g");
+	for (let attribute of element.attributes){
+		let attrName = attribute.name;
+		let attrValue = attribute.value;
+		let setAttr = false;
+		if (attrValue.includes(key)){
+			attrValue = attrValue.replace(regex, value);
+			setAttr = true;
+		}
+		if (attrName.includes(key)){
+			element.removeAttribute(key);
+			attrName = attrName.replace(regex, value);
+			setAttr = true;
+		}
+		if (setAttr)
+			element.setAttribute(attrName, attrValue);
+	}
+	let html = element.innerHTML;
+	if (html.indexOf(key) !== -1){
+		html = html.replace(regex, value);
+		element.innerHTML = html;
+	}
+	elementPrefix.set(prefix, value)
+	eventElements.set(element, elementPrefix)
+		
+}
 
 CoCreateEvents.init();
 
