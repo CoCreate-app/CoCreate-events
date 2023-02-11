@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.2.0...v1.3.0) (2023-02-11)
+
+
+### Features
+
+* define and replace a key ([f321bba](https://github.com/CoCreate-app/CoCreate-events/commit/f321bbad58ed361b5d7185cf5fe33e6c4ed79d2b))
+
 # [1.2.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.1.0...v1.2.0) (2023-02-02)
 
 
