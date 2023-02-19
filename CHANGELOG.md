@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.3.0...v1.4.0) (2023-02-19)
+
+
+### Features
+
+* debonce ([43748c4](https://github.com/CoCreate-app/CoCreate-events/commit/43748c45b9e76f58aaf1ad11d16964422c028bbc))
+
 # [1.3.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.2.0...v1.3.0) (2023-02-11)
 
 
