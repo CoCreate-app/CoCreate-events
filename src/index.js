@@ -2,7 +2,7 @@ import {queryDocumentSelectorAll} from '@cocreate/utils';
 import action from '@cocreate/actions';
 
 const CoCreateEvents = {
-	// ToDo update to support config, ability to add custom prefix, for loop each deafualt and custom prefix to support action
+	// ToDo update to support config, ability to add custom prefix, for loop each defualt and custom prefix to support action
 	init: function(prefix, events) {
 		if (prefix && events)
 			this.initElement(document, prefix, events);
@@ -26,28 +26,34 @@ const CoCreateEvents = {
 		const self = this;
 			
 		events.forEach((eventName) => {
+			let debounce;
 			element.addEventListener(eventName, function(event) {
-				const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
-				if (target) {
-					let attribute = target.getAttribute('actions') || ""
-					if (attribute.includes(prefix))
-						return;
-					// if (target.closest(`[actions*="${prefix}"]`)) 
-					// 	return;
-					self.__updateElements(target, prefix);
-
-					let parentElement = target.parentElement;
-					if (parentElement) {
-						do {
-							parentElement = parentElement.closest(`[${prefix}], [${prefix}-value]`)
-							if (parentElement)
-								self.__updateElements(parentElement, prefix);
+				// ToDo: apply debounce
+				clearTimeout(debounce);
+				debounce = setTimeout(function() {
+					const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
+					if (target) {
+						let attribute = target.getAttribute('actions') || ""
+						if (attribute.includes(prefix))
+							return;
+						// if (target.closest(`[actions*="${prefix}"]`)) 
+						// 	return;
+						self.__updateElements(target, prefix);
+	
+						let parentElement = target.parentElement;
+						if (parentElement) {
+							do {
+								parentElement = parentElement.closest(`[${prefix}], [${prefix}-value]`)
+								if (parentElement)
+									self.__updateElements(parentElement, prefix);
+							}
+							while (parentElement)
+	
 						}
-						while (parentElement)
-
+	
 					}
+					}, 500);
 
-				}
 			});
 		});
 
@@ -64,6 +70,8 @@ const CoCreateEvents = {
 	__updateElements: function(element, prefix) {
 		const self = this;
 		let targetValue = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
+		if (!targetValue && element.value)
+			targetValue = element.getValue()
 		if (!targetValue) return
 		
 		let values = targetValue.split(',');
@@ -198,7 +206,8 @@ const CoCreateEvents = {
 
 const eventElements = new Map();
 const elementPrefix = new Map();
-function replaceKey(prefix, element, key, values){
+function replaceKey(prefix, element, key, values) {
+	// ToDo: improve updating key to prevent unwanted match by storing each attribute that originally had a key to know which attributes to update
 	if (eventElements.has(element)) {
 		key = eventElements.get(element).get(prefix);
 	}
