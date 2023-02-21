@@ -9,9 +9,9 @@ const CoCreateEvents = {
 		else {
 			this.initElement(document, 'toggle', ['click']);
 			this.initElement(document, 'click', ['click']);
-			// this.initElement(document, 'hover', ['mouseover', 'mouseout');
-			// this.initElement(document, 'mouseover', ['mouseover');
-			// this.initElement(document, 'mouseout', ['mouseout');
+			this.initElement(document, 'hover', ['mouseover', 'mouseout']);
+			this.initElement(document, 'mouseover', ['mouseover']);
+			this.initElement(document, 'mouseout', ['mouseout']);
 			this.initElement(document, 'input', ['input']);
 			this.initElement(document, 'change', ['change']);
 			this.initElement(document, 'selected', ['click']);
@@ -29,8 +29,8 @@ const CoCreateEvents = {
 			let debounce;
 			element.addEventListener(eventName, function(event) {
 				// ToDo: apply debounce
-				clearTimeout(debounce);
-				debounce = setTimeout(function() {
+				// clearTimeout(debounce);
+				// debounce = setTimeout(function() {
 					const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
 					if (target) {
 						let attribute = target.getAttribute('actions') || ""
@@ -52,7 +52,7 @@ const CoCreateEvents = {
 						}
 	
 					}
-					}, 500);
+					// }, 500);
 
 			});
 		});
@@ -205,39 +205,77 @@ const CoCreateEvents = {
 };
 
 const eventElements = new Map();
-const elementPrefix = new Map();
-function replaceKey(prefix, element, key, values) {
-	// ToDo: improve updating key to prevent unwanted match by storing each attribute that originally had a key to know which attributes to update
-	if (eventElements.has(element)) {
-		key = eventElements.get(element).get(prefix);
-	}
-	let oldValue = key
-	let value = CoCreateEvents.__getNextValue(values, oldValue);
+const eventKeys = new Map();
 
-	const regex = new RegExp(key, "g");
+function replaceKey(prefix, element, key, values) {
+	let currentValue = key
+
+	if (eventElements.has(element)) {
+		currentValue = eventElements.get(element).get(key);
+	}
+	let value = CoCreateEvents.__getNextValue(values, currentValue);
+	eventKeys.set(key, value)
+	eventElements.set(element, eventKeys)
+
 	for (let attribute of element.attributes){
+		let newName = attribute.name;
+		let newValue = attribute.value;
 		let attrName = attribute.name;
 		let attrValue = attribute.value;
 		let setAttr = false;
-		if (attrValue.includes(key)){
-			attrValue = attrValue.replace(regex, value);
-			setAttr = true;
+		if (attrValue.includes(currentValue) || attribute.valueKeys && attribute.valueKeys[key]){
+			if (!attribute.originalValue) 
+				attribute.originalValue = attrValue
+			if (!attribute.valueKeys)
+				attribute.valueKeys = {[key]: value}
+			else
+				attribute.valueKeys[key] = value;
+
+			newValue = attribute.originalValue
+			for (let valueKey of Object.keys(attribute.valueKeys)) {
+				const valueKeyRegex = new RegExp(valueKey, "g");
+				newValue = newValue.replace(valueKeyRegex, value);
+			}
+			setAttr = true;	
 		}
-		if (attrName.includes(key)){
-			element.removeAttribute(key);
-			attrName = attrName.replace(regex, value);
-			setAttr = true;
+		if (attrName.includes(currentValue) || attribute.nameKeys && attribute.nameKeys[key]){
+			if (!attribute.originalName) 
+				attribute.originalName = attrName
+			if (!attribute.nameKeys)
+				attribute.nameKeys = {[key]: value}
+			else
+				attribute.nameKeys[key] = value;
+
+			newName = attribute.originalName
+			for (let nameKey of Object.keys(attribute.nameKeys)) {
+				const nameKeyRegex = new RegExp(nameKey, "g");
+				newName = newName.replace(nameKeyRegex, value);
+			}
+
+			element.removeAttribute(attrName);
+			setAttr = true;	
+
 		}
 		if (setAttr)
-			element.setAttribute(attrName, attrValue);
+			element.setAttribute(newName, newValue);
 	}
 	let html = element.innerHTML;
-	if (html.indexOf(key) !== -1){
-		html = html.replace(regex, value);
-		element.innerHTML = html;
+	if (html.indexOf(currentValue) !== -1 || element.htmlKeys && element.htmlKeys[key]) {
+		if (!element.originalHtml) 
+			element.originalHtml = html
+		if (!element.htmlKeys)
+			element.htmlKeys = {[key]: value}
+		else
+			element.htmlKeys[key] = value;
+
+		let newHTML = element.originalHTML
+		for (let elementKey of Object.keys(element.htmlKeys)) {
+			const htmlKeyRegex = new RegExp(elementKey, "g");
+			newHTML = newHTML.replace(htmlKeyRegex, value);
+		}
+
+		element.innerHTML = newHTML;
 	}
-	elementPrefix.set(prefix, value)
-	eventElements.set(element, elementPrefix)
 		
 }
 
