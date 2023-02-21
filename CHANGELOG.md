@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.4.0...v1.4.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* improved key usage ([a92e1f2](https://github.com/CoCreate-app/CoCreate-events/commit/a92e1f25d7b4c83dfa0beb9a7526c9ca3dc184fe))
+
 # [1.4.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.3.0...v1.4.0) (2023-02-19)
 
 
