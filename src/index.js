@@ -82,6 +82,10 @@ const CoCreateEvents = {
 		let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
 		let targetSelector = element.getAttribute(`${prefix}-target`);
 		let targetClosest = element.getAttribute(`${prefix}-closest`);
+		let targetParent = element.getAttribute(`${prefix}-parent`);
+		let targetNext = element.getAttribute(`${prefix}-next`);
+		let targetPrevious = element.getAttribute(`${prefix}-previous`);
+
 		let targetKey = element.getAttribute(`${prefix}-key`);
 
 		let targetGroup = element.getAttribute(`${prefix}-group`);
@@ -97,6 +101,9 @@ const CoCreateEvents = {
 
 				let groupTarget = el.getAttribute(`${prefix}-target`);
 				let groupClosest = el.getAttribute(`${prefix}-closest`);
+				let groupParent = el.getAttribute(`${prefix}-parent`);
+				let groupNext = el.getAttribute(`${prefix}-next`);
+				let groupPrevious = el.getAttribute(`${prefix}-previous`);		
 				let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';	
 				let groupKey = el.getAttribute(`${prefix}-key`)	
 
@@ -111,6 +118,19 @@ const CoCreateEvents = {
 					if (element)
 						self.setValue(prefix, element, groupAttribute, groupValues, groupKey, 'deactivate');
 				}
+				else if (groupParent)
+					el.parentElement.querySelectorAll(groupParent).forEach((el) => 
+						self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
+					);
+				else if (groupNext)
+					el.nextElementSibling.querySelectorAll(groupNext).forEach((el) => 
+						self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
+					);
+				else if (groupPrevious)
+					el.previousElementSibling.querySelectorAll(groupPrevious).forEach((el) => 
+						self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
+					);	
+
 			});
 		}
 
@@ -123,7 +143,20 @@ const CoCreateEvents = {
 			if (/{{\s*([\w\W]+)\s*}}/g.test(targetSelector)) return;
 			targetElements = queryDocumentSelectorAll(targetSelector);
 			targetElements.forEach((el) => self.setValue(prefix, el, targetAttribute, values, targetKey));
-		} else
+		}
+		else if (targetParent)
+			element.parentElement.querySelectorAll(targetParent).forEach((el) => 
+				self.setValue(prefix, el, targetAttribute, values, targetKey)
+			);
+		else if (targetNext)
+			el.nextElementSibling.querySelectorAll(targetNext).forEach((el) => 
+				self.setValue(prefix, el, targetAttribute, values, targetKey)
+			);
+		else if (targetPrevious)
+			el.previousElementSibling.querySelectorAll(targetPrevious).forEach((el) => 
+				self.setValue(prefix, el, targetAttribute, values, targetKey)
+			);	
+		else
 			self.setValue(prefix, element, targetAttribute, values, targetKey);
 
 		document.dispatchEvent(new CustomEvent(`${prefix}End`, {
@@ -206,6 +239,7 @@ const CoCreateEvents = {
 
 const eventElements = new Map();
 const eventKeys = new Map();
+const elementAttributes = new Map();
 
 function replaceKey(prefix, element, key, values) {
 	let currentValue = key
@@ -217,45 +251,67 @@ function replaceKey(prefix, element, key, values) {
 	eventKeys.set(key, value)
 	eventElements.set(element, eventKeys)
 
+	let attributes = elementAttributes.get(element)
+	if (!attributes) {
+		attributes = {}
+		elementAttributes.set(element, attributes)
+	}
+
+
 	for (let attribute of element.attributes){
 		let newName = attribute.name;
 		let newValue = attribute.value;
 		let attrName = attribute.name;
 		let attrValue = attribute.value;
 		let setAttr = false;
-		if (attrValue.includes(currentValue) || attribute.valueKeys && attribute.valueKeys[key]){
-			if (!attribute.originalValue) 
-				attribute.originalValue = attrValue
-			if (!attribute.valueKeys)
-				attribute.valueKeys = {[key]: value}
-			else
-				attribute.valueKeys[key] = value;
 
-			newValue = attribute.originalValue
-			for (let valueKey of Object.keys(attribute.valueKeys)) {
+		if(attrName === 'clone-data')
+			console.log('clone-data')
+		if (attrValue.includes(currentValue) || attributes[attrName] && attributes[attrName].valueKeys && attributes[attrName].valueKeys[key]){
+			if (!attributes[attrName])
+				attributes[attrName] = { originalValue: attrValue }
+			else if (!attributes[attrName].originalValue) 
+				attributes[attrName].originalValue = attrValue
+			if (!attributes[attrName].valueKeys)
+				attributes[attrName].valueKeys = {[key]: value}
+			else
+				attributes[attrName].valueKeys[key] = value;
+
+			newValue = attributes[attrName].originalValue
+			for (let valueKey of Object.keys(attributes[attrName].valueKeys)) {
 				const valueKeyRegex = new RegExp(valueKey, "g");
 				newValue = newValue.replace(valueKeyRegex, value);
 			}
 			setAttr = true;	
 		}
-		if (attrName.includes(currentValue) || attribute.nameKeys && attribute.nameKeys[key]){
-			if (!attribute.originalName) 
-				attribute.originalName = attrName
-			if (!attribute.nameKeys)
-				attribute.nameKeys = {[key]: value}
-			else
-				attribute.nameKeys[key] = value;
+		// if (attrName.includes(currentValue) || attributes[attrName] && attributes[attrName].nameKeys && attributes[attrName].nameKeys[key]){
+		// 	if (!attributes[attrName])
+		// 		attributes[attrName] = { originalName: attrName }
+		// 	else if (!attributes[attrName].originalName) 
+		// 		attributes[attrName].originalName = attrName
 
-			newName = attribute.originalName
-			for (let nameKey of Object.keys(attribute.nameKeys)) {
-				const nameKeyRegex = new RegExp(nameKey, "g");
-				newName = newName.replace(nameKeyRegex, value);
-			}
+		// 	if (!attributes[attrName].nameKeys)
+		// 		attributes[attrName].nameKeys = {[key]: value}
 
-			element.removeAttribute(attrName);
-			setAttr = true;	
+		// 	newName = attributes[attrName].originalName
+		// 	for (let nameKey of Object.keys(attributes[attrName].nameKeys)) {
+		// 		let r
+		// 		if (attrName === nameKey)
+		// 			r = nameKey
+		// 		else
+		// 			r = attributes[attrName].nameKeys[nameKey]
 
-		}
+		// 		const nameKeyRegex = new RegExp(r, "g");
+		// 		newName = newName.replace(nameKeyRegex, value);
+		// 	}
+			
+		// 	attributes[attrName].nameKeys[key] = value;
+
+
+		// 	element.removeAttribute(attrName);
+		// 	setAttr = true;	
+
+		// }
 		if (setAttr)
 			element.setAttribute(newName, newValue);
 	}
@@ -269,12 +325,14 @@ function replaceKey(prefix, element, key, values) {
 			element.htmlKeys[key] = value;
 
 		let newHTML = element.originalHTML
-		for (let elementKey of Object.keys(element.htmlKeys)) {
-			const htmlKeyRegex = new RegExp(elementKey, "g");
-			newHTML = newHTML.replace(htmlKeyRegex, value);
-		}
+		if (newHTML) {
+			for (let elementKey of Object.keys(element.htmlKeys)) {
+				const htmlKeyRegex = new RegExp(elementKey, "g");
+				newHTML = newHTML.replace(htmlKeyRegex, value);
+			}
 
-		element.innerHTML = newHTML;
+			element.innerHTML = newHTML;
+		}
 	}
 		
 }
