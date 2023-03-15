@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.4.1...v1.5.0) (2023-03-15)
+
+
+### Bug Fixes
+
+* add events per element and observer to detect newely added elements ([dcbaa38](https://github.com/CoCreate-app/CoCreate-events/commit/dcbaa38a09fa75ddcf3c969c708fa1dbcf2e3ce4))
+
+
+### Features
+
+* attribute for targeting parent and sibling elements ([842be58](https://github.com/CoCreate-app/CoCreate-events/commit/842be58541401574cd4d093d08468abe39decf9b))
+
 ## [1.4.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.4.0...v1.4.1) (2023-02-21)
 
 
