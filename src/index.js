@@ -1,5 +1,7 @@
 import {queryDocumentSelectorAll} from '@cocreate/utils';
 import action from '@cocreate/actions';
+import observer from '@cocreate/observer';
+
 
 const CoCreateEvents = {
 	// ToDo update to support config, ability to add custom prefix, for loop each defualt and custom prefix to support action
@@ -24,15 +26,45 @@ const CoCreateEvents = {
 	
 	__initElementEvent: function(element, prefix, events) {
 		const self = this;
-			
+		
+		let selector = `[${prefix}], [${prefix}-value]`
+		let elements = document.querySelectorAll(selector)
+		for (const el of elements) {
+			this.addEvent(el, prefix, events)
+		}
+
+		action.init({
+			name: prefix,
+			endEvent: `${prefix}End`,
+			callback: (btn, data) => {
+				this.__updateElements(btn, prefix)
+			}
+		});
+
+		observer.init({ 
+			name: 'CoCreateEventInit', 
+			observe: ['addedNodes'],
+			target: `[${prefix}], [${prefix}-value]`,
+			callback: function(mutation) {
+				self.addEvent(mutation.target, prefix, events);
+			}
+		});
+		
+
+	},
+	
+	addEvent: function(element, prefix, events) {
+		const self = this;
 		events.forEach((eventName) => {
 			let debounce;
 			element.addEventListener(eventName, function(event) {
 				// ToDo: apply debounce
 				// clearTimeout(debounce);
 				// debounce = setTimeout(function() {
-					const target = event.target.closest(`[${prefix}], [${prefix}-value]`);
+					const target = event.currentTarget
 					if (target) {
+						if (target.id == "testtemplate1" || target.id == "testtemplate2")
+							console.log(target.id)
 						let attribute = target.getAttribute('actions') || ""
 						if (attribute.includes(prefix))
 							return;
@@ -44,8 +76,10 @@ const CoCreateEvents = {
 						if (parentElement) {
 							do {
 								parentElement = parentElement.closest(`[${prefix}], [${prefix}-value]`)
-								if (parentElement)
+								if (parentElement) {
 									self.__updateElements(parentElement, prefix);
+									parentElement = parentElement.parentElement
+								}
 							}
 							while (parentElement)
 	
@@ -53,22 +87,15 @@ const CoCreateEvents = {
 	
 					}
 					// }, 500);
-
-			});
-		});
-
-		action.init({
-			name: prefix,
-			endEvent: `${prefix}End`,
-			callback: (btn, data) => {
-				this.__updateElements(btn, prefix)
-			}
-		});
-
-	},
 	
+			});
+	
+		});
+	},
+
 	__updateElements: function(element, prefix) {
 		const self = this;
+		// ToDo: support empty value when prefix-attribute defined, add and remove the attribute
 		let targetValue = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
 		if (!targetValue && element.value)
 			targetValue = element.getValue()
@@ -207,14 +234,14 @@ const CoCreateEvents = {
 					newValue = ""
 
 				if (attrName === 'class') {
-					if (oldValue != '') {
+					if (oldValue) {
 						element.classList.remove(oldValue);
 						if (values.length === 1) {
 							return;
 						}
 					}
 					
-					if (newValue != '') {
+					if (newValue) {
 						element.classList.add(newValue);
 					}
 				} else if (attrName === 'value') {
