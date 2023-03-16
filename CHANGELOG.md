@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.1...v1.6.2) (2023-03-16)
+
+
+### Bug Fixes
+
+* remove set-value demo ([6df371c](https://github.com/CoCreate-app/CoCreate-events/commit/6df371cabd6745359abac5a2028e8c0749143cc8))
+
 ## [1.6.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.0...v1.6.1) (2023-03-16)
 
 
