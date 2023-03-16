@@ -237,7 +237,7 @@ const CoCreateEvents = {
 				else if (groupPrevious)
 					el.previousElementSibling.querySelectorAll(groupPrevious).forEach((el) => 
 						self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-					);	
+					);
 
 			});
 		}
@@ -258,14 +258,15 @@ const CoCreateEvents = {
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);
 		 } else if (targetNext) {
-			el.nextElementSibling.querySelectorAll(targetNext).forEach((el) => 
+			element.nextElementSibling.querySelectorAll(targetNext).forEach((el) => 
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);
 		 } else if (targetPrevious) {
-			el.previousElementSibling.querySelectorAll(targetPrevious).forEach((el) => 
+			element.previousElementSibling.querySelectorAll(targetPrevious).forEach((el) => 
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);	
-		 }
+		 } else			
+		 	self.setValue(prefix, element, targetAttribute, values, targetKey);
 
 		document.dispatchEvent(new CustomEvent(`${prefix}End`, {
 			detail: {}
