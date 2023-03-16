@@ -4,34 +4,48 @@ import observer from '@cocreate/observer';
 
 
 const CoCreateEvents = {
-	// ToDo update to support config, ability to add custom prefix, for loop each defualt and custom prefix to support action
+
 	init: function(prefix, events) {
 		if (prefix && events)
-			this.initElement(document, prefix, events);
+			this.initPrefix(prefix, events);
 		else {
-			this.initElement(document, 'toggle', ['click']);
-			this.initElement(document, 'click', ['click']);
-			this.initElement(document, 'hover', ['mouseover', 'mouseout']);
-			this.initElement(document, 'mouseover', ['mouseover']);
-			this.initElement(document, 'mouseout', ['mouseout']);
-			this.initElement(document, 'input', ['input']);
-			this.initElement(document, 'change', ['change']);
-			this.initElement(document, 'selected', ['click']);
+			this.initPrefix('toggle', ['click']);
+			this.initPrefix('click', ['click']);
+			this.initPrefix('hover', ['mouseover', 'mouseout']);
+			this.initPrefix('mouseover', ['mouseover']);
+			this.initPrefix('mouseout', ['mouseout']);
+			this.initPrefix('input', ['input']);
+			this.initPrefix('change', ['change']);
+			this.initPrefix('selected', ['click']);
+			this.initPrefix('onload', ['onload']);
+			this.initPrefix('observe', ['observer']);
 		}
+
+		let customEventEls = document.querySelectorAll('[event-name]')
+		let names = {}
+		for (let customEventEl of customEventEls) {
+			let name = customEventEl.getAttribute('event-name')
+			if(!names[name]) {
+				names[name] = name
+				this.initPrefix(name);
+			}
+		}
+
+		const self = this
+		observer.init({ 
+			name: 'CoCreateEventName', 
+			observe: ['addedNodes'],
+			target: `[event-name]`,
+			callback: function(mutation) {
+				let name = mutation.target.getAttribute('event-name')
+				self.initPrefix(name);
+			}
+		});
+
 	},
-	
-	initElement: function(element, prefix, events) {
-		this.__initElementEvent(element || document, prefix, events);
-	},
-	
-	__initElementEvent: function(element, prefix, events) {
+
+	initPrefix: function(prefix, events) {
 		const self = this;
-		
-		let selector = `[${prefix}], [${prefix}-value]`
-		let elements = document.querySelectorAll(selector)
-		for (const el of elements) {
-			this.addEvent(el, prefix, events)
-		}
 
 		action.init({
 			name: prefix,
@@ -41,63 +55,129 @@ const CoCreateEvents = {
 			}
 		});
 
+		let selector = `[${prefix}], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+
 		observer.init({ 
-			name: 'CoCreateEventInit', 
-			observe: ['addedNodes'],
-			target: `[${prefix}], [${prefix}-value]`,
+			name: 'CoCreateEventattributes', 
+			observe: ['attributes', 'addedNodes'],
+			attributeName: [`${prefix}-events`],
+			target: selector,
 			callback: function(mutation) {
-				self.addEvent(mutation.target, prefix, events);
+				self.initElements([mutation.target], prefix, events)
 			}
 		});
-		
 
+		if (events.includes('observer')) {
+			observer.init({
+				name: 'observerAttributes',
+				observe: ['attributes'],
+				attributeName: [`${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`],
+				callback: function(mutation) {
+					// remove previous observer
+					self.initElements([mutation.target], prefix, events)
+				}
+			});
+		}
+		
+		let elements = document.querySelectorAll(selector)
+		this.initElements(elements, prefix, events);
 	},
-	
-	addEvent: function(element, prefix, events) {
-		const self = this;
-		events.forEach((eventName) => {
-			let debounce;
-			element.addEventListener(eventName, function(event) {
+
+	elements: new Map(),
+	initElements: function(elements, prefix, events = []) {
+		const self = this
+		for (const el of elements) {
+			let prefixes = this.elements.get(el)
+			if (!prefixes) {
+				prefixes = {[prefix]: events}
+				this.elements.set(el, prefixes)
+			} else {
+				events = prefixes[prefix]
+			}
+
+			let customEvents = el.getAttribute(`${prefix}-events`)
+			if (customEvents) {
+				customEvents = customEvents.split(',')
+				for (let i = 0; i < customEvents.length; i++)
+					customEvents[i] = customEvents[i].trim()
+
+				for (let i = 0; i < events.length; i++)
+					el.removeEventListener(events[i], eventFunction)
+				
+				events = customEvents
+				prefixes[prefix] = events
+			}
+
+			if (events.includes('onload'))
+				this.__updateElements(el, prefix);
+					
+			if (events.includes('observer')) {
+				let target;
+				for (let attribute of el.attributes) {
+					if ([`${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`].includes(attribute.name)) {
+						target = attribute.value
+						break;
+					}						
+				}
+
+				observer.init({ 
+					observe: ['addedNodes'],
+					target,
+					callback: function(mutation) {
+						self.__updateElements(el, prefix, mutation.target);
+					}
+				});
+			}
+
+			for (let i = 0; i < events.length; i++) {
+				if (events[i] !== 'onload' && events[i] !== 'observer')
+					el.addEventListener(events[i], eventFunction);
+			}
+		
+			function eventFunction(event) {
 				// ToDo: apply debounce
+				// let debounce;
 				// clearTimeout(debounce);
 				// debounce = setTimeout(function() {
-					const target = event.currentTarget
-					if (target) {
-						if (target.id == "testtemplate1" || target.id == "testtemplate2")
-							console.log(target.id)
-						let attribute = target.getAttribute('actions') || ""
-						if (attribute.includes(prefix))
-							return;
-						// if (target.closest(`[actions*="${prefix}"]`)) 
-						// 	return;
-						self.__updateElements(target, prefix);
-	
-						let parentElement = target.parentElement;
-						if (parentElement) {
-							do {
-								parentElement = parentElement.closest(`[${prefix}], [${prefix}-value]`)
-								if (parentElement) {
-									self.__updateElements(parentElement, prefix);
-									parentElement = parentElement.parentElement
-								}
+				const target = event.currentTarget
+				if (target) {
+					if (target.id == "testtemplate1" || target.id == "testtemplate2")
+						console.log(target.id)
+					let attribute = target.getAttribute('actions') || ""
+					if (attribute.includes(prefix))
+						return;
+					// if (target.closest(`[actions*="${prefix}"]`)) 
+					// 	return;
+					self.__updateElements(target, prefix);
+
+					let selector = `[${prefix}], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+
+					let parentElement = target.parentElement;
+					if (parentElement) {
+						do {
+							parentElement = parentElement.closest(selector)
+							if (parentElement) {
+								self.__updateElements(parentElement, prefix);
+								parentElement = parentElement.parentElement
 							}
-							while (parentElement)
-	
 						}
-	
+						while (parentElement)
+		
 					}
-					// }, 500);
-	
-			});
-	
-		});
+		
+				}
+				// }, 500);
+			}
+		
+
+		}
 	},
 
-	__updateElements: function(element, prefix) {
+	__updateElements: function(element, prefix, target) {
 		const self = this;
 		// ToDo: support empty value when prefix-attribute defined, add and remove the attribute
 		let targetValue = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
-		if (!targetValue && element.value)
+		if (!targetValue)
 			targetValue = element.getValue()
 		if (!targetValue) return
 		
@@ -107,6 +187,8 @@ const CoCreateEvents = {
 		}
 
 		let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
+		let targetText = element.getAttribute(`${prefix}-text`);
+		let targetHtml = element.getAttribute(`${prefix}-html`);
 		let targetSelector = element.getAttribute(`${prefix}-target`);
 		let targetClosest = element.getAttribute(`${prefix}-closest`);
 		let targetParent = element.getAttribute(`${prefix}-parent`);
@@ -161,30 +243,30 @@ const CoCreateEvents = {
 			});
 		}
 
-		let targetElements = [element];
-		if (targetClosest) {
-			element = element.closest(targetClosest);
-		}
 		values = values.map(x => x.trim());
-		if (targetSelector) {
+		let targetElements = [element];
+		if (target) {
+			self.setValue(prefix, target, targetAttribute, values, targetKey);
+		} else if (targetSelector) {
 			if (/{{\s*([\w\W]+)\s*}}/g.test(targetSelector)) return;
 			targetElements = queryDocumentSelectorAll(targetSelector);
 			targetElements.forEach((el) => self.setValue(prefix, el, targetAttribute, values, targetKey));
-		}
-		else if (targetParent)
+		} else if (targetClosest) {
+			element = element.closest(targetClosest);
+			self.setValue(prefix, element, targetAttribute, values, targetKey);
+		} else if (targetParent) {
 			element.parentElement.querySelectorAll(targetParent).forEach((el) => 
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);
-		else if (targetNext)
+		 } else if (targetNext) {
 			el.nextElementSibling.querySelectorAll(targetNext).forEach((el) => 
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);
-		else if (targetPrevious)
+		 } else if (targetPrevious) {
 			el.previousElementSibling.querySelectorAll(targetPrevious).forEach((el) => 
 				self.setValue(prefix, el, targetAttribute, values, targetKey)
 			);	
-		else
-			self.setValue(prefix, element, targetAttribute, values, targetKey);
+		 }
 
 		document.dispatchEvent(new CustomEvent(`${prefix}End`, {
 			detail: {}
@@ -224,6 +306,12 @@ const CoCreateEvents = {
 			} else {
 				if (attrName === 'value') {
 					oldValue = element.getValue()	
+				} else if (attrName === 'text') {
+					attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
+					oldValue = values.filter(x => attrValues.includes(x))[0] || '';
+				} else if (attrName === 'html') {
+					attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
+					oldValue = values.filter(x => attrValues.includes(x))[0] || '';
 				} else if (element.getAttribute(attrName)) {
 					attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
 					oldValue = values.filter(x => attrValues.includes(x))[0] || '';

@@ -68,8 +68,10 @@
 		
 		<!-- defining key example -->
 		<div >
-			<input input-target="#testing" input-value="" input-key="ty">
-			<span id="testing" class="{{ty}}">other content</span>
+			<div observe-target=".testing" observe-attribute="value">testing this new value</div>
+			<input input-target=".testing" input-attribute="value" input-events="input, onload" value="great test">
+			<input class="testing {{ty}}">
+			<div class="testing {{ty}}">other content</div>
 		</div>
 
 		<span id="keyname" clone-data='{"attributes": {"key": "{{keyname}}", "value": ""}}' {{keyname}}="test" style="margin-right:10px; padding:5px">
