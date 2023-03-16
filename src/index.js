@@ -89,10 +89,12 @@ const CoCreateEvents = {
 		for (const el of elements) {
 			let prefixes = this.elements.get(el)
 			if (!prefixes) {
-				prefixes = {[prefix]: events}
+				prefixes = {[prefix]: {events}}
 				this.elements.set(el, prefixes)
+			} else if (!prefixes[prefix]) {
+				prefixes[prefix] = {events}
 			} else {
-				events = prefixes[prefix]
+				events = prefixes[prefix].events
 			}
 
 			let customEvents = el.getAttribute(`${prefix}-events`)
@@ -105,7 +107,7 @@ const CoCreateEvents = {
 					el.removeEventListener(events[i], eventFunction)
 				
 				events = customEvents
-				prefixes[prefix] = events
+				prefixes[prefix].events = events
 			}
 			if (!events)
 				events = []
@@ -142,6 +144,13 @@ const CoCreateEvents = {
 				// debounce = setTimeout(function() {
 				const target = event.currentTarget
 				if (target) {
+					let prefixes = self.elements.get(target)
+					if (prefixes[prefix].prev === event.type && ['mouseover', 'mouseout'].includes(event.type))
+						return
+					else
+						prefixes[prefix].prev = event.type
+					console.log('prev', prefixes[prefix].prev)
+
 					let attribute = target.getAttribute('actions') || ""
 					if (attribute.includes(prefix))
 						return;
@@ -175,15 +184,15 @@ const CoCreateEvents = {
 	__updateElements: function(element, prefix, target) {
 		const self = this;
 		// ToDo: support empty value when prefix-attribute defined, add and remove the attribute
-		let targetValue = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
-		if (!targetValue)
-			targetValue = element.getValue()
-		if (!targetValue) return
 		
-		let values = targetValue.split(',');
-		if (!values || values.length == 0) {
+		let values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
+		if (values)
+			values = values.split(',');
+		else 
+			values = [element.getValue()]
+		
+		if (!values || values.length == 0)
 			return;
-		}
 
 		let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
 		let targetText = element.getAttribute(`${prefix}-text`);
