@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.3...v1.6.4) (2023-03-16)
+
+
+### Bug Fixes
+
+* el typo ([7b0ec3a](https://github.com/CoCreate-app/CoCreate-events/commit/7b0ec3a2dc04580efb4850d60ef63adcfbfe5f28))
+
 ## [1.6.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.2...v1.6.3) (2023-03-16)
 
 
