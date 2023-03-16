@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.4...v1.6.5) (2023-03-16)
+
+
+### Bug Fixes
+
+* filter-sort-direction ([d27f890](https://github.com/CoCreate-app/CoCreate-events/commit/d27f89030f096baea5fe703252290096c2c602b0))
+
 ## [1.6.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.3...v1.6.4) (2023-03-16)
 
 
