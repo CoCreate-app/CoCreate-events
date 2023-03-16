@@ -107,7 +107,8 @@ const CoCreateEvents = {
 				events = customEvents
 				prefixes[prefix] = events
 			}
-
+			if (!events)
+				events = []
 			if (events.includes('onload'))
 				this.__updateElements(el, prefix);
 					
@@ -141,8 +142,6 @@ const CoCreateEvents = {
 				// debounce = setTimeout(function() {
 				const target = event.currentTarget
 				if (target) {
-					if (target.id == "testtemplate1" || target.id == "testtemplate2")
-						console.log(target.id)
 					let attribute = target.getAttribute('actions') || ""
 					if (attribute.includes(prefix))
 						return;
