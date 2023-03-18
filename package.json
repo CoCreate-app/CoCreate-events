@@ -62,6 +62,7 @@
   "dependencies": {
     "@cocreate/actions": "^1.6.1",
     "@cocreate/docs": "^1.6.1",
+    "@cocreate/observer": "^1.6.2",
     "@cocreate/utils": "^1.19.1"
   }
 }
