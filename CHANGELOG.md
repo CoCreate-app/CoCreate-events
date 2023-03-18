@@ -1,3 +1,11 @@
+## [1.6.7](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.6...v1.6.7) (2023-03-18)
+
+
+### Bug Fixes
+
+* add missing package @cocreate/observer ([4416382](https://github.com/CoCreate-app/CoCreate-events/commit/4416382e802a4a72139db0c79d559d92533f115b))
+* bumped cdn to v1.48.1' ([881c583](https://github.com/CoCreate-app/CoCreate-events/commit/881c583b4d9305bedc80b123cdc8e2e4e6327ab7))
+
 ## [1.6.6](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.5...v1.6.6) (2023-03-16)
 
 
