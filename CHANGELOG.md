@@ -1,3 +1,10 @@
+## [1.6.12](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.11...v1.6.12) (2023-04-11)
+
+
+### Bug Fixes
+
+* bump cdn to 1.49.2 ([42a1f59](https://github.com/CoCreate-app/CoCreate-events/commit/42a1f59bdf66aaa16ffc29775551391176d55492))
+
 ## [1.6.11](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.10...v1.6.11) (2023-04-11)
 
 
