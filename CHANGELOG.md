@@ -1,3 +1,11 @@
+## [1.6.9](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.8...v1.6.9) (2023-04-11)
+
+
+### Bug Fixes
+
+* bump cdn to 1.49.0' ([ce456b1](https://github.com/CoCreate-app/CoCreate-events/commit/ce456b102bc87627deaa06a86777ed883cd7ebba))
+* renamed domains to hosts ([438db97](https://github.com/CoCreate-app/CoCreate-events/commit/438db971a5071a62b1982df97e44b661f4abdbc8))
+
 ## [1.6.8](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.7...v1.6.8) (2023-03-30)
 
 
