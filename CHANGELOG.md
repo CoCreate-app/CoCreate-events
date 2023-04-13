@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.12...v1.7.0) (2023-04-13)
+
+
+### Bug Fixes
+
+* add cdn ([62fda1b](https://github.com/CoCreate-app/CoCreate-events/commit/62fda1b4d8e2a7cbf6d9e9734cd78287a5c1a04a))
+
+
+### Features
+
+* handling of array value from getValue ([0332e3c](https://github.com/CoCreate-app/CoCreate-events/commit/0332e3cdf6b565725df959acb203065a37456f0f))
+
 ## [1.6.12](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.11...v1.6.12) (2023-04-11)
 
 
