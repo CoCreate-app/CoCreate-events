@@ -188,9 +188,12 @@ const CoCreateEvents = {
 		let values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
 		if (values)
 			values = values.split(',');
-		else 
-			values = [element.getValue()]
-		
+		else {
+			values = element.getValue()
+			if (!Array.isArray(values))
+				values = [values]
+		}
+
 		if (!values || values.length == 0)
 			return;
 
