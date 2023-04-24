@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.0...v1.8.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* bump cdn to 1.50.3 ([50ab2af](https://github.com/CoCreate-app/CoCreate-events/commit/50ab2affccfcf03b04131eaf5083145812655ff2))
+* removed uglifyjs-webpack-plugin ([911ba0c](https://github.com/CoCreate-app/CoCreate-events/commit/911ba0cddfe1c13f7c9e305252fe8cc49896acae))
+
 # [1.8.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.7.1...v1.8.0) (2023-04-24)
 
 
