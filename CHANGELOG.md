@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.7.0...v1.7.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* remove console.log ([f5d4517](https://github.com/CoCreate-app/CoCreate-events/commit/f5d45174c0769751bcb6b85fb277f6e7ee9a52b9))
+
 # [1.7.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.6.12...v1.7.0) (2023-04-13)
 
 
