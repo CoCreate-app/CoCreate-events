@@ -1,6 +1,7 @@
 import {queryDocumentSelectorAll} from '@cocreate/utils';
 import action from '@cocreate/actions';
 import observer from '@cocreate/observer';
+import '@cocreate/element-prototype';
 
 
 const CoCreateEvents = {
