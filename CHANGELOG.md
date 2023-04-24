@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.7.1...v1.8.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* add @cocreate/element-prototype, bump cdn to 1.50.0 ([2c56a43](https://github.com/CoCreate-app/CoCreate-events/commit/2c56a43d98e562953dc85110b636276133fc4e95))
+
+
+### Features
+
+* added pwa manifest ([84fbafc](https://github.com/CoCreate-app/CoCreate-events/commit/84fbafcbd1bdfb30ed5e3a6a3c9ae390df47defe))
+
 ## [1.7.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.7.0...v1.7.1) (2023-04-24)
 
 
