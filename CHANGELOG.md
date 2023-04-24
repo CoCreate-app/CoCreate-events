@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.2...v1.8.3) (2023-04-24)
+
+
+### Bug Fixes
+
+* workflow node version updated  16 ([5c66cc6](https://github.com/CoCreate-app/CoCreate-events/commit/5c66cc68b6dd19ede734e93aced6bb7d1c4c6822))
+
 ## [1.8.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.1...v1.8.2) (2023-04-24)
 
 
