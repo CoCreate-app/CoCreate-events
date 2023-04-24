@@ -149,7 +149,6 @@ const CoCreateEvents = {
 						return
 					else
 						prefixes[prefix].prev = event.type
-					console.log('prev', prefixes[prefix].prev)
 
 					let attribute = target.getAttribute('actions') || ""
 					if (attribute.includes(prefix))
