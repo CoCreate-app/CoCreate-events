@@ -57,7 +57,7 @@ const CoCreateEvents = {
 			}
 		});
 
-		let selector = `[${prefix}], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+		let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
 		observer.init({ 
 			name: 'CoCreateEventattributes', 
@@ -73,7 +73,7 @@ const CoCreateEvents = {
 			observer.init({
 				name: 'observerAttributes',
 				observe: ['attributes'],
-				attributeName: [`${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`],
+				attributeName: [`${prefix}-key`, `${prefix}-value`, `${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`],
 				callback: function(mutation) {
 					// remove previous observer
 					self.initElements([mutation.target], prefix, events)
@@ -159,7 +159,7 @@ const CoCreateEvents = {
 					// 	return;
 					self.__updateElements(target, prefix);
 
-					let selector = `[${prefix}], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+					let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
 					let parentElement = target.parentElement;
 					if (parentElement) {
