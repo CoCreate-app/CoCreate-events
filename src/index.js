@@ -451,7 +451,7 @@ function replaceKey(prefix, element, key, values) {
 		else
 			element.htmlKeys[key] = value;
 
-		let newHTML = element.originalHTML
+		let newHTML = element.originalHtml
 		if (newHTML) {
 			for (let elementKey of Object.keys(element.htmlKeys)) {
 				const htmlKeyRegex = new RegExp(elementKey, "g");
