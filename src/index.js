@@ -20,6 +20,7 @@ const CoCreateEvents = {
 			this.initPrefix('selected', ['click']);
 			this.initPrefix('onload', ['onload']);
 			this.initPrefix('observe', ['observer']);
+			this.initPrefix('localstorage', ['onload', 'observer']);
 		}
 
 		let customEventEls = document.querySelectorAll('[event-name]')
@@ -185,7 +186,15 @@ const CoCreateEvents = {
 		const self = this;
 		// ToDo: support empty value when prefix-attribute defined, add and remove the attribute
 		
-		let values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
+		let values
+		if (prefix === 'localstorage') {
+			let key = element.getAttribute('localstorage-get')
+			if (key)
+				values = localStorage.getItem(key)
+			else
+				return
+		} else
+			values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
 		if (values)
 			values = values.split(',');
 		else {
