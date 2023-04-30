@@ -1,3 +1,20 @@
+# [1.9.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.4...v1.9.0) (2023-04-30)
+
+
+### Bug Fixes
+
+* fullscreen target updated to fullscreen fullscreen-target ([a6c2acb](https://github.com/CoCreate-app/CoCreate-events/commit/a6c2acb8870ba52e916939a4d6cb7e0fddc5249b))
+* package-lock.json and pnpm-lock.yaml added to .gitignore ([b93d0c3](https://github.com/CoCreate-app/CoCreate-events/commit/b93d0c3cb06498be033c4117b2501e17e3556840))
+* removed toogle fullscreen icons. now using css content ([c3fff41](https://github.com/CoCreate-app/CoCreate-events/commit/c3fff41dfdfcd67f876b66a29abf41fca3e8d59e))
+* typo originalHTML to originalHtml ([3ac8d14](https://github.com/CoCreate-app/CoCreate-events/commit/3ac8d143b7d5fbcb4985844414d0fbb18e4f7f79))
+* typo originalHTML to originalHtml ([fa694cb](https://github.com/CoCreate-app/CoCreate-events/commit/fa694cb50e63b92c8e60895e1c1c632ebdab9f3f))
+
+
+### Features
+
+* localStorage attributes ([e2f5089](https://github.com/CoCreate-app/CoCreate-events/commit/e2f5089975428f96bf155f58e3581502122562f8))
+* observer -key attributes ([7b5c218](https://github.com/CoCreate-app/CoCreate-events/commit/7b5c218756249f6017b1bf03c39fb6ba8d5fa87b))
+
 ## [1.8.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.3...v1.8.4) (2023-04-24)
 
 
