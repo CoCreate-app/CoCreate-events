@@ -89,6 +89,7 @@ const CoCreateEvents = {
 	initElements: function(elements, prefix, events = []) {
 		const self = this
 		for (const el of elements) {
+			let isEventable = true
 			let prefixes = this.elements.get(el)
 			if (!prefixes) {
 				prefixes = {[prefix]: {events}}
@@ -96,7 +97,8 @@ const CoCreateEvents = {
 			} else if (!prefixes[prefix]) {
 				prefixes[prefix] = {events}
 			} else {
-				events = prefixes[prefix].events
+				isEventable = false
+				// events =  //prefixes[prefix].events
 			}
 
 			let customEvents = el.getAttribute(`${prefix}-events`)
@@ -110,9 +112,10 @@ const CoCreateEvents = {
 				
 				events = customEvents
 				prefixes[prefix].events = events
+				isEventable = true
 			}
-			if (!events)
-				events = []
+			if (!events || !isEventable)
+				continue
 			if (events.includes('onload'))
 				this.__updateElements(el, prefix);
 					
@@ -135,8 +138,10 @@ const CoCreateEvents = {
 			}
 
 			for (let i = 0; i < events.length; i++) {
-				if (events[i] !== 'onload' && events[i] !== 'observer')
+				if (events[i] !== 'onload' && events[i] !== 'observer') {
+					el.removeEventListener(events[i], eventFunction)
 					el.addEventListener(events[i], eventFunction);
+				}
 			}
 		
 			function eventFunction(event) {
