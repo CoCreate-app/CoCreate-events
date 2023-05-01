@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.0...v1.9.1) (2023-05-01)
+
+
+### Bug Fixes
+
+* replace fontawesome with svg ([11ed649](https://github.com/CoCreate-app/CoCreate-events/commit/11ed649b3a40be52f44bf6f2aa4b1c567f75df05))
+
 # [1.9.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.8.4...v1.9.0) (2023-04-30)
 
 
