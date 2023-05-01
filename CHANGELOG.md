@@ -1,3 +1,10 @@
+## [1.9.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.2...v1.9.3) (2023-05-01)
+
+
+### Bug Fixes
+
+* prevent duplicate events listeners ([a247b0c](https://github.com/CoCreate-app/CoCreate-events/commit/a247b0c78fa553139a66f63eb230488a4a35cca5))
+
 ## [1.9.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.1...v1.9.2) (2023-05-01)
 
 
