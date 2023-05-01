@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.1...v1.9.2) (2023-05-01)
+
+
+### Bug Fixes
+
+* update manifest.json to manifest.webmanifest ([d228a3e](https://github.com/CoCreate-app/CoCreate-events/commit/d228a3ef19b7b8663df6b808b05ba0ea62bc6dc5))
+
 ## [1.9.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.0...v1.9.1) (2023-05-01)
 
 
