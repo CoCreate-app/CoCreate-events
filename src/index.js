@@ -145,7 +145,7 @@ const CoCreateEvents = {
 			}
 		
 			function eventFunction(event) {
-				// ToDo: apply debounce
+				// TODO: apply debounce
 				// let debounce;
 				// clearTimeout(debounce);
 				// debounce = setTimeout(function() {
@@ -189,7 +189,7 @@ const CoCreateEvents = {
 
 	__updateElements: function(element, prefix, target) {
 		const self = this;
-		// ToDo: support empty value when prefix-attribute defined, add and remove the attribute
+		// TODO: support empty value when prefix-attribute defined, add and remove the attribute
 		
 		let values
 		if (prefix === 'localstorage') {
