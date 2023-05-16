@@ -1,89 +1,135 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Events | CoCreateJS</title>
-		
-		<!-- CoCreate Favicon -->
-		<link rel="icon" href="https://cdn.cocreate.app/favicon.ico" type="image/ico" sizes="16x16">
-		
-  		
-		<!-- Custom CSS -->
-		<style type="text/css">
-			.test{background:red}
-			.new{background:yellow}
-			.active{
-			background-color:blue;
-			}
-			.hidden {
-			display: none;
-			}
-		</style>
-		<link rel="manifest" href="/manifest.webmanifest" />
-	</head>
-	<body>
-	
-	   <div toggle="active"  class="test">hhh
-		   <!--<div  class="test">click me</div><br/>-->
-	   </div>
-	
-		 
-	
-	
-		<i class="fas fa-plus-circle" toggle="fa-minus-circle, fa-plus-circle"></i>
-	
-		<article>
-			<div id="div-01" class="vdom-item">
-				<p>Here is div-01 i should get class hidden</p>
-				<div>
-				  <div class="vdom-item" >some content1</div> 
-				  <span toggle="test" toggle-closest=".vdom-item"><i class="height:16px fill:#505050" src="/assets/svg/caret-down".svg"></i></span>
-				</div>
-				 <div class="vdom-item" >some content2</div>
-			</div>
-			<div class="vdom-item" >some content3</div>
-			<div id="div-03">Here is div-03</div>
-		</article>
-		<br>
-		<hr>
-		<div class="vdom-item" toggle="active" toggle-target="article > div">some content</div>
-		<br>
-		<hr> 
-		<div class="vdom-item" toggle-attribute='class' toggle="active" toggle-target=".vdom-item">
-			click for active
-		</div>
-	   <br>
-	   <hr>
-	   TEST HERE
-		<div class="vdom-item" id="hey" data-test="" toggle-attribute='id' toggle="active, other, hi, jean">
-			some content
-		</div>
-	
-		<!-- custom event example -->
-		<div test-value="active" test-events="click" event>
-			other content
-		</div>
-		<!-- defining key example -->
-		<div click-target="#testing" click-value="hello, bye" click-key="ty"> click here</div>
-		<div id="testing" class="{{ty}}">
-			<span class="{{ty}}"><b a="{{ty}}">other content {{ty}}</b></span>
-			<span class="{{ty}}"><b a="{{ty}}">other content {{ty}}</b></span>
-		</div>
-		
-		<!-- defining key example -->
-		<div >
-			<div observe-target=".testing" observe-attribute="value">testing this new value</div>
-			<input input-target=".testing" input-attribute="value" input-events="input, onload" value="great test">
-			<input class="testing {{ty}}">
-			<div class="testing {{ty}}">other content</div>
-		</div>
+    <head>
+        <title>Events | CoCreateJS</title>
 
-		<span id="keyname" clone-data='{"attributes": {"key": "{{keyname}}", "value": ""}}' {{keyname}}="test" style="margin-right:10px; padding:5px">
-			<svg class="svg" width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><path d="M5 5V0h1v5h5v1H6v5H5V6H0V5h5z" fill-rule="nonzero" fill-opacity="1" fill="#fff" stroke="none"></path></svg>
-		</span>
-		<input placeholder="Search all attributes" input-value input-key="keyname" input-target="#keyname">
-	
+        <!-- CoCreate Favicon -->
+        <link
+            rel="icon"
+            href="https://cdn.cocreate.app/favicon.ico"
+            type="image/ico"
+            sizes="16x16" />
+
+        <!-- Custom CSS -->
+        <style type="text/css">
+            .test {
+                background: red;
+            }
+            .new {
+                background: yellow;
+            }
+            .active {
+                background-color: blue;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+        <link rel="manifest" href="/manifest.webmanifest" />
+    </head>
+    <body>
+        <div toggle="active" class="test">
+            hhh
+            <!--<div  class="test">click me</div><br/>-->
+        </div>
+
+        <i
+            class="fas fa-plus-circle"
+            toggle="fa-minus-circle, fa-plus-circle"></i>
+
+        <article>
+            <div id="div-01" class="vdom-item">
+                <p>Here is div-01 i should get class hidden</p>
+                <div>
+                    <div class="vdom-item">some content1</div>
+                    <span toggle="test" toggle-closest=".vdom-item">
+                        <i
+                            class="height:16px fill:#505050"
+                            src="/assets/svg/caret-down.svg"></i>
+                    </span>
+                </div>
+                <div class="vdom-item">some content2</div>
+            </div>
+            <div class="vdom-item">some content3</div>
+            <div id="div-03">Here is div-03</div>
+        </article>
+        <br />
+        <hr />
+        <div class="vdom-item" toggle="active" toggle-target="article > div">
+            some content
+        </div>
+        <br />
+        <hr />
+        <div
+            class="vdom-item"
+            toggle-attribute="class"
+            toggle="active"
+            toggle-target=".vdom-item">
+            click for active
+        </div>
+        <br />
+        <hr />
+        TEST HERE
+        <div
+            class="vdom-item"
+            id="hey"
+            data-test=""
+            toggle-attribute="id"
+            toggle="active, other, hi, jean">
+            some content
+        </div>
+
+        <!-- custom event example -->
+        <div test-value="active" test-events="click" event>other content</div>
+        <!-- defining key example -->
+        <div click-target="#testing" click-value="hello, bye" click-key="ty">
+            click here
+        </div>
+        <div id="testing" class="{{ty}}">
+            <span class="{{ty}}"><b a="{{ty}}">other content {{ty}}</b></span>
+            <span class="{{ty}}"><b a="{{ty}}">other content {{ty}}</b></span>
+        </div>
+
+        <!-- defining key example -->
+        <div>
+            <div observe-target=".testing" observe-attribute="value">
+                testing this new value
+            </div>
+            <input
+                input-target=".testing"
+                input-attribute="value"
+                input-events="input, onload"
+                value="great test" />
+            <input class="testing {{ty}}" />
+            <div class="testing {{ty}}">other content</div>
+        </div>
+
+        <span
+            id="keyname"
+            clone-data="{'attributes': {'key': '{{keyname}}', 'value': ''}}"
+            {{keyname}}="test"
+            style="margin-right: 10px; padding: 5px">
+            <svg
+                class="svg"
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M5 5V0h1v5h5v1H6v5H5V6H0V5h5z"
+                    fill-rule="nonzero"
+                    fill-opacity="1"
+                    fill="#fff"
+                    stroke="none"></path>
+            </svg>
+        </span>
+        <input
+            placeholder="Search all attributes"
+            input-value
+            input-key="keyname"
+            input-target="#keyname" />
+
         <!--<script src="../dist/CoCreate-events.js"></script>-->
-	    <script src="https://cdn.cocreate.app/latest/CoCreate.min.js"></script>
-
-	</body>
+        <script src="https://cdn.cocreate.app/latest/CoCreate.min.js"></script>
+    </body>
 </html>
