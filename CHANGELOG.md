@@ -1,3 +1,15 @@
+# [1.10.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.4...v1.10.0) (2023-05-18)
+
+
+### Bug Fixes
+
+* apikey renamed to key ([75296fb](https://github.com/CoCreate-app/CoCreate-events/commit/75296fb44dfab0c599700498e389147755ffbf05))
+
+
+### Features
+
+* Refactor CoCreateEvents and add custom event functionality ([be5e630](https://github.com/CoCreate-app/CoCreate-events/commit/be5e63069d1b1249bea59d3bd5c29db5272837fc))
+
 ## [1.9.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.3...v1.9.4) (2023-05-06)
 
 
