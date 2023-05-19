@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.0...v1.10.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* update packages to latest version. This commit updates various packages in the dependencies section of the package.json file to their latest published versions, thereby fixing multiple bugs and improving overall performance. ([b0e4c79](https://github.com/CoCreate-app/CoCreate-events/commit/b0e4c79a269261f2d5cbf2c2f0bfd7cbb7beea52))
+
 # [1.10.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.9.4...v1.10.0) (2023-05-18)
 
 
