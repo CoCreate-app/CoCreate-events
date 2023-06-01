@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Value | CoCreateJS</title>
-  
-  <!-- CoCreate Favicon -->
-  <link rel="icon" href="https://cdn.cocreate.app/favicon.ico" type="image/ico" sizes="16x16">
-    <link rel="manifest" href="/manifest.webmanifest">
-</head>
-<body>
-  <div click-target="#testing" click-value="hello, bye" click-key="ty">
-    <span id="testing" class="{{ty}}">other content</span>
-  </div>
+    <head>
+        <title>Value | CoCreateJS</title>
 
-  <form realtime="false">
-    <input input-target="#testing2" input-attribute="value" value-type="array"/>
+        <!-- CoCreate Favicon -->
+        <link
+            rel="icon"
+            href="https://cdn.cocreate.app/favicon.ico"
+            type="image/ico"
+            sizes="16x16" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+    </head>
+    <body>
+        <div click-target="#testing" click-value="hello, bye" click-key="ty">
+            <span id="testing" class="{{ty}}">other content</span>
+        </div>
 
-    <input id="testing2" class="{{ty}}"/>
-  </form>
+        <form realtime="false">
+            <input
+                input-target="#testing2"
+                input-attribute="value"
+                value-type="array" />
 
-  <!-- <script src="../../../CoCreateJS/dist/CoCreate.js"></script> -->
-  <script src="https://cdn.cocreate.app/latest/CoCreate.min.js" ></script>
+            <input id="testing2" class="{{ty}}" />
+        </form>
 
-</body>
+        <!-- <script src="../../../CoCreateJS/dist/CoCreate.js"></script> -->
+        <script src="https://cdn.cocreate.app/latest/CoCreate.min.js"></script>
+    </body>
 </html>
