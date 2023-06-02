@@ -1,3 +1,11 @@
+## [1.10.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.2...v1.10.3) (2023-06-02)
+
+
+### Bug Fixes
+
+* format demo html ([7a646c2](https://github.com/CoCreate-app/CoCreate-events/commit/7a646c2531d8e3833be2e5d5ff5945219720ee49))
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([f5f8bb5](https://github.com/CoCreate-app/CoCreate-events/commit/f5f8bb5c7be2167b76ca3ab0c99ea9fdeee9c7d0))
+
 ## [1.10.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.1...v1.10.2) (2023-05-21)
 
 
