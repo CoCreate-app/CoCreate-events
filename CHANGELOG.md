@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.3...v1.10.4) (2023-06-04)
+
+
+### Bug Fixes
+
+* **semantic-release:** worklow error solved by running node version 14 ([a08bcab](https://github.com/CoCreate-app/CoCreate-events/commit/a08bcabf03c9f5ed1fb4bb21a9eda49bfc074fca))
+
 ## [1.10.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.2...v1.10.3) (2023-06-02)
 
 
