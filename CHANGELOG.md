@@ -1,3 +1,11 @@
+## [1.10.5](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.4...v1.10.5) (2023-06-04)
+
+
+### Bug Fixes
+
+* replaced secert GITHUB_TOKEN with GITHUB ([0047dda](https://github.com/CoCreate-app/CoCreate-events/commit/0047dda307fecc079482155010109b07468cad5a))
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([415f0ab](https://github.com/CoCreate-app/CoCreate-events/commit/415f0ab7b41f7507708149be6704591397657417))
+
 ## [1.10.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.3...v1.10.4) (2023-06-04)
 
 
