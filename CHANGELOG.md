@@ -1,3 +1,10 @@
+## [1.10.6](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.5...v1.10.6) (2023-06-04)
+
+
+### Bug Fixes
+
+* Refactor CoCreate.config.js to remove hard-coded credentials ([37feb89](https://github.com/CoCreate-app/CoCreate-events/commit/37feb890afe320fd7190c0d408727b0b310f6ed8))
+
 ## [1.10.5](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.4...v1.10.5) (2023-06-04)
 
 
