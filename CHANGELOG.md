@@ -1,3 +1,10 @@
+## [1.10.16](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.15...v1.10.16) (2023-06-11)
+
+
+### Bug Fixes
+
+* testing workflow ([b1aa30c](https://github.com/CoCreate-app/CoCreate-events/commit/b1aa30c7b4b9f6a0cd0608f7334ecd13d7ae1841))
+
 ## [1.10.15](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.14...v1.10.15) (2023-06-11)
 
 
