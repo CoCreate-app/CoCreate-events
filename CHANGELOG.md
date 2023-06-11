@@ -1,3 +1,10 @@
+## [1.10.11](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.10...v1.10.11) (2023-06-11)
+
+
+### Bug Fixes
+
+* @cocreate/cli moved to dependencies ([6a67a20](https://github.com/CoCreate-app/CoCreate-events/commit/6a67a206fdb8fcc20adef23c3c14640f5960bff4))
+
 ## [1.10.10](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.9...v1.10.10) (2023-06-11)
 
 
