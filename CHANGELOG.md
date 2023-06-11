@@ -1,3 +1,10 @@
+## [1.10.18](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.17...v1.10.18) (2023-06-11)
+
+
+### Bug Fixes
+
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([25470d2](https://github.com/CoCreate-app/CoCreate-events/commit/25470d25fdf0d7b63e8843b4f285aaa1faab3eac))
+
 ## [1.10.17](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.16...v1.10.17) (2023-06-11)
 
 
