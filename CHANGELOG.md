@@ -1,3 +1,10 @@
+## [1.10.12](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.11...v1.10.12) (2023-06-11)
+
+
+### Bug Fixes
+
+* postintall error ([9b91bab](https://github.com/CoCreate-app/CoCreate-events/commit/9b91bab64e165624ee37a9bfe8a14a1d7928ed16))
+
 ## [1.10.11](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.10...v1.10.11) (2023-06-11)
 
 
