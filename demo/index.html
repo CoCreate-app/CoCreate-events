@@ -55,7 +55,7 @@
         </article>
         <br />
         <hr />
-        <div class="vdom-item" toggle="active" toggle-target="article > div">
+        <div class="vdom-item" toggle="active" toggle-selector="article > div">
             some content
         </div>
         <br />
@@ -64,7 +64,7 @@
             class="vdom-item"
             toggle-attribute="class"
             toggle="active"
-            toggle-target=".vdom-item">
+            toggle-selector=".vdom-item">
             click for active
         </div>
         <br />
@@ -82,7 +82,7 @@
         <!-- custom event example -->
         <div test-value="active" test-events="click" event>other content</div>
         <!-- defining key example -->
-        <div click-target="#testing" click-value="hello, bye" click-key="ty">
+        <div click-selector="#testing" click-value="hello, bye" click-key="ty">
             click here
         </div>
         <div id="testing" class="{{ty}}">
@@ -92,11 +92,11 @@
 
         <!-- defining key example -->
         <div>
-            <div observe-target=".testing" observe-attribute="value">
+            <div observe-selector=".testing" observe-attribute="value">
                 testing this new value
             </div>
             <input
-                input-target=".testing"
+                input-selector=".testing"
                 input-attribute="value"
                 input-events="input, onload"
                 value="great test" />
@@ -127,7 +127,7 @@
             placeholder="Search all attributes"
             input-value
             input-key="keyname"
-            input-target="#keyname" />
+            input-selector="#keyname" />
 
         <!--<script src="../dist/CoCreate-events.js"></script>-->
         <script src="https://cdn.cocreate.app/latest/CoCreate.min.js"></script>

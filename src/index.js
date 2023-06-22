@@ -57,7 +57,7 @@ const CoCreateEvents = {
             }
         });
 
-        let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+        let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
         observer.init({
             name: 'CoCreateEventattributes',
@@ -73,7 +73,7 @@ const CoCreateEvents = {
             observer.init({
                 name: 'observerAttributes',
                 observe: ['attributes'],
-                attributeName: [`${prefix}-key`, `${prefix}-value`, `${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`],
+                attributeName: [`${prefix}-key`, `${prefix}-value`, `${prefix}-selector`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`],
                 callback: function (mutation) {
                     // remove previous observer
                     self.initElements([mutation.target], prefix, events)
@@ -122,7 +122,7 @@ const CoCreateEvents = {
             if (events.includes('observer')) {
                 let target;
                 for (let attribute of el.attributes) {
-                    if ([`${prefix}-target`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`].includes(attribute.name)) {
+                    if ([`${prefix}-selector`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`].includes(attribute.name)) {
                         target = attribute.value
                         break;
                     }
@@ -164,7 +164,7 @@ const CoCreateEvents = {
                     // 	return;
                     self.__updateElements(target, prefix);
 
-                    let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-target], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+                    let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
                     let parentElement = target.parentElement;
                     if (parentElement) {
@@ -214,7 +214,7 @@ const CoCreateEvents = {
         let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
         let targetText = element.getAttribute(`${prefix}-text`);
         let targetHtml = element.getAttribute(`${prefix}-html`);
-        let targetSelector = element.getAttribute(`${prefix}-target`);
+        let targetSelector = element.getAttribute(`${prefix}-selector`);
         let targetClosest = element.getAttribute(`${prefix}-closest`);
         let targetParent = element.getAttribute(`${prefix}-parent`);
         let targetNext = element.getAttribute(`${prefix}-next`);
@@ -233,7 +233,7 @@ const CoCreateEvents = {
 
                 groupValues = groupValues.map(x => x.trim());
 
-                let groupTarget = el.getAttribute(`${prefix}-target`);
+                let groupTarget = el.getAttribute(`${prefix}-selector`);
                 let groupClosest = el.getAttribute(`${prefix}-closest`);
                 let groupParent = el.getAttribute(`${prefix}-parent`);
                 let groupNext = el.getAttribute(`${prefix}-next`);
