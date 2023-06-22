@@ -52,8 +52,8 @@ const CoCreateEvents = {
         action.init({
             name: prefix,
             endEvent: `${prefix}End`,
-            callback: (btn, data) => {
-                this.__updateElements(btn, prefix)
+            callback: (data) => {
+                this.__updateElements(data.element, prefix)
             }
         });
 
