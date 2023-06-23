@@ -27,9 +27,13 @@ const CoCreateEvents = {
         let names = {}
         for (let customEventEl of customEventEls) {
             let name = customEventEl.getAttribute('event-name')
-            if (!names[name]) {
-                names[name] = name
-                this.initPrefix(name);
+            name = name.split(',')
+            for (let i = 0; i < name.length; i++) {
+                name[i].trim()
+                if (!names[name]) {
+                    names[name] = name
+                    this.initPrefix(name);
+                }
             }
         }
 
