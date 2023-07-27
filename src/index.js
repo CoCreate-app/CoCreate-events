@@ -1,4 +1,4 @@
-import { queryDocumentSelectorAll } from '@cocreate/utils';
+import { queryElements } from '@cocreate/utils';
 import action from '@cocreate/actions';
 import observer from '@cocreate/observer';
 import '@cocreate/element-prototype';
@@ -218,12 +218,6 @@ const CoCreateEvents = {
         let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
         let targetText = element.getAttribute(`${prefix}-text`);
         let targetHtml = element.getAttribute(`${prefix}-html`);
-        let targetSelector = element.getAttribute(`${prefix}-selector`);
-        let targetClosest = element.getAttribute(`${prefix}-closest`);
-        let targetParent = element.getAttribute(`${prefix}-parent`);
-        let targetNext = element.getAttribute(`${prefix}-next`);
-        let targetPrevious = element.getAttribute(`${prefix}-previous`);
-
         let targetKey = element.getAttribute(`${prefix}-key`);
 
         let targetGroup = element.getAttribute(`${prefix}-group`);
@@ -236,67 +230,26 @@ const CoCreateEvents = {
                 }
 
                 groupValues = groupValues.map(x => x.trim());
-
-                let groupTarget = el.getAttribute(`${prefix}-selector`);
-                let groupClosest = el.getAttribute(`${prefix}-closest`);
-                let groupParent = el.getAttribute(`${prefix}-parent`);
-                let groupNext = el.getAttribute(`${prefix}-next`);
-                let groupPrevious = el.getAttribute(`${prefix}-previous`);
                 let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';
                 let groupKey = el.getAttribute(`${prefix}-key`)
 
                 // el.removeAttribute(prefix)
                 self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-                if (groupTarget)
-                    document.querySelectorAll(groupTarget).forEach((el) =>
-                        self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-                    );
-                else if (groupClosest) {
-                    let element = el.closest(groupClosest)
-                    if (element)
-                        self.setValue(prefix, element, groupAttribute, groupValues, groupKey, 'deactivate');
-                }
-                else if (groupParent)
-                    el.parentElement.querySelectorAll(groupParent).forEach((el) =>
-                        self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-                    );
-                else if (groupNext)
-                    el.nextElementSibling.querySelectorAll(groupNext).forEach((el) =>
-                        self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-                    );
-                else if (groupPrevious)
-                    el.previousElementSibling.querySelectorAll(groupPrevious).forEach((el) =>
-                        self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
-                    );
+                let targetElements = queryElements({ el, prefix });
+                for (let i = 0; i < targetElements.length; i++)
+                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate')
 
             });
         }
 
         values = values.map(x => x.trim());
-        let targetElements = [element];
-        if (target) {
-            self.setValue(prefix, target, targetAttribute, values, targetKey);
-        } else if (targetSelector) {
-            if (/{{\s*([\w\W]+)\s*}}/g.test(targetSelector)) return;
-            targetElements = queryDocumentSelectorAll(targetSelector);
-            targetElements.forEach((el) => self.setValue(prefix, el, targetAttribute, values, targetKey));
-        } else if (targetClosest) {
-            element = element.closest(targetClosest);
-            self.setValue(prefix, element, targetAttribute, values, targetKey);
-        } else if (targetParent) {
-            element.parentElement.querySelectorAll(targetParent).forEach((el) =>
-                self.setValue(prefix, el, targetAttribute, values, targetKey)
-            );
-        } else if (targetNext) {
-            element.nextElementSibling.querySelectorAll(targetNext).forEach((el) =>
-                self.setValue(prefix, el, targetAttribute, values, targetKey)
-            );
-        } else if (targetPrevious) {
-            element.previousElementSibling.querySelectorAll(targetPrevious).forEach((el) =>
-                self.setValue(prefix, el, targetAttribute, values, targetKey)
-            );
-        } else
-            self.setValue(prefix, element, targetAttribute, values, targetKey);
+
+        let targetElements = queryElements({ element, prefix });
+        if (targetElements === false)
+            targetElements = [element]
+
+        for (let i = 0; i < targetElements.length; i++)
+            this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey)
 
         document.dispatchEvent(new CustomEvent(`${prefix}End`, {
             detail: {}
