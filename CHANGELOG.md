@@ -1,3 +1,20 @@
+# [1.11.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.20...v1.11.0) (2023-08-16)
+
+
+### Bug Fixes
+
+* crud attributes renamed ([4ccbb56](https://github.com/CoCreate-app/CoCreate-events/commit/4ccbb5688f21482e43b21ac972acbd138fd6b7ed))
+* replace -target -selector ([632e507](https://github.com/CoCreate-app/CoCreate-events/commit/632e507cae88ddf4f22c363ccff2e8784c0f23d7))
+* updated actions callback data object ([6dae7f6](https://github.com/CoCreate-app/CoCreate-events/commit/6dae7f668ee5d75da90d70554c59f5e207b1325d))
+* webpack.config and package.json make use of mode=production instead of process.env ([f21e9d2](https://github.com/CoCreate-app/CoCreate-events/commit/f21e9d278575ad86f6c34a768c4abb2ed6ff2bc3))
+
+
+### Features
+
+* Custom events initialization to handle multiple event names. ([342fa7a](https://github.com/CoCreate-app/CoCreate-events/commit/342fa7a7a401b9d65e8317743ea90b14c8d6c133))
+* name attribute and variable renamed to key ([7a3f3a8](https://github.com/CoCreate-app/CoCreate-events/commit/7a3f3a8c0dd79e7ae40ea261efba362403dcbc5e))
+* Refactor CoCreateEvents code to use queryElements instead of queryDocumentSelectorAll ([f176c8d](https://github.com/CoCreate-app/CoCreate-events/commit/f176c8d016234c920a59277fea060eb5bb61a2d8))
+
 ## [1.10.20](https://github.com/CoCreate-app/CoCreate-events/compare/v1.10.19...v1.10.20) (2023-06-14)
 
 
