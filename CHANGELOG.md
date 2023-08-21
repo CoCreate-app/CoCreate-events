@@ -1,3 +1,12 @@
+## [1.12.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.12.0...v1.12.1) (2023-08-21)
+
+
+### Bug Fixes
+
+* /dist/CoCreate.js updated to https://CoCreate.app/dist/CoCreate.js ([b14f66d](https://github.com/CoCreate-app/CoCreate-events/commit/b14f66d70bfa6f4ca1f5149db894ab7b082af132))
+* replace cdn with /dist ([05937e7](https://github.com/CoCreate-app/CoCreate-events/commit/05937e7c870e55bcdecd362bf196f38400a86389))
+* update file uploader ([e5dc52e](https://github.com/CoCreate-app/CoCreate-events/commit/e5dc52e144d70faa1410a0ca4e8cba53b5c764c4))
+
 # [1.12.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.11.0...v1.12.0) (2023-08-17)
 
 
