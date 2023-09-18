@@ -8,17 +8,16 @@ module.exports = {
             "object": {
                 "_id": "",
                 "name": "index.html",
-                "path": "/docs/events/index.html",
+                "path": "/docs/events",
+                "pathname": "/docs/events/index.html",
                 "src": "{{./docs/index.html}}",
                 "host": [
                     "*",
                     "general.cocreate.app"
                 ],
-                "directory": "/docs/events",
-                "parentDirectory": "{{parentDirectory}}",
+                "directory": "events",
                 "content-type": "{{content-type}}",
-                "public": "true",
-                "website_id": "644d4bff8036fb9d1d1fd69c"
+                "public": "true"
             }
         }
     ]
