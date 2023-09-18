@@ -1,3 +1,11 @@
+## [1.13.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.1...v1.13.2) (2023-09-18)
+
+
+### Bug Fixes
+
+*  Add path and pathname ([cc953b3](https://github.com/CoCreate-app/CoCreate-events/commit/cc953b35003e99771d4cb3e25f817c941ed21185))
+* Update CoCreate depndencies to latest versions ([c993d8b](https://github.com/CoCreate-app/CoCreate-events/commit/c993d8b0072f8ffba4f8a4ab0e48f0b4ae2a0a09))
+
 ## [1.13.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.0...v1.13.1) (2023-08-21)
 
 
