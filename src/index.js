@@ -213,7 +213,7 @@ const CoCreateEvents = {
         }
     },
 
-    __updateElements: function (element, prefix, target) {
+    __updateElements: async function (element, prefix, target) {
         const self = this;
         // TODO: support empty value when prefix-attribute defined, add and remove the attribute
 
@@ -229,7 +229,7 @@ const CoCreateEvents = {
         if (values)
             values = values.split(',');
         else {
-            values = element.getValue()
+            values = await element.getValue()
             if (!Array.isArray(values))
                 values = [values]
         }
@@ -279,7 +279,7 @@ const CoCreateEvents = {
 
     },
 
-    setValue: function (prefix, element, attrName, values, key, deactivate) {
+    setValue: async function (prefix, element, attrName, values, key, deactivate) {
         let attrValues, oldValue;
         if (key) {
             key = `{{${key}}}`;
@@ -310,7 +310,7 @@ const CoCreateEvents = {
                 }
             } else {
                 if (attrName === 'value') {
-                    oldValue = element.getValue()
+                    oldValue = await element.getValue()
                 } else if (attrName === 'text') {
                     attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
                     oldValue = values.filter(x => attrValues.includes(x))[0] || '';
