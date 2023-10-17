@@ -1,3 +1,10 @@
+## [1.13.7](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.6...v1.13.7) (2023-10-17)
+
+
+### Bug Fixes
+
+* await getValue() ([2d6cefa](https://github.com/CoCreate-app/CoCreate-events/commit/2d6cefaa39dbc655030938ed01fab04f6af0125f))
+
 ## [1.13.6](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.5...v1.13.6) (2023-10-14)
 
 
