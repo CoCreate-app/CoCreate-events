@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Observer Events | CoCreateJS</title>
+
+        <!-- CoCreate Favicon -->
+        <link
+            rel="icon"
+            href="https://cdn.cocreate.app/favicon.ico"
+            type="image/ico"
+            sizes="16x16" />
+
+        <!-- Custom CSS -->
+        <style type="text/css">
+            .test {
+                background: red;
+            }
+            .new {
+                background: yellow;
+            }
+            .active {
+                background-color: blue;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+        <link rel="manifest" href="/manifest.webmanifest" />
+    </head>
+    <body>
+        <div click-parent click-value="active">click here</div>
+        <div observe-parent observe-attribute="class" observe-value="active">
+            testing this new value
+        </div>
+
+        <!--<script src="../dist/CoCreate-events.js"></script>-->
+        <script src="https://CoCreate.app/dist/CoCreate.js"></script>
+    </body>
+</html>
