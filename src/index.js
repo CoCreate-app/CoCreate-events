@@ -20,11 +20,10 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-import { queryElements } from '@cocreate/utils';
+import { queryElements, checkMediaQueries } from '@cocreate/utils';
 import action from '@cocreate/actions';
 import observer from '@cocreate/observer';
 import '@cocreate/element-prototype';
-
 
 const CoCreateEvents = {
 
@@ -237,7 +236,11 @@ const CoCreateEvents = {
         if (!values || values.length == 0)
             return;
 
-        let targetAttribute = element.getAttribute(`${prefix}-attribute`) || 'class';
+        let targetAttribute = element.getAttribute(`${prefix}-attribute`);
+        // targetAttribute = checkMediaQueries(targetAttribute)
+        // if (targetAttribute === false)
+        //     return
+
         let targetText = element.getAttribute(`${prefix}-text`);
         let targetHtml = element.getAttribute(`${prefix}-html`);
         let targetKey = element.getAttribute(`${prefix}-key`);
@@ -253,6 +256,10 @@ const CoCreateEvents = {
 
                 groupValues = groupValues.map(x => x.trim());
                 let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';
+                // groupAttribute = checkMediaQueries(groupAttribute)
+                // if (!groupAttribute)
+                //     return
+
                 let groupKey = el.getAttribute(`${prefix}-key`)
 
                 // el.removeAttribute(prefix)
@@ -270,8 +277,12 @@ const CoCreateEvents = {
         if (targetElements === false)
             targetElements = [element]
 
-        for (let i = 0; i < targetElements.length; i++)
-            this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey)
+        for (let i = 0; i < targetElements.length; i++) {
+            if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
+                targetElements[i][prefix]()
+            } else
+                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey)
+        }
 
         document.dispatchEvent(new CustomEvent(`${prefix}End`, {
             detail: {}
