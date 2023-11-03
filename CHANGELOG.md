@@ -1,3 +1,16 @@
+# [1.14.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.8...v1.14.0) (2023-11-03)
+
+
+### Bug Fixes
+
+* favicon.ico path ([d4dd07c](https://github.com/CoCreate-app/CoCreate-events/commit/d4dd07c2532b9bb2c69f50770165a0daa73ce2cb))
+* update dependencies to the lates versions ([bca4417](https://github.com/CoCreate-app/CoCreate-events/commit/bca44178630f52bced0864850228da8310630958))
+
+
+### Features
+
+* trigger prefix event on target elements ([f8a96df](https://github.com/CoCreate-app/CoCreate-events/commit/f8a96dff58771fc2cd91653cb9281443b54c1599))
+
 ## [1.13.8](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.7...v1.13.8) (2023-10-25)
 
 
