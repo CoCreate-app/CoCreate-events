@@ -121,10 +121,8 @@ const CoCreateEvents = {
                 this.elements.set(el, prefixes)
             } else if (!prefixes[prefix]) {
                 prefixes[prefix] = { events }
-            } else {
+            } else
                 isEventable = false
-                // events =  //prefixes[prefix].events
-            }
 
             let customEvents = el.getAttribute(`${prefix}-events`)
             if (customEvents) {
