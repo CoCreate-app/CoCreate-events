@@ -1,3 +1,12 @@
+## [1.14.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.14.0...v1.14.1) (2023-11-09)
+
+
+### Bug Fixes
+
+* meta name typo ([5d896fb](https://github.com/CoCreate-app/CoCreate-events/commit/5d896fb644f5f005c4a7a91f15caab63ee3aed9a))
+* removed unused code ([9a302bc](https://github.com/CoCreate-app/CoCreate-events/commit/9a302bcc92ee35117029772c9fe1d638d75ea881))
+* update host ([bd0d438](https://github.com/CoCreate-app/CoCreate-events/commit/bd0d4381d5ab2d5c7069d9489c9d400830ec81e5))
+
 # [1.14.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.13.8...v1.14.0) (2023-11-03)
 
 
