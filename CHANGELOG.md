@@ -1,3 +1,15 @@
+# [1.15.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.14.2...v1.15.0) (2023-11-19)
+
+
+### Bug Fixes
+
+* if localstorage return if no key or value ([c6b2fc1](https://github.com/CoCreate-app/CoCreate-events/commit/c6b2fc166e6214dd9a3cb3a61cb309b2fd9cf34f))
+
+
+### Features
+
+* update dependecies for th latest features and bug fixes ([2e03eed](https://github.com/CoCreate-app/CoCreate-events/commit/2e03eed38fe82d0b7ae98da30a2894a1aa12be62))
+
 ## [1.14.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.14.1...v1.14.2) (2023-11-12)
 
 
