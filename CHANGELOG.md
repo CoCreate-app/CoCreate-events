@@ -1,3 +1,15 @@
+# [1.16.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.15.0...v1.16.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update nav, edit button and css path ([c337796](https://github.com/CoCreate-app/CoCreate-events/commit/c3377964291ce3f8550aee83be005f65acf1a254))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([e947635](https://github.com/CoCreate-app/CoCreate-events/commit/e947635700005fa424ab4bd337338f1070514c00))
+
 # [1.15.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.14.2...v1.15.0) (2023-11-19)
 
 
