@@ -1,3 +1,15 @@
+# [1.17.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.16.0...v1.17.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* update licensing details ([f09acf6](https://github.com/CoCreate-app/CoCreate-events/commit/f09acf61c247be8a9ac39e46804847be2077c488))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([8ce26ba](https://github.com/CoCreate-app/CoCreate-events/commit/8ce26ba5ce86bccf0848a75cc8e61a03c8f2f2be))
+
 # [1.16.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.15.0...v1.16.0) (2023-11-25)
 
 
