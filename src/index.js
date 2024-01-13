@@ -217,8 +217,13 @@ const CoCreateEvents = {
         let values
         if (prefix === 'localstorage') {
             let key = element.getAttribute('localstorage-get')
-            if (key)
+            if (key) {
                 values = localStorage.getItem(key)
+            } else if (key = element.getAttribute('localstorage-set')) {
+                values = await element.getValue()
+                if (values)
+                    localStorage.setItem(key, values)
+            }
             if (!key || !values)
                 return
         } else
