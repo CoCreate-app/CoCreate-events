@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.17.0...v1.18.0) (2024-01-17)
+
+
+### Features
+
+* handle localstorage-set attribute ([663ce65](https://github.com/CoCreate-app/CoCreate-events/commit/663ce65227b3223a35576fd8618652ab21f344ca))
+
 # [1.17.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.16.0...v1.17.0) (2023-11-25)
 
 
