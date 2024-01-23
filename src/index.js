@@ -20,13 +20,13 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-import { queryElements, checkMediaQueries } from '@cocreate/utils';
+import { queryElements, checkMediaQueries, queryData } from '@cocreate/utils';
 import action from '@cocreate/actions';
 import observer from '@cocreate/observer';
 import '@cocreate/element-prototype';
 
 const CoCreateEvents = {
-
+    elements2: new Map(),
     init: function (prefix, events) {
         if (prefix && events)
             this.initPrefix(prefix, events);
@@ -41,6 +41,7 @@ const CoCreateEvents = {
             this.initPrefix('selected', ['click']);
             this.initPrefix('onload', ['onload']);
             this.initPrefix('observe', ['observer']);
+            this.initPrefix('resize', ['onload', 'resize']);
             this.initPrefix('localstorage', ['onload', 'observer']);
         }
 
@@ -160,8 +161,18 @@ const CoCreateEvents = {
                     });
             }
 
+            if (events.includes('resize')) {
+                const resizeObserver = new ResizeObserver((entries) => {
+                    const lastEntry = entries[entries.length - 1];
+                    const { width, height } = lastEntry.contentRect;
+                    el.setAttribute(`${prefix}-value`, width + 'px')
+                    self.__updateElements(el, prefix)
+                });
+                resizeObserver.observe(el);
+            }
+
             for (let i = 0; i < events.length; i++) {
-                if (events[i] !== 'onload' && events[i] !== 'observer') {
+                if (events[i] !== 'onload' && events[i] !== 'observer' && events[i] !== 'resize') {
                     el.removeEventListener(events[i], eventFunction)
                     el.addEventListener(events[i], eventFunction);
                 }
@@ -213,6 +224,10 @@ const CoCreateEvents = {
     __updateElements: async function (element, prefix, target) {
         const self = this;
         // TODO: support empty value when prefix-attribute defined, add and remove the attribute
+        let targetAttribute = element.getAttribute(`${prefix}-attribute`);
+        // targetAttribute = checkMediaQueries(targetAttribute)
+        // if (targetAttribute === false)
+        //     return
 
         let values
         if (prefix === 'localstorage') {
@@ -228,6 +243,7 @@ const CoCreateEvents = {
                 return
         } else
             values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
+
         if (values)
             values = values.split(',');
         else {
@@ -236,13 +252,26 @@ const CoCreateEvents = {
                 values = [values]
         }
 
-        if (!values || values.length == 0)
+        if (targetAttribute && !values || values.length === 0)
             return;
 
-        let targetAttribute = element.getAttribute(`${prefix}-attribute`);
-        // targetAttribute = checkMediaQueries(targetAttribute)
-        // if (targetAttribute === false)
-        //     return
+        let ifCondition = element.getAttribute(`${prefix}-if`);
+        let elseCondition = element.getAttribute(`${prefix}-else`);
+
+        let hasCondition = this.elements2.get(element)
+        if (ifCondition && evaluateCondition(ifCondition, values)) {
+            if (hasCondition && hasCondition.condition === ifCondition) {
+                return
+            } else
+                this.elements2.set(element, { condition: ifCondition })
+        } else if (elseCondition && evaluateCondition(elseCondition, values)) {
+            if (hasCondition && hasCondition.condition === elseCondition) {
+                return
+            } else
+                this.elements2.set(element, { condition: elseCondition })
+        } else if (ifCondition || elseCondition) {
+            return
+        }
 
         let targetText = element.getAttribute(`${prefix}-text`);
         let targetHtml = element.getAttribute(`${prefix}-html`);
@@ -274,7 +303,16 @@ const CoCreateEvents = {
             });
         }
 
-        values = values.map(x => x.trim());
+        // values = values.map(x => x.trim());
+
+        values = values.map(x => {
+            x = x.trim(); // Update x with the trimmed value
+            let prop = element.getAttribute(`${prefix}-property`);
+            if (prop) {
+                x = `${prop}:${x}`; // Update x with prop if it exists
+            }
+            return x; // Return the updated x
+        });
 
         let targetElements = queryElements({ element, prefix });
         if (targetElements === false)
@@ -353,9 +391,19 @@ const CoCreateEvents = {
                     }
                 } else if (attrName === 'value') {
                     element.setValue(newValue);
-                } else {
+                } else if (['$click', '$focus', '$blur'].includes(attrName)) {
+                    element[attrName.substring(1)]()
+                } else if (attrName) {
                     element.setAttribute(attrName, newValue);
+                } else {
+                    if (!attrName && ['click', 'focus', 'blur'].includes(newValue)) {
+                        element[newValue]()
+                    } else if (['click', 'focus', 'blur'].includes(attrName)) {
+                        element[attrName]()
+                    }
+
                 }
+
             }
         }
     },
@@ -469,6 +517,66 @@ function replaceKey(prefix, element, key, values) {
         }
     }
 
+}
+
+function evaluateCondition(condition, values) {
+    let orConditions = condition.split(/\s*\|\|\s*/);
+
+    if (orConditions.length > 1) {
+        return orConditions.some(cond => checkCondition(cond, values));
+    } else {
+        let andConditions = condition.split(/\s*&&\s*/);
+        return andConditions.every(cond => checkCondition(cond, values));
+    }
+}
+
+function checkCondition(condition, value) {
+    let isNegated = condition.startsWith('!');
+    if (isNegated) {
+        condition = condition.substring(1);
+    }
+    const operatorMatch = condition.match(/(<=|>=|<|>)(.+)/);
+    if (operatorMatch)
+        condition = operatorMatch[2].trim()
+    condition = parseCondition(condition);
+    let result;
+
+    if (Array.isArray(value) && !(typeof condition === 'object')) {
+        if (operatorMatch) {
+            condition = parseFloat(condition)
+            result = value.some(v => {
+                v = parseFloat(v)
+                switch (operatorMatch[1]) {
+                    case '<': return v < condition;
+                    case '>': return v > condition;
+                    case '<=': return v <= condition;
+                    case '>=': return v >= condition;
+                    default: return false;
+                }
+            });
+        } else
+            result = value.includes(condition);
+    } else if (Array.isArray(value)) {
+        // TODO: handle comparing array to array, vs querying the ayya items for a match
+        result = queryData(value, condition)
+    } else if (typeof value === 'object' && value !== null && typeof parsedCond === 'object') {
+        result = queryData(value, condition)
+    } else {
+        result = value === condition;
+    }
+
+    return isNegated ? !result : result;
+}
+
+function parseCondition(condition) {
+    try {
+        // Attempt to parse the condition as JSON
+        let parsedJson = JSON.parse(condition);
+        return parsedJson;
+    } catch (e) {
+        // If JSON parsing fails, check if the condition is a number
+        return !isNaN(condition) && condition.trim() !== '' ? Number(condition) : condition;
+    }
 }
 
 CoCreateEvents.init();
