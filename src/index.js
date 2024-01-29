@@ -165,7 +165,7 @@ const CoCreateEvents = {
                 const resizeObserver = new ResizeObserver((entries) => {
                     const lastEntry = entries[entries.length - 1];
                     const { width, height } = lastEntry.contentRect;
-                    el.setAttribute(`${prefix}-value`, width + 'px')
+                    el.setAttribute(`${prefix}-if-value`, width + 'px')
                     self.__updateElements(el, prefix)
                 });
                 resizeObserver.observe(el);
@@ -241,9 +241,9 @@ const CoCreateEvents = {
             }
             if (!key || !values)
                 return
-        } else
-            values = element.getAttribute(`${prefix}-value`) || element.getAttribute(prefix);
-
+        } else {
+            values = element.getAttribute(`${prefix}-value`) || element.getAttribute(`${prefix}-if-value`) || element.getAttribute(prefix);
+        }
         if (values)
             values = values.split(',');
         else {
@@ -258,17 +258,24 @@ const CoCreateEvents = {
         let ifCondition = element.getAttribute(`${prefix}-if`);
         let elseCondition = element.getAttribute(`${prefix}-else`);
 
-        let hasCondition = this.elements2.get(element)
-        if (ifCondition && evaluateCondition(ifCondition, values)) {
-            if (hasCondition && hasCondition.condition === ifCondition) {
-                return
-            } else
-                this.elements2.set(element, { condition: ifCondition })
-        } else if (elseCondition && evaluateCondition(elseCondition, values)) {
-            if (hasCondition && hasCondition.condition === elseCondition) {
-                return
-            } else
-                this.elements2.set(element, { condition: elseCondition })
+        let ifValue = element.getAttribute(`${prefix}-if-value`)
+        if (ifValue || ifValue === "")
+            ifValue = [ifValue]
+        else
+            ifValue = values
+
+        //TODO: improved resize toggling of values
+        // let hasCondition = this.elements2.get(element)
+        if (ifCondition && evaluateCondition(ifCondition, ifValue)) {
+            // if (hasCondition && hasCondition.condition === ifCondition) {
+            //     return
+            // } else
+            //     this.elements2.set(element, { condition: ifCondition })
+        } else if (elseCondition && evaluateCondition(elseCondition, ifValue)) {
+            // if (hasCondition && hasCondition.condition === elseCondition) {
+            //     return
+            // } else
+            //     this.elements2.set(element, { condition: elseCondition })
         } else if (ifCondition || elseCondition) {
             return
         }
@@ -377,7 +384,6 @@ const CoCreateEvents = {
                 let newValue = this.__getNextValue(values, oldValue);
                 if (deactivate)
                     newValue = ""
-
                 if (attrName === 'class') {
                     if (oldValue) {
                         element.classList.remove(oldValue);
