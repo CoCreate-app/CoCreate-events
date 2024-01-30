@@ -1,3 +1,15 @@
+# [1.19.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.18.0...v1.19.0) (2024-01-30)
+
+
+### Bug Fixes
+
+* prefix-if-value to containg resize observer value ([fc561e7](https://github.com/CoCreate-app/CoCreate-events/commit/fc561e73cbcbbb28d0dc8126ce124742f48e9a4b))
+
+
+### Features
+
+* handle resize observer event and if and else attributes conditions ([233e370](https://github.com/CoCreate-app/CoCreate-events/commit/233e3700741f0f4792559b2ff6ecd6719a5321c0))
+
 # [1.18.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.17.0...v1.18.0) (2024-01-17)
 
 
