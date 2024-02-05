@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.0...v1.19.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Removed https://cdn.cocreate.app/latest/CoCreate.min.css ([f3a773f](https://github.com/CoCreate-app/CoCreate-events/commit/f3a773fe9173b1bf19225f082fcc373e1e6b403a))
+
 # [1.19.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.18.0...v1.19.0) (2024-01-30)
 
 
