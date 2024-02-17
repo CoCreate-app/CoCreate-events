@@ -544,7 +544,10 @@ function checkCondition(condition, value) {
     const operatorMatch = condition.match(/(<=|>=|<|>)(.+)/);
     if (operatorMatch)
         condition = operatorMatch[2].trim()
-    condition = parseCondition(condition);
+
+    // TODO: why parse updated conditin to boolean false
+    if (condition !== 'false')
+        condition = parseCondition(condition);
     let result;
 
     if (Array.isArray(value) && !(typeof condition === 'object')) {
