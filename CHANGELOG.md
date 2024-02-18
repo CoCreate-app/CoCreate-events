@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.1...v1.19.2) (2024-02-18)
+
+
+### Bug Fixes
+
+* condition "false" ([9bbd374](https://github.com/CoCreate-app/CoCreate-events/commit/9bbd374254ec8a421493618a5a9ad4e45e9b2830))
+
 ## [1.19.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.0...v1.19.1) (2024-02-05)
 
 
