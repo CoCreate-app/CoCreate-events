@@ -244,9 +244,13 @@ const CoCreateEvents = {
         } else {
             values = element.getAttribute(`${prefix}-value`) || element.getAttribute(`${prefix}-if-value`) || element.getAttribute(prefix);
         }
-        if (values)
-            values = values.split(',');
-        else {
+
+        if (values) {
+            if (typeof values === 'string')
+                values = values.split(',');
+            else if (!Array.isArray(values))
+                values = [values]
+        } else {
             values = await element.getValue()
             if (!Array.isArray(values))
                 values = [values]
@@ -313,7 +317,8 @@ const CoCreateEvents = {
         // values = values.map(x => x.trim());
 
         values = values.map(x => {
-            x = x.trim(); // Update x with the trimmed value
+            if (typeof x === 'string')
+                x = x.trim(); // Update x with the trimmed value
             let prop = element.getAttribute(`${prefix}-property`);
             if (prop) {
                 x = `${prop}:${x}`; // Update x with prop if it exists
