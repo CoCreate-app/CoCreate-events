@@ -1,3 +1,10 @@
+## [1.19.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.2...v1.19.3) (2024-02-20)
+
+
+### Bug Fixes
+
+* handle values that are not string ([7b1374b](https://github.com/CoCreate-app/CoCreate-events/commit/7b1374b984673f541b99d7deb29af990b88e962c))
+
 ## [1.19.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.1...v1.19.2) (2024-02-18)
 
 
