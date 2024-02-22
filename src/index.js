@@ -263,10 +263,15 @@ const CoCreateEvents = {
         let elseCondition = element.getAttribute(`${prefix}-else`);
 
         let ifValue = element.getAttribute(`${prefix}-if-value`)
-        if (ifValue || ifValue === "")
+        if (!ifValue && ifValue !== "")
+            ifValue = await element.getValue()
+        else if (ifValue || ifValue === "")
             ifValue = [ifValue]
         else
             ifValue = values
+
+        if (!Array.isArray(ifValue))
+            ifValue = [ifValue]
 
         //TODO: improved resize toggling of values
         // let hasCondition = this.elements2.get(element)
