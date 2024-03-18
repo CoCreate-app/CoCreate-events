@@ -1,3 +1,10 @@
+## [1.19.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.3...v1.19.4) (2024-03-18)
+
+
+### Bug Fixes
+
+* ifValue defaults to value or <prefix>-if-value ([74a35c5](https://github.com/CoCreate-app/CoCreate-events/commit/74a35c5b17644caa52c40ce2ca931cbafe161a28))
+
 ## [1.19.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.2...v1.19.3) (2024-02-20)
 
 
