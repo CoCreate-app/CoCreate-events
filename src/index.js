@@ -229,6 +229,17 @@ const CoCreateEvents = {
         // if (targetAttribute === false)
         //     return
 
+        let onEvent = element.getAttribute(`${prefix}-on`)
+        if (onEvent) {
+            await new Promise((resolve, reject) => {
+                const handleEvent = () => {
+                    element.removeEventListener(onEvent, handleEvent);
+                    resolve();
+                };
+                element.addEventListener(onEvent, handleEvent);
+            });
+        }
+
         let values
         if (prefix === 'localstorage') {
             let key = element.getAttribute('localstorage-get')
