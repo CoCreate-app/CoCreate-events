@@ -233,10 +233,10 @@ const CoCreateEvents = {
         if (onEvent) {
             await new Promise((resolve, reject) => {
                 const handleEvent = () => {
-                    element.removeEventListener(onEvent, handleEvent);
+                    document.removeEventListener(onEvent, handleEvent);
                     resolve();
                 };
-                element.addEventListener(onEvent, handleEvent);
+                document.addEventListener(onEvent, handleEvent);
             });
         }
 
@@ -250,7 +250,9 @@ const CoCreateEvents = {
                 if (values)
                     localStorage.setItem(key, values)
             }
-            if (!key || !values)
+
+            // if (!key || !values)
+            if (!key)
                 return
         } else {
             values = element.getAttribute(`${prefix}-value`) || element.getAttribute(`${prefix}-if-value`) || element.getAttribute(prefix);
@@ -275,7 +277,7 @@ const CoCreateEvents = {
 
         let ifValue = element.getAttribute(`${prefix}-if-value`)
         if (!ifValue && ifValue !== "")
-            ifValue = await element.getValue()
+            ifValue = values // await element.getValue()
         else if (ifValue || ifValue === "")
             ifValue = [ifValue]
         else
