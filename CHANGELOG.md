@@ -1,3 +1,16 @@
+# [1.20.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.5...v1.20.0) (2024-05-08)
+
+
+### Bug Fixes
+
+* onEvent must liten at the document level, if no value allow comaparion of if esle conditions ([57d1f91](https://github.com/CoCreate-app/CoCreate-events/commit/57d1f91123d598b720030503412dd23fb6e38e51))
+
+
+### Features
+
+* attribute *-on to apply an event name. The operation will pause and await the event to resolve before continuing ([0d8db13](https://github.com/CoCreate-app/CoCreate-events/commit/0d8db13ed1ee63d9b2e67d8ebdd50e60408303d7))
+* support condition tur or false ([6a9f6fc](https://github.com/CoCreate-app/CoCreate-events/commit/6a9f6fcffe65028f4e6bb66fc1afd9f160297743))
+
 ## [1.19.5](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.4...v1.19.5) (2024-04-29)
 
 
