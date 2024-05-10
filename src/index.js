@@ -277,7 +277,7 @@ const CoCreateEvents = {
 
         let ifValue = element.getAttribute(`${prefix}-if-value`)
         if (!ifValue && ifValue !== "")
-            ifValue = values // await element.getValue()
+            ifValue = await element.getValue() || values //values // await element.getValue()
         else if (ifValue || ifValue === "")
             ifValue = [ifValue]
         else
