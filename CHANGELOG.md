@@ -1,3 +1,10 @@
+## [1.20.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.20.0...v1.20.1) (2024-05-19)
+
+
+### Bug Fixes
+
+* getValue from element else fallback to value ([c8e06af](https://github.com/CoCreate-app/CoCreate-events/commit/c8e06afb6d88ab382cead8065dea88cdec3300ca))
+
 # [1.20.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.19.5...v1.20.0) (2024-05-08)
 
 
