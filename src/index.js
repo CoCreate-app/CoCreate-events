@@ -196,7 +196,7 @@ const CoCreateEvents = {
                         return;
                     // if (target.closest(`[actions*="${prefix}"]`)) 
                     // 	return;
-                    self.__updateElements(target, prefix);
+                    self.__updateElements(target, prefix, null, prefixes[prefix].events);
 
                     let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
@@ -205,7 +205,7 @@ const CoCreateEvents = {
                         do {
                             parentElement = parentElement.closest(selector)
                             if (parentElement) {
-                                self.__updateElements(parentElement, prefix);
+                                self.__updateElements(parentElement, prefix, null, prefixes[prefix].events);
                                 parentElement = parentElement.parentElement
                             }
                         }
@@ -221,7 +221,7 @@ const CoCreateEvents = {
         }
     },
 
-    __updateElements: async function (element, prefix, target) {
+    __updateElements: async function (element, prefix, target, events) {
         const self = this;
         // TODO: support empty value when prefix-attribute defined, add and remove the attribute
         let targetAttribute = element.getAttribute(`${prefix}-attribute`);
@@ -324,10 +324,10 @@ const CoCreateEvents = {
                 let groupKey = el.getAttribute(`${prefix}-key`)
 
                 // el.removeAttribute(prefix)
-                self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate')
+                self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate', events)
                 let targetElements = queryElements({ el, prefix });
                 for (let i = 0; i < targetElements.length; i++)
-                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate')
+                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate', events)
 
             });
         }
@@ -352,7 +352,7 @@ const CoCreateEvents = {
             if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
                 targetElements[i][prefix]()
             } else
-                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey)
+                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, null, events)
         }
 
         document.dispatchEvent(new CustomEvent(`${prefix}End`, {
@@ -361,7 +361,16 @@ const CoCreateEvents = {
 
     },
 
-    setValue: async function (prefix, element, attrName, values, key, deactivate) {
+    setValue: async function (prefix, element, attrName, values, key, deactivate, events) {
+        if (events && events.includes('mouseout')) {
+            if (element.matches(':hover')) {
+                element.addEventListener('mouseout', () => {
+                    this.setValue(prefix, element, attrName, values, key, deactivate, events);
+                }, { once: true });
+                return;
+            }
+        }
+
         let attrValues, oldValue;
         if (key) {
             key = `{{${key}}}`;
