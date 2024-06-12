@@ -1,3 +1,16 @@
+# [1.21.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.20.1...v1.21.0) (2024-06-12)
+
+
+### Bug Fixes
+
+* bump cocreate dependencies ([c4ae1f6](https://github.com/CoCreate-app/CoCreate-events/commit/c4ae1f6fd54fc9de71ffd039014c86d2b490d985))
+* svg icon class ([26265ec](https://github.com/CoCreate-app/CoCreate-events/commit/26265ece8a975bb0901f3243baddf9d0e4bb35ff))
+
+
+### Features
+
+* send event details to setValue to process mouseout logic ([9b5b499](https://github.com/CoCreate-app/CoCreate-events/commit/9b5b4998c3a24f68df41c6fabd69fa2fec80b8fc))
+
 ## [1.20.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.20.0...v1.20.1) (2024-05-19)
 
 
