@@ -20,7 +20,7 @@
 // you must obtain a commercial license from CoCreate LLC.
 // For details, visit <https://cocreate.app/licenses/> or contact us at sales@cocreate.app.
 
-import { queryElements, checkMediaQueries, queryData } from '@cocreate/utils';
+import { queryElements, queryData } from '@cocreate/utils';
 import action from '@cocreate/actions';
 import observer from '@cocreate/observer';
 import '@cocreate/element-prototype';
@@ -289,6 +289,7 @@ const CoCreateEvents = {
         //TODO: improved resize toggling of values
         // let hasCondition = this.elements2.get(element)
         if (ifCondition && evaluateCondition(ifCondition, ifValue)) {
+
             // if (hasCondition && hasCondition.condition === ifCondition) {
             //     return
             // } else
@@ -588,7 +589,9 @@ function checkCondition(condition, value) {
         condition = parseCondition(condition);
     let result;
 
-    if (Array.isArray(value) && !(typeof condition === 'object')) {
+    if (condition === '$template') {
+        result = (/{{\s*([\w\W]+)\s*}}/g.test(value[0]))
+    } else if (Array.isArray(value) && !(typeof condition === 'object')) {
         if (operatorMatch) {
             condition = parseFloat(condition)
             result = value.some(v => {
