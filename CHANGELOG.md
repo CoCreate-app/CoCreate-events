@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.21.0...v1.22.0) (2024-06-19)
+
+
+### Features
+
+* $template condition checks for {{}} ([bd7219a](https://github.com/CoCreate-app/CoCreate-events/commit/bd7219a03b5d1b04772596872af15351bfd5f999))
+
 # [1.21.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.20.1...v1.21.0) (2024-06-12)
 
 
