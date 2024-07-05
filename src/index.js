@@ -578,15 +578,21 @@ function checkCondition(condition, value) {
     if (operatorMatch)
         condition = operatorMatch[2].trim()
 
+    let parse = true
     if (condition === 'true') {
         return !!value[0];
     } else if (condition === 'false') {
         return !value[0];
+    } else if (condition === '[]' && typeof value[0] === 'string') {
+        parse = false
     }
 
+
+
     // TODO: why parse updated conditin to boolean false
-    if (condition !== 'false')
+    if (parse && condition !== 'false')
         condition = parseCondition(condition);
+
     let result;
 
     if (condition === '$template') {
