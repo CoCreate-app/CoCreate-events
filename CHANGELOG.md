@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.22.0...v1.22.1) (2024-08-24)
+
+
+### Bug Fixes
+
+* parse flag ([53ce700](https://github.com/CoCreate-app/CoCreate-events/commit/53ce700cca7d90919b933d102cda5f73fe3261c5))
+
 # [1.22.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.21.0...v1.22.0) (2024-06-19)
 
 
