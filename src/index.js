@@ -146,7 +146,10 @@ const CoCreateEvents = {
             if (events.includes('observer')) {
                 let target;
                 for (let attribute of el.attributes) {
-                    if ([`${prefix}-selector`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`].includes(attribute.name)) {
+                    if (attribute.name === 'observe-target') {
+                        target = attribute.value
+                        break;
+                    } else if ([`${prefix}-selector`, `${prefix}-closest`, `${prefix}-parent`, `${prefix}-next`, `${prefix}-previous`].includes(attribute.name)) {
                         target = attribute.value
                         break;
                     }
@@ -440,9 +443,7 @@ const CoCreateEvents = {
                     } else if (['click', 'focus', 'blur'].includes(attrName)) {
                         element[attrName]()
                     }
-
                 }
-
             }
         }
     },
