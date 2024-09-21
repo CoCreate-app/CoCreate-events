@@ -228,6 +228,7 @@ const CoCreateEvents = {
         const self = this;
         // TODO: support empty value when prefix-attribute defined, add and remove the attribute
         let targetAttribute = element.getAttribute(`${prefix}-attribute`);
+        let targetPosition = element.getAttribute(`${prefix}-insert-adjacent`);
         // targetAttribute = checkMediaQueries(targetAttribute)
         // if (targetAttribute === false)
         //     return
@@ -321,6 +322,7 @@ const CoCreateEvents = {
 
                 groupValues = groupValues.map(x => x.trim());
                 let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';
+                let groupPosition = el.getAttribute(`${prefix}-insert-adjacent`);
                 // groupAttribute = checkMediaQueries(groupAttribute)
                 // if (!groupAttribute)
                 //     return
@@ -328,10 +330,10 @@ const CoCreateEvents = {
                 let groupKey = el.getAttribute(`${prefix}-key`)
 
                 // el.removeAttribute(prefix)
-                self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate', events)
+                self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate', events, groupPosition)
                 let targetElements = queryElements({ el, prefix });
                 for (let i = 0; i < targetElements.length; i++)
-                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate', events)
+                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate', events, groupPosition)
 
             });
         }
@@ -355,8 +357,9 @@ const CoCreateEvents = {
         for (let i = 0; i < targetElements.length; i++) {
             if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
                 targetElements[i][prefix]()
-            } else
-                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, null, events)
+            } else {
+                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, null, events, targetPosition)
+            }
         }
 
         document.dispatchEvent(new CustomEvent(`${prefix}End`, {
@@ -365,11 +368,11 @@ const CoCreateEvents = {
 
     },
 
-    setValue: async function (prefix, element, attrName, values, key, deactivate, events) {
+    setValue: async function (prefix, element, attrName, values, key, deactivate, events, targetPosition) {
         if (events && events.includes('mouseout')) {
             if (element.matches(':hover')) {
                 element.addEventListener('mouseout', () => {
-                    this.setValue(prefix, element, attrName, values, key, deactivate, events);
+                    this.setValue(prefix, element, attrName, values, key, deactivate, events, targetPosition);
                 }, { once: true });
                 return;
             }
@@ -437,6 +440,8 @@ const CoCreateEvents = {
                     element[attrName.substring(1)]()
                 } else if (attrName) {
                     element.setAttribute(attrName, newValue);
+                } else if (targetPosition) {
+                    element.insertAdjacentHTML(targetPosition, newValue);
                 } else {
                     if (!attrName && ['click', 'focus', 'blur'].includes(newValue)) {
                         element[newValue]()
