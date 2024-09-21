@@ -1,3 +1,15 @@
+# [1.23.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.22.1...v1.23.0) (2024-09-21)
+
+
+### Bug Fixes
+
+* observer-target attribute ([92593d3](https://github.com/CoCreate-app/CoCreate-events/commit/92593d32c4b53fe97dab511e44dd1c9f345d708e))
+
+
+### Features
+
+* *-insert-adjacent attribute to apply value using insertAdjacentHTML() ([3d2151d](https://github.com/CoCreate-app/CoCreate-events/commit/3d2151d91d56ad53df006343e4f18b3aa1a99b1d))
+
 ## [1.22.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.22.0...v1.22.1) (2024-08-24)
 
 
