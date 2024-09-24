@@ -313,6 +313,7 @@ const CoCreateEvents = {
 
         let targetGroup = element.getAttribute(`${prefix}-group`);
         if (targetGroup) {
+
             document.querySelectorAll(`[${prefix}-group="${targetGroup}"]`).forEach((el) => {
                 let groupValue = el.getAttribute(`${prefix}-value`) || el.getAttribute(prefix);
                 let groupValues = groupValue.split(',');
@@ -330,8 +331,18 @@ const CoCreateEvents = {
                 let groupKey = el.getAttribute(`${prefix}-key`)
 
                 // el.removeAttribute(prefix)
-                self.setValue(prefix, el, groupAttribute, groupValues, groupKey, 'deactivate', events, groupPosition)
-                let targetElements = queryElements({ el, prefix });
+                if (prefix === 'selected') {
+                    if (el !== element)
+                        el.removeAttribute('selected')
+                    else
+                        element.setAttribute('selected', '')
+
+                }
+
+                let targetElements = queryElements({ element: el, prefix });
+                if (targetElements === false)
+                    targetElements = [el]
+
                 for (let i = 0; i < targetElements.length; i++)
                     self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate', events, groupPosition)
 
