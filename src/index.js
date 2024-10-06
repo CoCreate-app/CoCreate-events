@@ -95,7 +95,7 @@ const CoCreateEvents = {
             }
         });
 
-        if (events.includes('observer')) {
+        if (events && events.includes('observer')) {
             observer.init({
                 name: 'observerAttributes',
                 observe: ['attributes'],
