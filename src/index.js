@@ -259,10 +259,17 @@ const CoCreateEvents = {
             if (!key)
                 return
         } else {
-            values = element.getAttribute(`${prefix}-value`) || element.getAttribute(`${prefix}-if-value`) || element.getAttribute(prefix);
+
+            values = element.getAttribute(`${prefix}-value`)
+
+            if (values === null)
+                values = element.getAttribute(`${prefix}-if-value`)
+            if (values === null)
+                values = element.getAttribute(prefix);
+
         }
 
-        if (values) {
+        if (values || values === '') {
             if (typeof values === 'string')
                 values = values.split(',');
             else if (!Array.isArray(values))
@@ -420,13 +427,7 @@ const CoCreateEvents = {
             } else {
                 if (attrName === 'value') {
                     oldValue = await element.getValue()
-                } else if (attrName === 'text') {
-                    attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
-                    oldValue = values.filter(x => attrValues.includes(x))[0] || '';
-                } else if (attrName === 'html') {
-                    attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
-                    oldValue = values.filter(x => attrValues.includes(x))[0] || '';
-                } else if (element.getAttribute(attrName)) {
+                } else if (attrName === 'text' || attrName === 'html' || element.getAttribute(attrName)) {
                     attrValues = element.getAttribute(attrName).split(' ').map(x => x.trim());
                     oldValue = values.filter(x => attrValues.includes(x))[0] || '';
                 }
@@ -447,10 +448,14 @@ const CoCreateEvents = {
                     }
                 } else if (attrName === 'value') {
                     element.setValue(newValue);
-                } else if (['$click', '$focus', '$blur'].includes(attrName)) {
+                } else if (['$click', '$focus', '$blur', '$save', '$read'].includes(attrName)) {
                     element[attrName.substring(1)]()
                 } else if (attrName) {
-                    element.setAttribute(attrName, newValue);
+                    // TODO: removeAttribute vs setting empty value, how best to define. operator $remove ???
+                    if (newValue === '' && element.hasAttribute(attrName))
+                        element.removeAttribute(attrName);
+                    else
+                        element.setAttribute(attrName, newValue);
                 } else if (targetPosition) {
                     element.insertAdjacentHTML(targetPosition, newValue);
                 } else {
