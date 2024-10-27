@@ -262,6 +262,18 @@ const CoCreateEvents = {
 
             values = element.getAttribute(`${prefix}-value`)
 
+            if (values === null) {
+                let valueElements = queryElements({ element, prefix: `${prefix}-value` });
+                if (valueElements) {
+                    let elementValues = []
+                    for (let i = 0; i < valueElements.length; i++)
+                        elementValues.push(valueElements[i].getValue())
+
+                    if (elementValues.length)
+                        values = elementValues
+                }
+            }
+
             if (values === null)
                 values = element.getAttribute(`${prefix}-if-value`)
             if (values === null)
@@ -371,9 +383,11 @@ const CoCreateEvents = {
         let targetElements = queryElements({ element, prefix });
         if (targetElements === false)
             targetElements = [element]
-
+        let action = element.getAttribute(`${prefix}-action`)
         for (let i = 0; i < targetElements.length; i++) {
-            if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
+            if (action) {
+                targetElements[i][action]()
+            } else if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
                 targetElements[i][prefix]()
             } else {
                 this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, null, events, targetPosition)
@@ -457,7 +471,11 @@ const CoCreateEvents = {
                     else
                         element.setAttribute(attrName, newValue);
                 } else if (targetPosition) {
-                    element.insertAdjacentHTML(targetPosition, newValue);
+                    if (targetPosition === 'replace') {
+                        element.insertAdjacentHTML('beforebegin', newValue); // Insert before oldElement
+                        element.remove(); // Remove oldElement
+                    } else
+                        element.insertAdjacentHTML(targetPosition, newValue);
                 } else {
                     if (!attrName && ['click', 'focus', 'blur'].includes(newValue)) {
                         element[newValue]()
