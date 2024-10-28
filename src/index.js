@@ -201,20 +201,20 @@ const CoCreateEvents = {
                     // 	return;
                     self.__updateElements(target, prefix, null, prefixes[prefix].events);
 
-                    let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+                    // let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
 
-                    let parentElement = target.parentElement;
-                    if (parentElement) {
-                        do {
-                            parentElement = parentElement.closest(selector)
-                            if (parentElement) {
-                                self.__updateElements(parentElement, prefix, null, prefixes[prefix].events);
-                                parentElement = parentElement.parentElement
-                            }
-                        }
-                        while (parentElement)
+                    // let parentElement = target.parentElement;
+                    // if (parentElement) {
+                    //     do {
+                    //         parentElement = parentElement.closest(selector)
+                    //         if (parentElement) {
+                    //             self.__updateElements(parentElement, prefix, null, prefixes[prefix].events);
+                    //             parentElement = parentElement.parentElement
+                    //         }
+                    //     }
+                    //     while (parentElement)
 
-                    }
+                    // }
 
                 }
                 // }, 500);
@@ -661,7 +661,9 @@ function checkCondition(condition, value) {
         result = value === condition;
     }
 
-    return isNegated ? !result : result;
+    result = isNegated ? !result : result;
+    return result
+
 }
 
 function parseCondition(condition) {
