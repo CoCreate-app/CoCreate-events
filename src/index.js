@@ -224,173 +224,156 @@ const CoCreateEvents = {
         }
     },
 
-    __updateElements: async function (element, prefix, target, events) {
+    __updateElements: async function (el, prefix, target, events) {
         const self = this;
-        // TODO: support empty value when prefix-attribute defined, add and remove the attribute
-        let targetAttribute = element.getAttribute(`${prefix}-attribute`);
-        let targetPosition = element.getAttribute(`${prefix}-insert-adjacent`);
-        // targetAttribute = checkMediaQueries(targetAttribute)
-        // if (targetAttribute === false)
-        //     return
-
-        let onEvent = element.getAttribute(`${prefix}-on`)
-        if (onEvent) {
-            await new Promise((resolve, reject) => {
-                const handleEvent = () => {
-                    document.removeEventListener(onEvent, handleEvent);
-                    resolve();
-                };
-                document.addEventListener(onEvent, handleEvent);
-            });
-        }
-
-        let values
-        if (prefix === 'localstorage') {
-            let key = element.getAttribute('localstorage-get')
-            if (key) {
-                values = localStorage.getItem(key)
-            } else if (key = element.getAttribute('localstorage-set')) {
-                values = await element.getValue()
-                if (values)
-                    localStorage.setItem(key, values)
-            }
-
-            // if (!key || !values)
-            if (!key)
-                return
-        } else {
-
-            values = element.getAttribute(`${prefix}-value`)
-
-            if (values === null) {
-                let valueElements = queryElements({ element, prefix: `${prefix}-value` });
-                if (valueElements) {
-                    let elementValues = []
-                    for (let i = 0; i < valueElements.length; i++)
-                        elementValues.push(valueElements[i].getValue())
-
-                    if (elementValues.length)
-                        values = elementValues
-                }
-            }
-
-            if (values === null)
-                values = element.getAttribute(`${prefix}-if-value`)
-            if (values === null)
-                values = element.getAttribute(prefix);
-
-        }
-
-        if (values || values === '') {
-            if (typeof values === 'string')
-                values = values.split(',');
-            else if (!Array.isArray(values))
-                values = [values]
-        } else {
-            values = await element.getValue()
-            if (!Array.isArray(values))
-                values = [values]
-        }
-
-        if (targetAttribute && !values || values.length === 0)
-            return;
-
-        let ifCondition = element.getAttribute(`${prefix}-if`);
-        let elseCondition = element.getAttribute(`${prefix}-else`);
-
-        let ifValue = element.getAttribute(`${prefix}-if-value`)
-        if (!ifValue && ifValue !== "")
-            ifValue = await element.getValue() || values //values // await element.getValue()
-        else if (ifValue || ifValue === "")
-            ifValue = [ifValue]
-        else
-            ifValue = values
-
-        if (!Array.isArray(ifValue))
-            ifValue = [ifValue]
-
-        //TODO: improved resize toggling of values
-        // let hasCondition = this.elements2.get(element)
-        if (ifCondition && evaluateCondition(ifCondition, ifValue)) {
-
-            // if (hasCondition && hasCondition.condition === ifCondition) {
-            //     return
-            // } else
-            //     this.elements2.set(element, { condition: ifCondition })
-        } else if (elseCondition && evaluateCondition(elseCondition, ifValue)) {
-            // if (hasCondition && hasCondition.condition === elseCondition) {
-            //     return
-            // } else
-            //     this.elements2.set(element, { condition: elseCondition })
-        } else if (ifCondition || elseCondition) {
-            return
-        }
-
-        let targetText = element.getAttribute(`${prefix}-text`);
-        let targetHtml = element.getAttribute(`${prefix}-html`);
-        let targetKey = element.getAttribute(`${prefix}-key`);
-
-        let targetGroup = element.getAttribute(`${prefix}-group`);
+        let elements = [el]
+        let targetGroup = el.getAttribute(`${prefix}-group`);
         if (targetGroup) {
-
-            document.querySelectorAll(`[${prefix}-group="${targetGroup}"]`).forEach((el) => {
-                let groupValue = el.getAttribute(`${prefix}-value`) || el.getAttribute(prefix);
-                let groupValues = groupValue.split(',');
-                if (!groupValues || groupValues.length == 0) {
-                    return;
-                }
-
-                groupValues = groupValues.map(x => x.trim());
-                let groupAttribute = el.getAttribute(`${prefix}-attribute`) || 'class';
-                let groupPosition = el.getAttribute(`${prefix}-insert-adjacent`);
-                // groupAttribute = checkMediaQueries(groupAttribute)
-                // if (!groupAttribute)
-                //     return
-
-                let groupKey = el.getAttribute(`${prefix}-key`)
-
-                // el.removeAttribute(prefix)
-                if (prefix === 'selected') {
-                    if (el !== element)
-                        el.removeAttribute('selected')
-                    else
-                        element.setAttribute('selected', '')
-
-                }
-
-                let targetElements = queryElements({ element: el, prefix });
-                if (targetElements === false)
-                    targetElements = [el]
-
-                for (let i = 0; i < targetElements.length; i++)
-                    self.setValue(prefix, targetElements[i], groupAttribute, groupValues, groupKey, 'deactivate', events, groupPosition)
-
-            });
+            document.querySelectorAll(`[${prefix}-group="${targetGroup}"]`).forEach((element) => {
+                if (element !== el)
+                    elements.push(element)
+            })
         }
 
-        // values = values.map(x => x.trim());
+        for (let element of elements) {
+            // TODO: support empty value when prefix-attribute defined, add and remove the attribute
+            let targetAttribute = element.getAttribute(`${prefix}-attribute`);
+            let targetPosition = element.getAttribute(`${prefix}-insert-adjacent`);
+            // targetAttribute = checkMediaQueries(targetAttribute)
+            // if (targetAttribute === false)
+            //     return
 
-        values = values.map(x => {
-            if (typeof x === 'string')
-                x = x.trim(); // Update x with the trimmed value
-            let prop = element.getAttribute(`${prefix}-property`);
-            if (prop) {
-                x = `${prop}:${x}`; // Update x with prop if it exists
+            let onEvent = element.getAttribute(`${prefix}-on`)
+            if (onEvent) {
+                await new Promise((resolve, reject) => {
+                    const handleEvent = () => {
+                        document.removeEventListener(onEvent, handleEvent);
+                        resolve();
+                    };
+                    document.addEventListener(onEvent, handleEvent);
+                });
             }
-            return x; // Return the updated x
-        });
 
-        let targetElements = queryElements({ element, prefix });
-        if (targetElements === false)
-            targetElements = [element]
-        let action = element.getAttribute(`${prefix}-action`)
-        for (let i = 0; i < targetElements.length; i++) {
-            if (action) {
-                targetElements[i][action]()
-            } else if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
-                targetElements[i][prefix]()
+            let values
+            if (prefix === 'localstorage') {
+                let key = element.getAttribute('localstorage-get')
+                if (key) {
+                    values = localStorage.getItem(key)
+                } else if (key = element.getAttribute('localstorage-set')) {
+                    values = await element.getValue()
+                    if (values)
+                        localStorage.setItem(key, values)
+                }
+
+                // if (!key || !values)
+                if (!key)
+                    return
             } else {
-                this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, null, events, targetPosition)
+
+                values = element.getAttribute(`${prefix}-value`)
+
+                if (values === null) {
+                    let valueElements = queryElements({ element, prefix: `${prefix}-value` });
+                    if (valueElements) {
+                        let elementValues = []
+                        for (let i = 0; i < valueElements.length; i++)
+                            elementValues.push(valueElements[i].getValue())
+
+                        if (elementValues.length)
+                            values = elementValues
+                    }
+                }
+
+                if (values === null)
+                    values = element.getAttribute(`${prefix}-if-value`)
+                if (values === null)
+                    values = element.getAttribute(prefix);
+
+            }
+
+            if (values || values === '') {
+                if (typeof values === 'string')
+                    values = values.split(',');
+                else if (!Array.isArray(values))
+                    values = [values]
+            } else {
+                values = await element.getValue()
+                if (!Array.isArray(values))
+                    values = [values]
+            }
+
+            if (targetAttribute && !values || values.length === 0)
+                return;
+
+            let ifCondition = element.getAttribute(`${prefix}-if`);
+            let elseCondition = element.getAttribute(`${prefix}-else`);
+
+            let ifValue = element.getAttribute(`${prefix}-if-value`)
+            if (!ifValue && ifValue !== "")
+                ifValue = await element.getValue() || values //values // await element.getValue()
+            else if (ifValue || ifValue === "")
+                ifValue = [ifValue]
+            else
+                ifValue = values
+
+            if (!Array.isArray(ifValue))
+                ifValue = [ifValue]
+
+            //TODO: improved resize toggling of values
+            // let hasCondition = this.elements2.get(element)
+            if (ifCondition && evaluateCondition(ifCondition, ifValue)) {
+
+                // if (hasCondition && hasCondition.condition === ifCondition) {
+                //     return
+                // } else
+                //     this.elements2.set(element, { condition: ifCondition })
+            } else if (elseCondition && evaluateCondition(elseCondition, ifValue)) {
+                // if (hasCondition && hasCondition.condition === elseCondition) {
+                //     return
+                // } else
+                //     this.elements2.set(element, { condition: elseCondition })
+            } else if (ifCondition || elseCondition) {
+                return
+            }
+
+            let targetText = element.getAttribute(`${prefix}-text`);
+            let targetHtml = element.getAttribute(`${prefix}-html`);
+            let targetKey = element.getAttribute(`${prefix}-key`);
+
+            if (prefix === 'selected') {
+                if (el !== element)
+                    element.removeAttribute('selected')
+                else
+                    element.setAttribute('selected', '')
+            }
+
+            let deactivate = false
+            if (el !== element)
+                deactivate = true
+            // values = values.map(x => x.trim());
+
+            values = values.map(x => {
+                if (typeof x === 'string')
+                    x = x.trim(); // Update x with the trimmed value
+                let prop = element.getAttribute(`${prefix}-property`);
+                if (prop) {
+                    x = `${prop}:${x}`; // Update x with prop if it exists
+                }
+                return x; // Return the updated x
+            });
+
+            let targetElements = queryElements({ element, prefix });
+            if (targetElements === false)
+                targetElements = [element]
+            let action = element.getAttribute(`${prefix}-action`)
+            for (let i = 0; i < targetElements.length; i++) {
+                if (action) {
+                    targetElements[i][action]()
+                } else if (!targetAttribute && targetAttribute !== '' && ['click', 'focus', 'blur'].includes(prefix)) {
+                    targetElements[i][prefix]()
+                } else {
+                    this.setValue(prefix, targetElements[i], targetAttribute, values, targetKey, deactivate, events, targetPosition)
+                }
             }
         }
 
