@@ -63,7 +63,7 @@ const CoCreateEvents = {
         observer.init({
             name: 'CoCreateEventName',
             observe: ['addedNodes'],
-            target: `[event-name]`,
+            selector: `[event-name]`,
             callback: function (mutation) {
                 let name = mutation.target.getAttribute('event-name')
                 self.initPrefix(name);
@@ -89,7 +89,7 @@ const CoCreateEvents = {
             name: 'CoCreateEventattributes',
             observe: ['attributes', 'addedNodes'],
             attributeName: [`${prefix}-events`],
-            target: selector,
+            selector: selector,
             callback: function (mutation) {
                 self.initElements([mutation.target], prefix, events)
             }
@@ -157,7 +157,7 @@ const CoCreateEvents = {
                 if (target)
                     observer.init({
                         observe: ['addedNodes'],
-                        target,
+                        selector: target,
                         callback: function (mutation) {
                             self.__updateElements(el, prefix, mutation.target);
                         }
