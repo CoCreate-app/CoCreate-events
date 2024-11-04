@@ -1,3 +1,23 @@
+# [1.24.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.23.0...v1.24.0) (2024-11-04)
+
+
+### Bug Fixes
+
+* check for value attibutes has empty string indicating that the a value attribute exists and that the value will not be retrieved using getValue() ([c79a0b3](https://github.com/CoCreate-app/CoCreate-events/commit/c79a0b338378b46613e9ba3b5b98c71e040ecbc7))
+* if events ([afaf496](https://github.com/CoCreate-app/CoCreate-events/commit/afaf496cf01eb6a013e050952a08a530d5e63e67))
+* observer taget has been renamed to selector ([fae2134](https://github.com/CoCreate-app/CoCreate-events/commit/fae2134873fea89480a7c28920d4277691d7109a))
+* pretier.config.js and file formating ([f31afac](https://github.com/CoCreate-app/CoCreate-events/commit/f31afac19f6e4875866f6e090e2aa861a453639c))
+* selected group handling ([975008a](https://github.com/CoCreate-app/CoCreate-events/commit/975008a568f8983772a76ae843298fb5cfcc807c))
+* temporarily commented checking for parent events ([09d0394](https://github.com/CoCreate-app/CoCreate-events/commit/09d0394b946306862153ca5164b08e1440cbbb63))
+
+
+### Features
+
+* add prettier.config.js and format files ([558b874](https://github.com/CoCreate-app/CoCreate-events/commit/558b8748cb2ba34d479680acb1c25f359283d817))
+* add prettier.config.js and format files ([9920bd7](https://github.com/CoCreate-app/CoCreate-events/commit/9920bd7ebe78ddeb41524377307b08b6271f45b8))
+* handle action and replace ([25fc93c](https://github.com/CoCreate-app/CoCreate-events/commit/25fc93cc8846a4571903e556ec16acd9acf74be1))
+* improved gropu support ([a4b10f8](https://github.com/CoCreate-app/CoCreate-events/commit/a4b10f82a4fbefb42d08346a72bd4731d3c8b71c))
+
 # [1.23.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.22.1...v1.23.0) (2024-09-21)
 
 
