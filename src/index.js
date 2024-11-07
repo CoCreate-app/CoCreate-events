@@ -324,9 +324,8 @@ const CoCreateEvents = {
 
 			let ifValue = element.getAttribute(`${prefix}-if-value`);
 			if (!ifValue && ifValue !== "")
-				ifValue =
-					(await element.getValue()) ||
-					values; //values // await element.getValue()
+				ifValue = (await element.getValue()) || values;
+			//values // await element.getValue()
 			else if (ifValue || ifValue === "") ifValue = [ifValue];
 			else ifValue = values;
 
@@ -382,6 +381,7 @@ const CoCreateEvents = {
 				} else if (
 					!targetAttribute &&
 					targetAttribute !== "" &&
+					!targetPosition &&
 					["click", "focus", "blur"].includes(prefix)
 				) {
 					targetElements[i][prefix]();
@@ -445,6 +445,13 @@ const CoCreateEvents = {
 			// let value = values[0]
 			replaceKey(prefix, element, key, values);
 		} else {
+			// TODo: if html in iframe
+			let domTextEditor;
+			if (element.parentElement) {
+				domTextEditor =
+					element.parentElement.closest("[contenteditable]");
+			}
+
 			if (attrName === "style") {
 				if (element.getAttribute(attrName)) {
 					attrValues = element
@@ -514,10 +521,19 @@ const CoCreateEvents = {
 						element.removeAttribute(attrName);
 					else element.setAttribute(attrName, newValue);
 				} else if (targetPosition) {
-					if (targetPosition === "replace") {
+					if (domTextEditor) {
+						CoCreate.text.insertAdjacentElement({
+							domTextEditor,
+							position: targetPosition,
+							target: element,
+							elementValue: newValue
+						});
+					} else if (targetPosition === "replace") {
 						element.insertAdjacentHTML("beforebegin", newValue); // Insert before oldElement
 						element.remove(); // Remove oldElement
-					} else element.insertAdjacentHTML(targetPosition, newValue);
+					} else {
+						element.insertAdjacentHTML(targetPosition, newValue);
+					}
 				} else {
 					if (
 						!attrName &&
