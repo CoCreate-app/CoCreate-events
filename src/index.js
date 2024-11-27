@@ -81,7 +81,7 @@ const CoCreateEvents = {
 			}
 		});
 
-		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`;
+		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`;
 
 		observer.init({
 			name: "CoCreateEventattributes",
