@@ -243,7 +243,7 @@ const CoCreateEvents = {
 	},
 
 	__updateElements: async function (el, prefix, target, events) {
-		const self = this;
+		if (!el.isConnected) return;
 		let elements = [el];
 		let targetGroup = el.getAttribute(`${prefix}-group`);
 		if (targetGroup) {
@@ -255,6 +255,17 @@ const CoCreateEvents = {
 		}
 
 		for (let element of elements) {
+			let once = element.getAttribute(`${prefix}-once`);
+			if (once || once === "") {
+				if (!element.eventsOnce) {
+					element.eventsOnce = [prefix];
+				} else if (element.eventsOnce.includes(prefix)) {
+					continue;
+				} else {
+					element.eventsOnce.push(prefix);
+				}
+			}
+
 			// TODO: support empty value when prefix-attribute defined, add and remove the attribute
 			let targetAttribute = element.getAttribute(`${prefix}-attribute`);
 			let targetPosition = element.getAttribute(
