@@ -395,7 +395,8 @@ const CoCreateEvents = {
 					!targetPosition &&
 					["click", "focus", "blur"].includes(prefix)
 				) {
-					targetElements[i][prefix]();
+					if (element.hasAttribute(prefix))
+						targetElements[i][prefix]();
 				} else {
 					this.setValue(
 						prefix,
