@@ -1,3 +1,19 @@
+# [1.25.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.24.0...v1.25.0) (2024-12-14)
+
+
+### Bug Fixes
+
+* add prefix-action to selector ([5a74600](https://github.com/CoCreate-app/CoCreate-events/commit/5a74600927d519d2c03220eeec5eee649885283b))
+* domEditor handling ([466d565](https://github.com/CoCreate-app/CoCreate-events/commit/466d565e9c2dde109326b37fb34c2e50219c191b))
+* formating ([ed056bd](https://github.com/CoCreate-app/CoCreate-events/commit/ed056bd45c14d56612ceee539456a9ad1cd8da7c))
+* prevent loop caused by actions firing prefix with no query elements ([d696c35](https://github.com/CoCreate-app/CoCreate-events/commit/d696c35407779e9be5c706cc97a8d83eaa3a75dd))
+
+
+### Features
+
+* <prefix>-once attribute to fire event once, if el.isConnected = false return ([17d5a14](https://github.com/CoCreate-app/CoCreate-events/commit/17d5a141a0ec2fcc63dccf9397e5860907949631))
+* Add `<eventname>-delay` to delay event execution and validate DOM presence ([0eb5fc9](https://github.com/CoCreate-app/CoCreate-events/commit/0eb5fc9d2127dad62530821216b9696854aac05b))
+
 # [1.24.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.23.0...v1.24.0) (2024-11-04)
 
 
