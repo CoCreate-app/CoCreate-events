@@ -77,7 +77,13 @@ const CoCreateEvents = {
 			name: prefix,
 			endEvent: `${prefix}End`,
 			callback: (data) => {
-				this.__updateElements(data.element, prefix);
+				this.__updateElements(
+					data.element,
+					prefix,
+					null,
+					null,
+					data.params
+				);
 			}
 		});
 
@@ -165,14 +171,44 @@ const CoCreateEvents = {
 						break;
 					}
 				}
-				if (target)
-					observer.init({
-						observe: ["addedNodes"],
-						selector: target,
-						callback: function (mutation) {
-							self.__updateElements(el, prefix, mutation.target);
-						}
-					});
+
+				let attributeName = (
+					el.getAttribute(`${prefix}-attributes`) || ""
+				)
+					.split(/\s*,\s*/)
+					.filter((item) => item);
+
+				let observeAttribute = (
+					el.getAttribute(`${prefix}-observe`) || ""
+				)
+					.split(/\s*,\s*/)
+					.filter((item) => item);
+
+				let observerConfig = {
+					observe: observeAttribute,
+					callback: function (mutation) {
+						self.__updateElements(el, prefix, mutation.target);
+					}
+				};
+
+				if (target) {
+					if (
+						target &&
+						!observeAttribute.length &&
+						!attributeName.length
+					) {
+						observerConfig.observe.push("addedNodes");
+					}
+					observerConfig.target = target;
+				}
+
+				if (attributeName.length) {
+					observerConfig.observe.push("attributes");
+					observerConfig.attributeName = attributeName;
+				}
+
+				if (observerConfig.observe.length)
+					observer.init(observerConfig);
 			}
 
 			if (events.includes("resize")) {
@@ -242,8 +278,9 @@ const CoCreateEvents = {
 		}
 	},
 
-	__updateElements: async function (el, prefix, target, events) {
+	__updateElements: async function (el, prefix, target, events, params) {
 		if (!el.isConnected) return;
+
 		let elements = [el];
 		let targetGroup = el.getAttribute(`${prefix}-group`);
 		if (targetGroup) {
@@ -255,6 +292,17 @@ const CoCreateEvents = {
 		}
 
 		for (let element of elements) {
+			let delay = element.getAttribute(`${prefix}-delay`);
+
+			if (delay) {
+				delay = parseInt(delay, 10) || 0;
+				if (delay > 0) {
+					await new Promise((resolve) => setTimeout(resolve, delay));
+				}
+			}
+
+			if (!element.isConnected) return;
+
 			let once = element.getAttribute(`${prefix}-once`);
 			if (once || once === "") {
 				if (!element.eventsOnce) {
@@ -383,7 +431,11 @@ const CoCreateEvents = {
 				return x; // Return the updated x
 			});
 
-			let targetElements = queryElements({ element, prefix });
+			let targetElements = queryElements({
+				element,
+				prefix,
+				selector: params
+			});
 			if (targetElements === false) targetElements = [element];
 			let action = element.getAttribute(`${prefix}-action`);
 			for (let i = 0; i < targetElements.length; i++) {
@@ -395,7 +447,14 @@ const CoCreateEvents = {
 					!targetPosition &&
 					["click", "focus", "blur"].includes(prefix)
 				) {
-					if (element.hasAttribute(prefix))
+					// TODO: click causes an infinite loop if targetElement[i] is a child of element do to event propactaion
+					if (
+						(targetElements[i] === element &&
+							element.hasAttribute(prefix)) ||
+						(params &&
+							targetElements[i] !== element &&
+							!element.contains(targetElements[i]))
+					)
 						targetElements[i][prefix]();
 				} else {
 					this.setValue(
@@ -694,12 +753,19 @@ function checkCondition(condition, value) {
 		return !!value[0];
 	} else if (condition === "false") {
 		return !value[0];
-	} else if (condition === "[]" && typeof value[0] === "string") {
-		parse = false;
 	}
+	// else if (condition === "[]" && typeof value[0] === "string") {
+	// 	parse = false;
+	// }
 
 	// TODO: why parse updated conditin to boolean false
-	if (parse && condition !== "false") condition = parseCondition(condition);
+	// if (parse && condition !== "false") condition = parseCondition(condition);
+
+	if (typeof value[0] === "number") {
+		condition = parseNumberCondition(condition);
+	} else if (typeof value[0] === "object" && typeof condition === "string") {
+		condition = parseJsonCondition(condition);
+	}
 
 	let result;
 
@@ -725,7 +791,7 @@ function checkCondition(condition, value) {
 			});
 		} else result = value.includes(condition);
 	} else if (Array.isArray(value)) {
-		// TODO: handle comparing array to array, vs querying the ayya items for a match
+		// TODO: handle comparing array to array, vs querying the array items for a match
 		result = queryData(value, condition);
 	} else if (
 		typeof value === "object" &&
@@ -741,17 +807,19 @@ function checkCondition(condition, value) {
 	return result;
 }
 
-function parseCondition(condition) {
+function parseJsonCondition(condition) {
 	try {
 		// Attempt to parse the condition as JSON
 		let parsedJson = JSON.parse(condition);
 		return parsedJson;
 	} catch (e) {
-		// If JSON parsing fails, check if the condition is a number
-		return !isNaN(condition) && condition.trim() !== ""
-			? Number(condition)
-			: condition;
+		return condition;
 	}
+}
+function parseNumberCondition(condition) {
+	return !isNaN(condition) && condition.trim() !== ""
+		? Number(condition)
+		: condition;
 }
 
 CoCreateEvents.init();
