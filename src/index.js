@@ -41,7 +41,7 @@ const CoCreateEvents = {
 			this.initPrefix("onload", ["onload"]);
 			this.initPrefix("observe", ["observer"]);
 			this.initPrefix("resize", ["onload", "resize"]);
-			this.initPrefix("localstorage", ["onload", "observer"]);
+			this.initPrefix("localstorage", ["onload"]);
 		}
 
 		let customEventEls = document.querySelectorAll("[event-name]");
@@ -92,32 +92,21 @@ const CoCreateEvents = {
 		observer.init({
 			name: "CoCreateEventattributes",
 			observe: ["attributes", "addedNodes"],
-			attributeName: [`${prefix}-events`],
-			selector: selector,
+			attributeName: [
+				`${prefix}-key`,
+				`${prefix}-value`,
+				`${prefix}-selector`,
+				`${prefix}-closest`,
+				`${prefix}-parent`,
+				`${prefix}-next`,
+				`${prefix}-previous`,
+				`${prefix}-events`
+			],
+			selector,
 			callback: function (mutation) {
 				self.initElements([mutation.target], prefix, events);
 			}
 		});
-
-		if (events && events.includes("observer")) {
-			observer.init({
-				name: "observerAttributes",
-				observe: ["attributes"],
-				attributeName: [
-					`${prefix}-key`,
-					`${prefix}-value`,
-					`${prefix}-selector`,
-					`${prefix}-closest`,
-					`${prefix}-parent`,
-					`${prefix}-next`,
-					`${prefix}-previous`
-				],
-				callback: function (mutation) {
-					// remove previous observer
-					self.initElements([mutation.target], prefix, events);
-				}
-			});
-		}
 
 		let elements = document.querySelectorAll(selector);
 		this.initElements(elements, prefix, events);
