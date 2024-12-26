@@ -42,6 +42,7 @@ const CoCreateEvents = {
 			this.initPrefix("observe", ["observer"]);
 			this.initPrefix("resize", ["onload", "resize"]);
 			this.initPrefix("localstorage", ["onload"]);
+			this.initPrefix("focus", ["focus"]);
 		}
 
 		let customEventEls = document.querySelectorAll("[event-name]");
