@@ -40,6 +40,7 @@ const CoCreateEvents = {
 			this.initPrefix("selected", ["click"]);
 			this.initPrefix("onload", ["onload"]);
 			this.initPrefix("observe", ["observer"]);
+			this.initPrefix("intersection", ["intersection"]);
 			this.initPrefix("resize", ["onload", "resize"]);
 			this.initPrefix("localstorage", ["onload"]);
 			this.initPrefix("focus", ["focus"]);
@@ -211,10 +212,68 @@ const CoCreateEvents = {
 				resizeObserver.observe(el);
 			}
 
+			if (events.includes("intersection")) {
+				const rootSelector = el.getAttribute(`${prefix}-root`);
+				const rootMargin =
+					el.getAttribute(`${prefix}-root-margin`) || "0px";
+				const threshold = el.getAttribute(`${prefix}-threshold`)
+					? JSON.parse(el.getAttribute(`${prefix}-threshold`))
+					: [0];
+				const trigger = el.getAttribute(`${prefix}-trigger`) || "both"; // Default to "both"
+
+				// Resolve root from the selector or use null for viewport
+				const root = rootSelector
+					? document.querySelector(rootSelector)
+					: null;
+
+				// Validate and filter threshold values
+				const validThreshold = Array.isArray(threshold)
+					? threshold.filter((value) => value >= 0 && value <= 1)
+					: [0];
+
+				// Create IntersectionObserver
+				const intersectionObserver = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							const isVisible = entry.isIntersecting;
+
+							// Determine if __updateElements should be called based on trigger
+							// if (
+							// 	(trigger === "visible" && isVisible) ||
+							// 	(trigger === "not-visible" && !isVisible) ||
+							// 	trigger === "both"
+							// ) {
+							if (isVisible) {
+								// Set an attribute to reflect visibility state
+								el.setAttribute(
+									`${prefix}-is-visible`,
+									isVisible ? "true" : "false"
+								);
+
+								// Call __updateElements
+								self.__updateElements(
+									el,
+									prefix
+									// {
+									// 	isVisible,
+									// 	intersectionRatio:
+									// 		entry.intersectionRatio
+									// }
+								);
+							}
+						});
+					},
+					{ root, rootMargin, threshold: validThreshold }
+				);
+
+				intersectionObserver.observe(el);
+			}
+
 			for (let i = 0; i < events.length; i++) {
 				if (
 					events[i] !== "onload" &&
 					events[i] !== "observer" &&
+					events[i] !== "intersection" &&
 					events[i] !== "resize"
 				) {
 					el.removeEventListener(events[i], eventFunction);
