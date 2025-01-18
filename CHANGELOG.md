@@ -1,3 +1,16 @@
+# [1.26.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.25.0...v1.26.0) (2025-01-18)
+
+
+### Bug Fixes
+
+* removed ovserver from local storage ([b07e5f7](https://github.com/CoCreate-app/CoCreate-events/commit/b07e5f7ef2d6f8a39dc77a56a63f078d0576f85a))
+
+
+### Features
+
+* added focus ([0b81f3e](https://github.com/CoCreate-app/CoCreate-events/commit/0b81f3edff2c254281cb5a1028d2396b3b86e9e8))
+* intersection handling ([dea8872](https://github.com/CoCreate-app/CoCreate-events/commit/dea887246eb0489022450fd135418dc42767fd59))
+
 # [1.25.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.24.0...v1.25.0) (2024-12-14)
 
 
