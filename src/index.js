@@ -89,7 +89,7 @@ const CoCreateEvents = {
 			}
 		});
 
-		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`;
+		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous], [${prefix}-preventDefault], [${prefix}-stopPropagation], [${prefix}-stopImmediatePropagation]`;
 
 		observer.init({
 			name: "CoCreateEventattributes",
@@ -105,7 +105,10 @@ const CoCreateEvents = {
 				`${prefix}-events`,
 				`${prefix}-bubbles`,
 				`${prefix}-cancelable`,
-				`${prefix}-composed`
+				`${prefix}-composed`,
+				`${prefix}-preventDefault`,
+				`${prefix}-stopPropagation`,
+				`${prefix}-stopImmediatePropagation`
 			],
 			selector,
 			callback: function (mutation) {
