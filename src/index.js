@@ -102,7 +102,10 @@ const CoCreateEvents = {
 				`${prefix}-parent`,
 				`${prefix}-next`,
 				`${prefix}-previous`,
-				`${prefix}-events`
+				`${prefix}-events`,
+				`${prefix}-bubbles`,
+				`${prefix}-cancelable`,
+				`${prefix}-composed`
 			],
 			selector,
 			callback: function (mutation) {
@@ -270,19 +273,40 @@ const CoCreateEvents = {
 			}
 
 			for (let i = 0; i < events.length; i++) {
+				// Skip specific lifecycle events
 				if (
-					events[i] !== "onload" &&
-					events[i] !== "observer" &&
-					events[i] !== "intersection" &&
-					events[i] !== "resize"
+					events[i] === "onload" ||
+					events[i] === "observer" ||
+					events[i] === "intersection" ||
+					events[i] === "resize"
 				) {
-					el.removeEventListener(events[i], eventFunction);
-					el.addEventListener(events[i], eventFunction);
+					continue;
 				}
+
+				// Remove any existing event listener
+				el.removeEventListener(events[i], eventFunction);
+
+				// Initialize an empty options object
+				const options = {};
+
+				// Attributes to check dynamically
+				const attributes = ["bubbles", "cancelable", "composed"];
+
+				for (let j = 0; j < attributes.length; j++) {
+					const attrValue = el.getAttribute(
+						`${events[i]}-${attributes[j]}`
+					);
+					if (attrValue !== null) {
+						options[attributes[j]] = attrValue !== "false";
+					}
+				}
+
+				// Add the new event listener with the dynamically constructed options
+				el.addEventListener(events[i], eventFunction, options);
 			}
 
 			function eventFunction(event) {
-				// TODO: apply debounce
+				// TODO: apply debounce.
 				// let debounce;
 				// clearTimeout(debounce);
 				// debounce = setTimeout(function() {
@@ -300,6 +324,25 @@ const CoCreateEvents = {
 					if (attribute.includes(prefix)) return;
 					// if (target.closest(`[actions*="${prefix}"]`))
 					// 	return;
+
+					// Define the lifecycle attributes (matching JavaScript event methods)
+					const lifecycleAttributes = [
+						"preventDefault",
+						"stopPropagation",
+						"stopImmediatePropagation"
+					];
+
+					// Handle lifecycle attributes dynamically
+					for (let i = 0; i < lifecycleAttributes.length; i++) {
+						const attr = `${prefix}-${lifecycleAttributes[i]}`; // Add prefix dynamically
+						const attrValue = target.getAttribute(attr); // Directly get the attribute value
+
+						// If attribute exists and is not explicitly "false", apply the corresponding event method
+						if (attrValue !== null && attrValue !== "false") {
+							event[lifecycleAttributes[i]]();
+						}
+					}
+
 					self.__updateElements(
 						target,
 						prefix,
@@ -431,13 +474,15 @@ const CoCreateEvents = {
 			let elseCondition = element.getAttribute(`${prefix}-else`);
 
 			let ifValue = element.getAttribute(`${prefix}-if-value`);
-			if (!ifValue && ifValue !== "")
-				ifValue = (await element.getValue()) || values;
-			//values // await element.getValue()
-			else if (ifValue || ifValue === "") ifValue = [ifValue];
-			else ifValue = values;
+			if (ifCondition) {
+				if (!ifValue && ifValue !== "")
+					ifValue = (await element.getValue()) || values;
+				//values // await element.getValue()
+				else if (ifValue || ifValue === "") ifValue = [ifValue];
+				else ifValue = values;
 
-			if (!Array.isArray(ifValue)) ifValue = [ifValue];
+				if (!Array.isArray(ifValue)) ifValue = [ifValue];
+			}
 
 			//TODO: improved resize toggling of values
 			// let hasCondition = this.elements2.get(element)
@@ -520,7 +565,7 @@ const CoCreateEvents = {
 			}
 		}
 
-		document.dispatchEvent(
+		el.dispatchEvent(
 			new CustomEvent(`${prefix}End`, {
 				detail: {}
 			})
@@ -628,7 +673,7 @@ const CoCreateEvents = {
 						element.classList.add(newValue);
 					}
 				} else if (attrName === "value") {
-					element.setValue(newValue);
+					element.setValue(newValue, false);
 				} else if (
 					["$click", "$focus", "$blur", "$save", "$read"].includes(
 						attrName
