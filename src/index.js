@@ -146,8 +146,12 @@ const CoCreateEvents = {
 				prefixes[prefix].events = events;
 				isEventable = true;
 			}
+
 			if (!events || !isEventable) continue;
-			if (events.includes("onload")) this.__updateElements(el, prefix);
+
+			if (events.includes("onload")) {
+				this.__updateElements(el, prefix);
+			}
 
 			if (events.includes("observer")) {
 				let target;
