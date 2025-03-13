@@ -543,7 +543,7 @@ const CoCreateEvents = {
 				targetElements.length === 1 &&
 				targetElements[0] === null
 			) {
-				console.log("test");
+				console.log("test from events target elements null");
 			}
 			let action = element.getAttribute(`${prefix}-action`);
 			for (let i = 0; i < targetElements.length; i++) {
