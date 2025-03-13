@@ -537,14 +537,11 @@ const CoCreateEvents = {
 				prefix,
 				selector: params
 			});
+
 			if (targetElements === false) {
 				targetElements = [element];
-			} else if (
-				targetElements.length === 1 &&
-				targetElements[0] === null
-			) {
-				console.log("test from events target elements null");
 			}
+
 			let action = element.getAttribute(`${prefix}-action`);
 			for (let i = 0; i < targetElements.length; i++) {
 				if (action) {
@@ -565,9 +562,6 @@ const CoCreateEvents = {
 					)
 						targetElements[i][prefix]();
 				} else {
-					if (!targetElements[i]) {
-						console.log("teste");
-					}
 					this.setValue(
 						prefix,
 						targetElements[i],
