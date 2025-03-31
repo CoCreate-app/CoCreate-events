@@ -63,7 +63,7 @@ const CoCreateEvents = {
 		const self = this;
 		observer.init({
 			name: "CoCreateEventName",
-			observe: ["addedNodes"],
+			types: ["addedNodes"],
 			selector: `[event-name]`,
 			callback: function (mutation) {
 				let name = mutation.target.getAttribute("event-name");
@@ -93,8 +93,8 @@ const CoCreateEvents = {
 
 		observer.init({
 			name: "CoCreateEventattributes",
-			observe: ["attributes", "addedNodes"],
-			attributeName: [
+			types: ["attributes", "addedNodes"],
+			attributeFilter: [
 				`${prefix}-key`,
 				`${prefix}-value`,
 				`${prefix}-selector`,
@@ -131,7 +131,9 @@ const CoCreateEvents = {
 				this.elements.set(el, prefixes);
 			} else if (!prefixes[prefix]) {
 				prefixes[prefix] = { events };
-			} else isEventable = false;
+			} else {
+				isEventable = false;
+			}
 
 			let customEvents = el.getAttribute(`${prefix}-events`);
 			if (customEvents) {
@@ -148,6 +150,19 @@ const CoCreateEvents = {
 			}
 
 			if (!events || !isEventable) continue;
+
+			// let originalSelector = ""; // i think we need to extract the selector and remove the operators
+			// if (originalSelector) {
+			// 	observer.init({
+			// 		types: ["addedNodes"],
+			// 		callback: function (mutation) {
+			// 			const els = el.queryElements();
+			// 			if (els && els.includes(mutation.target)) {
+			// 				self.__updateElements();
+			// 			}
+			// 		}
+			// 	});
+			// }
 
 			if (events.includes("onload")) {
 				this.__updateElements(el, prefix);
@@ -173,7 +188,7 @@ const CoCreateEvents = {
 					}
 				}
 
-				let attributeName = (
+				let attributeFilter = (
 					el.getAttribute(`${prefix}-attributes`) || ""
 				)
 					.split(/\s*,\s*/)
@@ -186,7 +201,7 @@ const CoCreateEvents = {
 					.filter((item) => item);
 
 				let observerConfig = {
-					observe: observeAttribute,
+					types: observeAttribute,
 					callback: function (mutation) {
 						self.__updateElements(el, prefix, mutation.target);
 					}
@@ -196,20 +211,19 @@ const CoCreateEvents = {
 					if (
 						target &&
 						!observeAttribute.length &&
-						!attributeName.length
+						!attributeFilter.length
 					) {
-						observerConfig.observe.push("addedNodes");
+						observerConfig.types.push("addedNodes");
 					}
 					observerConfig.target = target;
 				}
 
-				if (attributeName.length) {
-					observerConfig.observe.push("attributes");
-					observerConfig.attributeName = attributeName;
+				if (attributeFilter.length) {
+					observerConfig.types.push("attributes");
+					observerConfig.attributeFilter = attributeFilter;
 				}
 
-				if (observerConfig.observe.length)
-					observer.init(observerConfig);
+				if (observerConfig.types.length) observer.init(observerConfig);
 			}
 
 			if (events.includes("resize")) {
