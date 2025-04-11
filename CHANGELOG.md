@@ -1,3 +1,21 @@
+# [1.27.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.26.0...v1.27.0) (2025-04-11)
+
+
+### Bug Fixes
+
+* console.log() ([2174c1e](https://github.com/CoCreate-app/CoCreate-events/commit/2174c1e0a9fa0b777e073de30aed4f29ec59f8f6))
+* formating ([58b8550](https://github.com/CoCreate-app/CoCreate-events/commit/58b8550c96c30153a94e24ce93b39914eed2fba3))
+* removed console.log() ([f44cb8f](https://github.com/CoCreate-app/CoCreate-events/commit/f44cb8fdfec3b3b1787e830cd1b3bab3a1ef3fa5))
+* renamed prefix-delay to prefix-setTimout ([84e511a](https://github.com/CoCreate-app/CoCreate-events/commit/84e511af8bcb521e5e8e7bc481a6f202fca04930))
+* Selctor === "" returning null ([c49bc35](https://github.com/CoCreate-app/CoCreate-events/commit/c49bc35cd8a8ff9232229ee64d71bc4e32d3d6fc))
+* selectors ([ccb2dee](https://github.com/CoCreate-app/CoCreate-events/commit/ccb2dee2a682bcdf601047f0783c5c44ebcfe5ed))
+* update observer obseve param to type and and attributeName to attributeFilter ([44372d4](https://github.com/CoCreate-app/CoCreate-events/commit/44372d4ceba70360507cd0c94df43f4ee877be99))
+
+
+### Features
+
+* support "*-preventDefault", "*-stopPropagation", "*-stopImmediatePropagation" ([5b10663](https://github.com/CoCreate-app/CoCreate-events/commit/5b106633f425001ca6ec7d65dc0bd00ad6368b64))
+
 # [1.26.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.25.0...v1.26.0) (2025-01-18)
 
 
