@@ -405,7 +405,26 @@ const CoCreateEvents = {
 		}
 
 		for (let element of elements) {
-			let delay = element.getAttribute(`${prefix}-delay`);
+			// const requestAnimationFrameAttr = element.getAttribute(
+			// 	`${prefix}-requestAnimationFrame`
+			// );
+
+			// if (
+			// 	requestAnimationFrameAttr !== null &&
+			// 	requestAnimationFrameAttr !== "false"
+			// ) {
+			// 	// Double requestAnimationFrame
+			// 	await new Promise((resolve) => {
+			// 		requestAnimationFrame(() => {
+			// 			requestAnimationFrame(() => {
+			// 				resolve();
+			// 			});
+			// 		});
+			// 	});
+			// }
+
+			// TODO: Handle setInterval logic
+			let delay = element.getAttribute(`${prefix}-setTimeout`);
 
 			if (delay) {
 				delay = parseInt(delay, 10) || 0;
@@ -940,6 +959,160 @@ function parseNumberCondition(condition) {
 		? Number(condition)
 		: condition;
 }
+
+// Helper function for delay using Promises
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Waits for a specific element property to meet a readiness condition,
+ * based on retry attributes defined on the element.
+ * Incorporates optional exponential backoff for retry delays.
+ * Returns a Promise that resolves to true if the condition is met within
+ * the allowed attempts, and false otherwise.
+ *
+ * @param {HTMLElement} element The element with the onload-retry-* attributes.
+ * @returns {Promise<boolean>} A Promise resolving to true if ready, false if timed out.
+ */
+async function checkElementReadinessWithBackoff(element) {
+	const propertyName = element.getAttribute("onload-retry-property");
+
+	if (!propertyName) {
+		return true; // No retry needed
+	}
+
+	// --- Retry Parameters ---
+	const maxAttempts =
+		parseInt(element.getAttribute("onload-retry-attempts") || "3", 10) || 3;
+	// Initial delay (used for the first wait and as the base for backoff)
+	const initialDelayMs =
+		parseInt(element.getAttribute("onload-retry-delay") || "100", 10) ||
+		100;
+	// Exponential backoff factor (e.g., 2 for doubling). <= 1 means fixed delay.
+	// Default to 1 (no backoff) if missing or invalid.
+	const backoffFactor =
+		parseFloat(
+			element.getAttribute("onload-retry-backoff-factor") || "1"
+		) || 1;
+	// Optional maximum delay cap. Use Infinity if missing, invalid, or <= 0.
+	const maxDelayMs = parseInt(
+		element.getAttribute("onload-retry-max-delay") || "0",
+		10
+	);
+	const effectiveMaxDelay =
+		maxDelayMs && maxDelayMs > 0 ? maxDelayMs : Infinity;
+
+	console.log(
+		`Checking readiness for property "${propertyName}" on element ${
+			element.id || ""
+		}. Max attempts: ${maxAttempts}, Initial Delay: ${initialDelayMs}ms, Backoff Factor: ${backoffFactor}, Max Delay: ${
+			effectiveMaxDelay === Infinity ? "None" : effectiveMaxDelay + "ms"
+		}.`
+	);
+
+	// Initialize the delay to be used for the *first* wait.
+	let currentDelay = initialDelayMs;
+
+	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+		console.log(
+			`Attempt ${attempt}/${maxAttempts}: Checking "${propertyName}"...`
+		);
+		try {
+			const propertyValue = element[propertyName];
+			// Example check: Adjust condition as needed
+			if (propertyValue !== undefined && propertyValue > 0) {
+				console.log(
+					`Property "${propertyName}" ready on attempt ${attempt}. Value: ${propertyValue}`
+				);
+				return true; // Condition met
+			}
+		} catch (error) {
+			console.error(
+				`Error accessing property "${propertyName}" on attempt ${attempt}:`,
+				error
+			);
+		}
+
+		// If condition not met and more attempts remain:
+		if (attempt < maxAttempts) {
+			// Determine the actual delay for this wait, applying the cap
+			const delayForThisWait = Math.min(currentDelay, effectiveMaxDelay);
+
+			console.log(
+				`Waiting ${Math.round(
+					delayForThisWait
+				)}ms before next attempt...`
+			);
+			await delay(delayForThisWait);
+
+			// Calculate the delay for the *next* potential wait, only if backoff is active
+			if (backoffFactor > 1) {
+				currentDelay = currentDelay * backoffFactor;
+				// Note: We apply the cap just before the actual delay,
+				// but the base 'currentDelay' keeps growing exponentially.
+				// Alternatively, you could cap 'currentDelay' itself here:
+				// currentDelay = Math.min(currentDelay * backoffFactor, effectiveMaxDelay);
+				// Let's stick to capping just before delay() for now.
+			}
+			// If backoffFactor <= 1, currentDelay remains initialDelayMs (implicitly handled by initialization)
+		}
+	}
+
+	// If loop finishes without condition being met
+	console.warn(
+		`Readiness check failed for property "${propertyName}" on element ${
+			element.id || ""
+		} after ${maxAttempts} attempts.`
+	);
+	return false; // Timed out
+}
+
+// --- Example Usage (calling code doesn't change) ---
+
+async function handleElementProcessingWithBackoff(element) {
+	// Call the function that now supports backoff
+	const isReady = await checkElementReadinessWithBackoff(element);
+
+	if (isReady) {
+		console.log(
+			`Element ${element.id || ""} is ready. Proceeding with actions.`
+		);
+		// --- Execute subsequent actions ---
+		if (element.hasAttribute("onload-attribute")) {
+			/* ... */
+		}
+		if (element.hasAttribute("onload-next")) {
+			/* ... */
+		}
+	} else {
+		console.warn(
+			`Skipping actions for element ${
+				element.id || ""
+			} because readiness check failed.`
+		);
+	}
+}
+
+// --- Example Elements ---
+
+// With Backoff (Delays: 100, 200, 400, 800 - capped)
+// <span id="elem1" onload-retry-property="scrollWidth"
+//   onload-retry-attempts="5" onload-retry-delay="100"
+//   onload-retry-backoff-factor="2" onload-retry-max-delay="500">
+//   Content 1
+// </span>
+// Waits would be: 100ms, 200ms, 400ms, 500ms (capped)
+
+// No Backoff (factor missing/invalid/<=1)
+// <span id="elem2" onload-retry-property="clientHeight"
+//   onload-retry-attempts="4" onload-retry-delay="300">
+//   Content 2
+// </span>
+// Waits would be: 300ms, 300ms, 300ms
+
+// const element1 = document.getElementById('elem1');
+// if (element1) handleElementProcessingWithBackoff(element1);
+// const element2 = document.getElementById('elem2');
+// if (element2) handleElementProcessingWithBackoff(element2);
 
 CoCreateEvents.init();
 
