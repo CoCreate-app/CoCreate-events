@@ -89,7 +89,7 @@ const CoCreateEvents = {
 			}
 		});
 
-		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous], [${prefix}-preventDefault], [${prefix}-stopPropagation], [${prefix}-stopImmediatePropagation]`;
+		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-query], [${prefix}-preventDefault], [${prefix}-stopPropagation], [${prefix}-stopImmediatePropagation]`;
 
 		observer.init({
 			name: "CoCreateEventattributes",
@@ -97,11 +97,7 @@ const CoCreateEvents = {
 			attributeFilter: [
 				`${prefix}-key`,
 				`${prefix}-value`,
-				`${prefix}-selector`,
-				`${prefix}-closest`,
-				`${prefix}-parent`,
-				`${prefix}-next`,
-				`${prefix}-previous`,
+				`${prefix}-query`,
 				`${prefix}-events`,
 				`${prefix}-bubbles`,
 				`${prefix}-cancelable`,
@@ -174,15 +170,7 @@ const CoCreateEvents = {
 					if (attribute.name === "observe-target") {
 						target = attribute.value;
 						break;
-					} else if (
-						[
-							`${prefix}-selector`,
-							`${prefix}-closest`,
-							`${prefix}-parent`,
-							`${prefix}-next`,
-							`${prefix}-previous`
-						].includes(attribute.name)
-					) {
+					} else if ([`${prefix}-query`].includes(attribute.name)) {
 						target = attribute.value;
 						break;
 					}
@@ -371,7 +359,7 @@ const CoCreateEvents = {
 						prefixes[prefix].events
 					);
 
-					// let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-selector], [${prefix}-closest], [${prefix}-parent], [${prefix}-next], [${prefix}-previous]`
+					// let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-query]`
 
 					// let parentElement = target.parentElement;
 					// if (parentElement) {
@@ -486,7 +474,7 @@ const CoCreateEvents = {
 						element,
 						prefix: `${prefix}-value`
 					});
-					if (valueElements) {
+					if (valueElements.length) {
 						let elementValues = [];
 						for (let i = 0; i < valueElements.length; i++)
 							elementValues.push(valueElements[i].getValue());
@@ -564,14 +552,14 @@ const CoCreateEvents = {
 				}
 				return x; // Return the updated x
 			});
-
-			let targetElements = queryElements({
-				element,
-				prefix,
-				selector: params
-			});
-
-			if (targetElements === false) {
+			let targetElements;
+			if (element.hasAttribute(`${prefix}-query`)) {
+				targetElements = queryElements({
+					element,
+					prefix,
+					selector: params
+				});
+			} else {
 				targetElements = [element];
 			}
 
@@ -1080,7 +1068,7 @@ async function handleElementProcessingWithBackoff(element) {
 		if (element.hasAttribute("onload-attribute")) {
 			/* ... */
 		}
-		if (element.hasAttribute("onload-next")) {
+		if (element.hasAttribute("onload-query")) {
 			/* ... */
 		}
 	} else {

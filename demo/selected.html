@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Selected | CoCreateJS</title>
+	<head>
+		<title>Selected | CoCreateJS</title>
 
-        <!-- CoCreate Favicon -->
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="../assets/favicon.ico" />
-        <!-- Custom CSS -->
-        <style type="text/css">
-            .test {
-                background: red;
-            }
-            .green {
-                background: green;
-            }
-            .yellow {
-                background: yellow;
-            }
-            .blue {
-                background: blue;
-            }
-            .red {
-                background: red;
-            }
-            .active {
-                background-color: blue;
-            }
-            .hfhfh[selected] {
-            }
-        </style>
-        <link rel="manifest" href="/manifest.webmanifest" />
-    </head>
-    <body>
-        <!--<article>-->
+		<!-- CoCreate Favicon -->
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="../assets/favicon.ico" />
+		<!-- Custom CSS -->
+		<style type="text/css">
+			.test {
+				background: red;
+			}
+			.green {
+				background: green;
+			}
+			.yellow {
+				background: yellow;
+			}
+			.blue {
+				background: blue;
+			}
+			.red {
+				background: red;
+			}
+			.active {
+				background-color: blue;
+			}
+			.hfhfh[selected] {
+			}
+		</style>
+		<link rel="manifest" href="/manifest.webmanifest" />
+	</head>
+	<body>
+		<!--<article>-->
 
-        <div
-            id="yyy"
-            selected-selector=".tester"
-            selected-value="active,"
-            selected-attribute="data-test"
-            selected-group="uno"
-            data-test=""
-            class="test">
-            1 tab
-        </div>
-        <div selected-value="active" selected-group="uno" class="test">
-            2 tab
-        </div>
-        <div selected-value="active" selected-group="uno" class="test">
-            3 tab
-        </div>
+		<div
+			id="yyy"
+			selected-query=".tester"
+			selected-value="active,"
+			selected-attribute="data-test"
+			selected-group="uno"
+			data-test=""
+			class="test">
+			1 tab
+		</div>
+		<div selected-value="active" selected-group="uno" class="test">
+			2 tab
+		</div>
+		<div selected-value="active" selected-group="uno" class="test">
+			3 tab
+		</div>
 
-        <hr />
+		<hr />
 
-        <div selected-value="yellow" selected-group="2" class="green">
-            1 tab
-        </div>
-        <div selected-value="blue" selected-group="2" class="green">2 tab</div>
-        <div selected-value="red" selected-group="2" class="green">3 tab</div>
+		<div selected-value="yellow" selected-group="2" class="green">
+			1 tab
+		</div>
+		<div selected-value="blue" selected-group="2" class="green">2 tab</div>
+		<div selected-value="red" selected-group="2" class="green">3 tab</div>
 
-        <hr />
-        <div class="tester">
-            <div
-                selected-value="active"
-                selected-closest="div.tester"
-                class="test">
-                4 tab
-            </div>
-            <div selected-value="active" class="test">4 tab</div>
+		<hr />
+		<div class="tester">
+			<div
+				selected-value="active"
+				selected-query="$closest div.tester"
+				class="test">
+				4 tab
+			</div>
+			<div selected-value="active" class="test">4 tab</div>
 
-            <div
-                selected-value="color:black; background:grey"
-                selected-attribute="style"
-                style="">
-                color tab
-            </div>
+			<div
+				selected-value="color:black; background:grey"
+				selected-attribute="style"
+				style="">
+				color tab
+			</div>
 
-            <div id="yyyy" data-test="" class="test">1 tab</div>
-        </div>
+			<div id="yyyy" data-test="" class="test">1 tab</div>
+		</div>
 
-        <!-- <script src="../dist/CoCreate-selected.js"></script> -->
-        <script src="https://CoCreate.app/dist/CoCreate.js"></script>
-        <!-- <script src="https://CoCreate.app/dist/CoCreate.js"></script> -->
-    </body>
+		<!-- <script src="../dist/CoCreate-selected.js"></script> -->
+		<script src="https://CoCreate.app/dist/CoCreate.js"></script>
+		<!-- <script src="https://CoCreate.app/dist/CoCreate.js"></script> -->
+	</body>
 </html>

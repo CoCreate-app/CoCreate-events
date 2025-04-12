@@ -1,91 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Events | CoCreateJS</title>
+	<head>
+		<title>Events | CoCreateJS</title>
 
-        <!-- CoCreate Favicon -->
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="../assets/favicon.ico" />
+		<!-- CoCreate Favicon -->
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="../assets/favicon.ico" />
 
-        <!-- Custom CSS -->
-        <style type="text/css">
-            .test {
-                background: red;
-            }
-            .new {
-                background: yellow;
-            }
-            .active {
-                background-color: blue;
-            }
-            .hidden {
-                display: none;
-            }
-        </style>
-        <link rel="manifest" href="/manifest.webmanifest" />
-    </head>
-    <body>
-        <div click="active" class="test">
-            hhh
-            <!--<div  class="test">click me</div><br/>-->
-        </div>
+		<!-- Custom CSS -->
+		<style type="text/css">
+			.test {
+				background: red;
+			}
+			.new {
+				background: yellow;
+			}
+			.active {
+				background-color: blue;
+			}
+			.hidden {
+				display: none;
+			}
+		</style>
+		<link rel="manifest" href="/manifest.webmanifest" />
+	</head>
+	<body>
+		<div click="active" class="test">
+			hhh
+			<!--<div  class="test">click me</div><br/>-->
+		</div>
 
-        <i
-            class="fas fa-plus-circle"
-            click="fa-minus-circle, fa-plus-circle"></i>
+		<i
+			class="fas fa-plus-circle"
+			click="fa-minus-circle, fa-plus-circle"></i>
 
-        <article>
-            <div id="div-01" class="vdom-item">
-                <p>Here is div-01 i should get class hidden</p>
-                <div>
-                    <div class="vdom-item">some content1</div>
-                    <span click="test" click-closest=".vdom-item"
-                        ><i class="height:16px" src="/assets/svg/caret-down.svg"
-                            >test</i
-                        ></span
-                    >
-                </div>
-                <div class="vdom-item">some content2</div>
-            </div>
-            <div class="vdom-item">some content3</div>
-            <div id="div-03">Here is div-03</div>
-        </article>
-        <br />
-        <hr />
-        <div class="vdom-item" click="active" click-selector="article > div">
-            some content
-        </div>
-        <br />
-        <hr />
-        <div
-            class="vdom-item"
-            click-attribute="class"
-            click="active"
-            click-selector=".vdom-item">
-            click for active
-        </div>
-        <br />
-        <hr />
-        TEST HERE
-        <div
-            class="vdom-item"
-            id="hey"
-            data-test=""
-            click-attribute="value"
-            click-selector="#tester"
-            click-value="active, other, hi, jean">
-            some content
-        </div>
-        <form>
-            <input id="tester" />
-            <a actions="reset">reset</a>
-        </form>
+		<article>
+			<div id="div-01" class="vdom-item">
+				<p>Here is div-01 i should get class hidden</p>
+				<div>
+					<div class="vdom-item">some content1</div>
+					<span click="test" click-query="$closest .vdom-item"
+						><i class="height:16px" src="/assets/svg/caret-down.svg"
+							>test</i
+						></span
+					>
+				</div>
+				<div class="vdom-item">some content2</div>
+			</div>
+			<div class="vdom-item">some content3</div>
+			<div id="div-03">Here is div-03</div>
+		</article>
+		<br />
+		<hr />
+		<div class="vdom-item" click="active" click-query="article > div">
+			some content
+		</div>
+		<br />
+		<hr />
+		<div
+			class="vdom-item"
+			click-attribute="class"
+			click="active"
+			click-query=".vdom-item">
+			click for active
+		</div>
+		<br />
+		<hr />
+		TEST HERE
+		<div
+			class="vdom-item"
+			id="hey"
+			data-test=""
+			click-attribute="value"
+			click-query="#tester"
+			click-value="active, other, hi, jean">
+			some content
+		</div>
+		<form>
+			<input id="tester" />
+			<a actions="reset">reset</a>
+		</form>
 
-        <!-- <script src="../dist/CoCreate-events.js"></script> -->
-        <!-- <script src="../../../CoCreateJS/dist/CoCreate.js"></script> -->
-        <script src="https://CoCreate.app/dist/CoCreate.js"></script>
-    </body>
+		<!-- <script src="../dist/CoCreate-events.js"></script> -->
+		<!-- <script src="../../../CoCreateJS/dist/CoCreate.js"></script> -->
+		<script src="https://CoCreate.app/dist/CoCreate.js"></script>
+	</body>
 </html>
