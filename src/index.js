@@ -461,7 +461,9 @@ const CoCreateEvents = {
 					values = localStorage.getItem(key);
 				} else if ((key = element.getAttribute("localstorage-set"))) {
 					values = await element.getValue();
-					if (values) localStorage.setItem(key, values);
+					if (values) {
+						localStorage.setItem(key, values);
+					}
 				}
 
 				// if (!key || !values)
@@ -476,27 +478,39 @@ const CoCreateEvents = {
 					});
 					if (valueElements.length) {
 						let elementValues = [];
-						for (let i = 0; i < valueElements.length; i++)
+						for (let i = 0; i < valueElements.length; i++) {
 							elementValues.push(valueElements[i].getValue());
-
-						if (elementValues.length) values = elementValues;
+						}
+						if (elementValues.length) {
+							values = elementValues;
+						}
 					}
 				}
 
-				if (values === null)
+				if (values === null) {
 					values = element.getAttribute(`${prefix}-if-value`);
-				if (values === null) values = element.getAttribute(prefix);
+				}
+				if (values === null) {
+					values = element.getAttribute(prefix);
+				}
 			}
 
 			if (values || values === "") {
-				if (typeof values === "string") values = values.split(",");
-				else if (!Array.isArray(values)) values = [values];
+				if (typeof values === "string") {
+					values = values.split(",");
+				} else if (!Array.isArray(values)) {
+					values = [values];
+				}
 			} else {
 				values = await element.getValue();
-				if (!Array.isArray(values)) values = [values];
+				if (!Array.isArray(values)) {
+					values = [values];
+				}
 			}
 
-			if ((targetAttribute && !values) || values.length === 0) return;
+			if ((targetAttribute && !values) || values.length === 0) {
+				return;
+			}
 
 			let ifCondition = element.getAttribute(`${prefix}-if`);
 			let elseCondition = element.getAttribute(`${prefix}-else`);
@@ -506,29 +520,51 @@ const CoCreateEvents = {
 				if (!ifValue && ifValue !== "")
 					ifValue = (await element.getValue()) || values;
 				//values // await element.getValue()
-				else if (ifValue || ifValue === "") ifValue = [ifValue];
-				else ifValue = values;
+				else if (ifValue || ifValue === "") {
+					ifValue = [ifValue];
+				} else {
+					ifValue = values;
+				}
 
-				if (!Array.isArray(ifValue)) ifValue = [ifValue];
+				if (!Array.isArray(ifValue)) {
+					ifValue = [ifValue];
+				}
 			}
 
 			//TODO: improved resize toggling of values
 			// let hasCondition = this.elements2.get(element)
-			if (ifCondition && evaluateCondition(ifCondition, ifValue)) {
-				// if (hasCondition && hasCondition.condition === ifCondition) {
-				//     return
-				// } else
-				//     this.elements2.set(element, { condition: ifCondition })
-			} else if (
-				elseCondition &&
-				evaluateCondition(elseCondition, ifValue)
-			) {
-				// if (hasCondition && hasCondition.condition === elseCondition) {
-				//     return
-				// } else
-				//     this.elements2.set(element, { condition: elseCondition })
-			} else if (ifCondition || elseCondition) {
-				return;
+			if (ifCondition) {
+				if (evaluateCondition(ifCondition, ifValue)) {
+					// Action 1: Condition exists and evaluates true
+					// console.log("Executing Action 1 for ifCondition:", ifCondition); // Optional debug log
+					// Replace this comment with your actual code for Path 1
+					// e.g., this.elements2.set(element, { condition: ifCondition });
+
+					// Assuming we stop processing for this element once a condition is met and actioned
+					return;
+				} else {
+					// Condition existed but evaluated false. Stop processing.
+					// Corresponds to the original `else if (ifCondition || elseCondition) { return; }` for the ifCondition case
+					return;
+				}
+			}
+
+			// If we reach here, ifCondition was falsy (didn't exist)
+			// Now check the 'else' condition
+			if (elseCondition) {
+				if (evaluateCondition(elseCondition, ifValue)) {
+					// Action 2: Condition exists and evaluates true
+					// console.log("Executing Action 2 for elseCondition:", elseCondition); // Optional debug log
+					// Replace this comment with your actual code for Path 2
+					// e.g., this.elements2.set(element, { condition: elseCondition });
+
+					// Assuming we stop processing for this element once a condition is met and actioned
+					return;
+				} else {
+					// Condition existed but evaluated false. Stop processing.
+					// Corresponds to the original `else if (ifCondition || elseCondition) { return; }` for the elseCondition case
+					return;
+				}
 			}
 
 			let targetText = element.getAttribute(`${prefix}-text`);
@@ -536,12 +572,17 @@ const CoCreateEvents = {
 			let targetKey = element.getAttribute(`${prefix}-key`);
 
 			if (prefix === "selected") {
-				if (el !== element) element.removeAttribute("selected");
-				else element.setAttribute("selected", "");
+				if (el !== element) {
+					element.removeAttribute("selected");
+				} else {
+					element.setAttribute("selected", "");
+				}
 			}
 
 			let deactivate = false;
-			if (el !== element) deactivate = true;
+			if (el !== element) {
+				deactivate = true;
+			}
 			// values = values.map(x => x.trim());
 
 			values = values.map((x) => {
