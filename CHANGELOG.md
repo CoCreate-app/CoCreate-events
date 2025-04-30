@@ -1,3 +1,14 @@
+## [1.27.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.0...v1.27.1) (2025-04-30)
+
+
+### Bug Fixes
+
+* added css-loader ([bc0861e](https://github.com/CoCreate-app/CoCreate-events/commit/bc0861e3c58e72dee5c02353142528243e40bf4c))
+* build error ([f2f1774](https://github.com/CoCreate-app/CoCreate-events/commit/f2f1774b4808abe3953e4279cef509c1daab7ee7))
+* update query attributes ([5acc01b](https://github.com/CoCreate-app/CoCreate-events/commit/5acc01b00729265f24be91a5255e51a31f2496d3))
+* updated cocreate modules versions ([a3c9613](https://github.com/CoCreate-app/CoCreate-events/commit/a3c9613380c4eae9bcca2b6290d09627b4bd468e))
+* webpack.config and devdependencies ([0e101a7](https://github.com/CoCreate-app/CoCreate-events/commit/0e101a79632f4fc09c73b6b8382f56fb6c6a8647))
+
 # [1.27.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.26.0...v1.27.0) (2025-04-11)
 
 
