@@ -1,3 +1,10 @@
+## [1.27.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.1...v1.27.2) (2025-05-01)
+
+
+### Bug Fixes
+
+* update [@cocreate](https://github.com/cocreate) dependencies ([7d405b5](https://github.com/CoCreate-app/CoCreate-events/commit/7d405b51a40165f9b1a30fdf6cc6279aaba2289b))
+
 ## [1.27.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.0...v1.27.1) (2025-04-30)
 
 
