@@ -28,8 +28,9 @@ import "@cocreate/element-prototype";
 const CoCreateEvents = {
 	elements2: new Map(),
 	init: function (prefix, events) {
-		if (prefix && events) this.initPrefix(prefix, events);
-		else {
+		if (prefix && events) {
+			this.initPrefix(prefix, events);
+		} else {
 			this.initPrefix("toggle", ["click"]);
 			this.initPrefix("click", ["click"]);
 			this.initPrefix("hover", ["mouseover", "mouseout"]);
@@ -385,11 +386,9 @@ const CoCreateEvents = {
 		let elements = [el];
 		let targetGroup = el.getAttribute(`${prefix}-group`);
 		if (targetGroup) {
-			document
-				.querySelectorAll(`[${prefix}-group="${targetGroup}"]`)
-				.forEach((element) => {
-					if (element !== el) elements.push(element);
-				});
+			elements = document.querySelectorAll(
+				`[${prefix}-group="${targetGroup}"]`
+			);
 		}
 
 		for (let element of elements) {
@@ -583,8 +582,11 @@ const CoCreateEvents = {
 			if (el !== element) {
 				deactivate = true;
 			}
-			// values = values.map(x => x.trim());
+			if (events && events.includes("click")) {
+				// TODO: handling of attributes that represent states aria-expanded, aria-selected etc.
+			}
 
+			// values = values.map(x => x.trim());
 			values = values.map((x) => {
 				if (typeof x === "string") x = x.trim(); // Update x with the trimmed value
 				let prop = element.getAttribute(`${prefix}-property`);
@@ -604,10 +606,14 @@ const CoCreateEvents = {
 				targetElements = [element];
 			}
 
-			let action = element.getAttribute(`${prefix}-action`);
+			let action =
+				element.getAttribute(`${prefix}-action`) ||
+				element.getAttribute(`${prefix}-method`);
 			for (let i = 0; i < targetElements.length; i++) {
 				if (action) {
-					targetElements[i][action]();
+					if (targetElements[i][action]) {
+						targetElements[i][action]();
+					}
 				} else if (
 					!targetAttribute &&
 					targetAttribute !== "" &&
@@ -736,14 +742,18 @@ const CoCreateEvents = {
 				if (deactivate) newValue = "";
 				if (attrName === "class") {
 					if (oldValue) {
-						element.classList.remove(oldValue);
+						oldValue.split(" ").forEach((className) => {
+							element.classList.remove(className);
+						});
 						if (values.length === 1) {
 							return;
 						}
 					}
 
 					if (newValue) {
-						element.classList.add(newValue);
+						newValue.split(" ").forEach((className) => {
+							element.classList.add(className);
+						});
 					}
 				} else if (attrName === "value") {
 					element.setValue(newValue, false);
@@ -755,9 +765,11 @@ const CoCreateEvents = {
 					element[attrName.substring(1)]();
 				} else if (attrName) {
 					// TODO: removeAttribute vs setting empty value, how best to define. operator $remove ???
-					if (newValue === "" && element.hasAttribute(attrName))
+					if (newValue === "" && element.hasAttribute(attrName)) {
 						element.removeAttribute(attrName);
-					else element.setAttribute(attrName, newValue);
+					} else {
+						element.setAttribute(attrName, newValue);
+					}
 				} else if (targetPosition) {
 					if (domTextEditor) {
 						CoCreate.text.insertAdjacentElement({
