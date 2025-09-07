@@ -1,3 +1,10 @@
+## [1.27.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.2...v1.27.3) (2025-09-07)
+
+
+### Bug Fixes
+
+* improve event handling and element manipulation in CoCreateEvents ([ae6b58a](https://github.com/CoCreate-app/CoCreate-events/commit/ae6b58a7c0dc313b426a2614b6cb141735dffbbb))
+
 ## [1.27.2](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.1...v1.27.2) (2025-05-01)
 
 
