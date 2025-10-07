@@ -512,6 +512,7 @@ const CoCreateEvents = {
 			}
 
 			let ifCondition = element.getAttribute(`${prefix}-if`);
+			let elseIfCondition = element.getAttribute(`${prefix}-else-if`);
 			let elseCondition = element.getAttribute(`${prefix}-else`);
 
 			let ifValue = element.getAttribute(`${prefix}-if-value`);
@@ -530,38 +531,16 @@ const CoCreateEvents = {
 				}
 			}
 
-			//TODO: improved resize toggling of values
-			// let hasCondition = this.elements2.get(element)
 			if (ifCondition) {
-				if (evaluateCondition(ifCondition, ifValue)) {
-					// Action 1: Condition exists and evaluates true
-					// console.log("Executing Action 1 for ifCondition:", ifCondition); // Optional debug log
-					// Replace this comment with your actual code for Path 1
-					// e.g., this.elements2.set(element, { condition: ifCondition });
-
-					// Assuming we stop processing for this element once a condition is met and actioned
-					return;
-				} else {
-					// Condition existed but evaluated false. Stop processing.
-					// Corresponds to the original `else if (ifCondition || elseCondition) { return; }` for the ifCondition case
+				// If the 'if' condition is not met, stop processing this element.
+				if (!evaluateCondition(ifCondition, ifValue)) {
 					return;
 				}
-			}
-
-			// If we reach here, ifCondition was falsy (didn't exist)
-			// Now check the 'else' condition
-			if (elseCondition) {
-				if (evaluateCondition(elseCondition, ifValue)) {
-					// Action 2: Condition exists and evaluates true
-					// console.log("Executing Action 2 for elseCondition:", elseCondition); // Optional debug log
-					// Replace this comment with your actual code for Path 2
-					// e.g., this.elements2.set(element, { condition: elseCondition });
-
-					// Assuming we stop processing for this element once a condition is met and actioned
-					return;
-				} else {
-					// Condition existed but evaluated false. Stop processing.
-					// Corresponds to the original `else if (ifCondition || elseCondition) { return; }` for the elseCondition case
+			} else if (elseCondition) {
+				// If there's no 'if' condition but there is an 'else' condition,
+				// stop processing if the 'else' condition is met.
+				// This creates an "execute unless" behavior for the 'else' attribute.
+				if (evaluateCondition(elseIfCondition, ifValue)) {
 					return;
 				}
 			}
@@ -940,7 +919,10 @@ function checkCondition(condition, value) {
 	// TODO: why parse updated conditin to boolean false
 	// if (parse && condition !== "false") condition = parseCondition(condition);
 
-	if (typeof value[0] === "number") {
+	if (
+		typeof condition === "number" ||
+		(typeof condition === "string" && /\d/.test(condition))
+	) {
 		condition = parseNumberCondition(condition);
 	} else if (typeof value[0] === "object" && typeof condition === "string") {
 		condition = parseJsonCondition(condition);
@@ -996,9 +978,11 @@ function parseJsonCondition(condition) {
 	}
 }
 function parseNumberCondition(condition) {
-	return !isNaN(condition) && condition.trim() !== ""
-		? Number(condition)
-		: condition;
+	if (typeof condition === "string") {
+		const num = parseFloat(condition);
+		return !isNaN(num) ? num : condition;
+	}
+	return condition;
 }
 
 // Helper function for delay using Promises
