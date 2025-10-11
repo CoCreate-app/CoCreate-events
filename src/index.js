@@ -45,6 +45,7 @@ const CoCreateEvents = {
 			this.initPrefix("resize", ["onload", "resize"]);
 			this.initPrefix("localstorage", ["onload"]);
 			this.initPrefix("focus", ["focus"]);
+			this.initPrefix("blur", ["blur"]);
 		}
 
 		let customEventEls = document.querySelectorAll("[event-name]");
