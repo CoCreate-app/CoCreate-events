@@ -1,3 +1,11 @@
+## [1.27.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.3...v1.27.4) (2025-10-11)
+
+
+### Bug Fixes
+
+* add support for blur event initialization in CoCreateEvents ([8c2aec3](https://github.com/CoCreate-app/CoCreate-events/commit/8c2aec3cf145fdce8abf65463332c09c6c3c57c5))
+* enhance conditional processing with else-if support and improve number parsing ([053f322](https://github.com/CoCreate-app/CoCreate-events/commit/053f3220fa8f98d20a02e6f3faa32340869b8e49))
+
 ## [1.27.3](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.2...v1.27.3) (2025-09-07)
 
 
