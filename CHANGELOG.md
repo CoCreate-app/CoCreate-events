@@ -1,3 +1,15 @@
+# [1.28.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.4...v1.28.0) (2026-01-17)
+
+
+### Bug Fixes
+
+* update worklow ([e8f4c2d](https://github.com/CoCreate-app/CoCreate-events/commit/e8f4c2dc8c3a799adf0be238bab5a4ed9ac08915))
+
+
+### Features
+
+* once attribute for intersectionObserver ([e58bfee](https://github.com/CoCreate-app/CoCreate-events/commit/e58bfeec8122a176179ec1b9a03557dbe80765d8))
+
 ## [1.27.4](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.3...v1.27.4) (2025-10-11)
 
 
