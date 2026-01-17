@@ -245,6 +245,10 @@ const CoCreateEvents = {
 					? threshold.filter((value) => value >= 0 && value <= 1)
 					: [0];
 
+				// Returns true if attribute is present AND does not equal "false"
+				const onceAttr = el.getAttribute(`${prefix}-once`);
+                const once = onceAttr !== null && onceAttr !== "false";
+
 				// Create IntersectionObserver
 				const intersectionObserver = new IntersectionObserver(
 					(entries) => {
@@ -274,6 +278,10 @@ const CoCreateEvents = {
 									// 		entry.intersectionRatio
 									// }
 								);
+								// Disconnect if once is true
+                                if (once) {
+                                    intersectionObserver.unobserve(entry.target);
+                                }
 							}
 						});
 					},
