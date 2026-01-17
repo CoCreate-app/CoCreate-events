@@ -1,3 +1,10 @@
+# [1.29.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.28.0...v1.29.0) (2026-01-17)
+
+
+### Features
+
+* setInterval attribute ([f64f9bc](https://github.com/CoCreate-app/CoCreate-events/commit/f64f9bcc93248c0451b8dcc468d1f0162f3101ea))
+
 # [1.28.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.27.4...v1.28.0) (2026-01-17)
 
 
