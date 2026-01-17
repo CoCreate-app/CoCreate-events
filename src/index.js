@@ -91,7 +91,7 @@ const CoCreateEvents = {
 			}
 		});
 
-		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-query], [${prefix}-preventDefault], [${prefix}-stopPropagation], [${prefix}-stopImmediatePropagation]`;
+		let selector = `[${prefix}], [${prefix}-key], [${prefix}-attribute], [${prefix}-value], [${prefix}-action], [${prefix}-query]`;
 
 		observer.init({
 			name: "CoCreateEventattributes",
@@ -148,19 +148,6 @@ const CoCreateEvents = {
 			}
 
 			if (!events || !isEventable) continue;
-
-			// let originalSelector = ""; // i think we need to extract the selector and remove the operators
-			// if (originalSelector) {
-			// 	observer.init({
-			// 		types: ["addedNodes"],
-			// 		callback: function (mutation) {
-			// 			const els = el.queryElements();
-			// 			if (els && els.includes(mutation.target)) {
-			// 				self.__updateElements();
-			// 			}
-			// 		}
-			// 	});
-			// }
 
 			if (events.includes("onload")) {
 				this.__updateElements(el, prefix);
@@ -255,13 +242,12 @@ const CoCreateEvents = {
 						entries.forEach((entry) => {
 							const isVisible = entry.isIntersecting;
 
-							// Determine if __updateElements should be called based on trigger
-							// if (
-							// 	(trigger === "visible" && isVisible) ||
-							// 	(trigger === "not-visible" && !isVisible) ||
-							// 	trigger === "both"
-							// ) {
-							if (isVisible) {
+							// Determine if we should trigger based on the "trigger" attribute
+							if (
+								(trigger === "visible" && isVisible) ||
+								(trigger === "not-visible" && !isVisible) ||
+								trigger === "both"
+							) {
 								// Set an attribute to reflect visibility state
 								el.setAttribute(
 									`${prefix}-is-visible`,
@@ -272,11 +258,6 @@ const CoCreateEvents = {
 								self.__updateElements(
 									el,
 									prefix
-									// {
-									// 	isVisible,
-									// 	intersectionRatio:
-									// 		entry.intersectionRatio
-									// }
 								);
 								// Disconnect if once is true
                                 if (once) {
@@ -368,23 +349,7 @@ const CoCreateEvents = {
 						null,
 						prefixes[prefix].events
 					);
-
-					// let selector = `[${prefix}], [${prefix}-key], [${prefix}-value], [${prefix}-query]`
-
-					// let parentElement = target.parentElement;
-					// if (parentElement) {
-					//     do {
-					//         parentElement = parentElement.closest(selector)
-					//         if (parentElement) {
-					//             self.__updateElements(parentElement, prefix, null, prefixes[prefix].events);
-					//             parentElement = parentElement.parentElement
-					//         }
-					//     }
-					//     while (parentElement)
-
-					// }
 				}
-				// }, 500);
 			}
 		}
 	},
@@ -419,9 +384,48 @@ const CoCreateEvents = {
 			// 	});
 			// }
 
-			// TODO: Handle setInterval logic
-			let delay = element.getAttribute(`${prefix}-setTimeout`);
+			let interval = element.getAttribute(`${prefix}-setInterval`);
+			if (interval !== null) {
+				let intervalMs = parseInt(interval, 10) || 0;
+				if (!element.eventsInterval) {
+					element.eventsInterval = {};
+				}
+				let intervalEntry = element.eventsInterval[prefix];
+				if (intervalMs > 0) {
+					if (!intervalEntry || intervalEntry.delay !== intervalMs) {
+						if (intervalEntry) {
+							clearInterval(intervalEntry.id);
+						}
+						element.eventsInterval[prefix] = {
+							delay: intervalMs,
+							id: setInterval(() => {
+								if (!element.isConnected) {
+									const entry =
+										element.eventsInterval &&
+										element.eventsInterval[prefix];
+									if (entry) {
+										clearInterval(entry.id);
+										delete element.eventsInterval[prefix];
+									}
+									return;
+								}
+								self.__updateElements(
+									element,
+									prefix,
+									target,
+									events,
+									params
+								);
+							}, intervalMs)
+						};
+					}
+				} else if (intervalEntry) {
+					clearInterval(intervalEntry.id);
+					delete element.eventsInterval[prefix];
+				}
+			}
 
+			let delay = element.getAttribute(`${prefix}-setTimeout`);
 			if (delay) {
 				delay = parseInt(delay, 10) || 0;
 				if (delay > 0) {
@@ -447,9 +451,6 @@ const CoCreateEvents = {
 			let targetPosition = element.getAttribute(
 				`${prefix}-insert-adjacent`
 			);
-			// targetAttribute = checkMediaQueries(targetAttribute)
-			// if (targetAttribute === false)
-			//     return
 
 			let onEvent = element.getAttribute(`${prefix}-on`);
 			if (onEvent) {
@@ -474,7 +475,6 @@ const CoCreateEvents = {
 					}
 				}
 
-				// if (!key || !values)
 				if (!key) return;
 			} else {
 				values = element.getAttribute(`${prefix}-value`);
