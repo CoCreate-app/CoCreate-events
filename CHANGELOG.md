@@ -1,3 +1,10 @@
+## [1.29.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.29.0...v1.29.1) (2026-02-04)
+
+
+### Bug Fixes
+
+* formating ([1f8b5fc](https://github.com/CoCreate-app/CoCreate-events/commit/1f8b5fc191b407b70720124ad504c7b8416ab08e))
+
 # [1.29.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.28.0...v1.29.0) (2026-01-17)
 
 
