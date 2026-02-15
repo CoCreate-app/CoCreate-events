@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.29.1...v1.30.0) (2026-02-15)
+
+
+### Features
+
+* streamline event initialization and update handling with dash notation ([aaf434a](https://github.com/CoCreate-app/CoCreate-events/commit/aaf434a56eab97dc9581833ba5e277946e2a79c7))
+
 ## [1.29.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.29.0...v1.29.1) (2026-02-04)
 
 
