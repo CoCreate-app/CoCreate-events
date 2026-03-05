@@ -1,3 +1,10 @@
+## [1.30.1](https://github.com/CoCreate-app/CoCreate-events/compare/v1.30.0...v1.30.1) (2026-03-05)
+
+
+### Bug Fixes
+
+* operator $value should trigger getValue() instead of being treated as a literal string ([7198b2d](https://github.com/CoCreate-app/CoCreate-events/commit/7198b2d3aa65899a22889cb1d6a3638baca442c5))
+
 # [1.30.0](https://github.com/CoCreate-app/CoCreate-events/compare/v1.29.1...v1.30.0) (2026-02-15)
 
 
