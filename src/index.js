@@ -473,9 +473,9 @@ const CoCreateEvents = {
 
             // Get Value
             let value = sourceElement.getAttribute(name);
-            if (!value && sourceElement.getValue) {
+            if (value === "$value" && sourceElement.getValue) {
                 value = await sourceElement.getValue();
-            }
+            } 
 
             // Parse CSV for rotation
             let values = [];
@@ -608,12 +608,7 @@ const CoCreateEvents = {
                         newValue = this.__getNextValue(values, oldValue, deactivate);
 
                         // Handle Namespaced Attributes (e.g. svg:href) if encoded in name
-                        if (targetName.includes('.')) {
-                            const realName = targetName.replace('.', ':');
-                            targetElement.setAttribute(realName, newValue);
-                        } else {
-                            targetElement.setAttribute(targetName, newValue);
-                        }
+                        targetElement.setAttribute(targetName, newValue);
                     }
                     break;
             }
